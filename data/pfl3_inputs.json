@@ -1,0 +1,3062 @@
+{
+ "note": "これは配線の測定であって、動作点での寄与ではない。重みが大きくても沈黙していれば寄与は 0（6.9 節の PFNv）。",
+ "counts": {
+  "PFL3": 24,
+  "FC2": 92,
+  "hDeltaB": 19,
+  "EPG": 50,
+  "Delta7": 42
+ },
+ "pfl3_inputs": {
+  "hDeltaA": {
+   "weight": 3881.0,
+   "weight_abs": 3881.0,
+   "share": 0.1133006364220237,
+   "n_connections": 92,
+   "n_synapses": 3881,
+   "sign": "exc",
+   "offset_deg": -118.01571082304228,
+   "offset_R": 0.24650635808997848,
+   "route": "hD_other"
+  },
+  "hDeltaM": {
+   "weight": 2428.0,
+   "weight_abs": 2428.0,
+   "share": 0.07088223273194372,
+   "n_connections": 58,
+   "n_synapses": 2428,
+   "sign": "exc",
+   "offset_deg": 173.3864692544094,
+   "offset_R": 0.21957944507674076,
+   "route": "hD_other"
+  },
+  "hDeltaI": {
+   "weight": 3468.0,
+   "weight_abs": 3468.0,
+   "share": 0.10124365037659835,
+   "n_connections": 128,
+   "n_synapses": 3468,
+   "sign": "exc",
+   "offset_deg": -122.93396478823958,
+   "offset_R": 0.2289838907436255,
+   "route": "hD_other"
+  },
+  "Delta7": {
+   "weight": -5617.0,
+   "weight_abs": 5617.0,
+   "share": 0.16398084895194723,
+   "n_connections": 278,
+   "n_synapses": 5617,
+   "sign": "inh",
+   "offset_deg": -12.18593802159623,
+   "offset_R": 0.9018659182477669,
+   "route": "H"
+  },
+  "hDeltaH": {
+   "weight": 1448.0,
+   "weight_abs": 1448.0,
+   "share": 0.042272435336019154,
+   "n_connections": 57,
+   "n_synapses": 1448,
+   "sign": "exc",
+   "offset_deg": 177.58650087139935,
+   "offset_R": 0.19784685562371163,
+   "route": "hD_other"
+  },
+  "FC2A": {
+   "weight": 2512.0,
+   "weight_abs": 2512.0,
+   "share": 0.07333450108016581,
+   "n_connections": 126,
+   "n_synapses": 2512,
+   "sign": "exc",
+   "offset_deg": 13.877301305186815,
+   "offset_R": 0.28146184895206966,
+   "route": "G"
+  },
+  "FC2B": {
+   "weight": 2478.0,
+   "weight_abs": 2478.0,
+   "share": 0.07234191627255211,
+   "n_connections": 183,
+   "n_synapses": 2478,
+   "sign": "exc",
+   "offset_deg": 9.242012887771573,
+   "offset_R": 0.26540269340321454,
+   "route": "G"
+  },
+  "hDeltaG": {
+   "weight": 582.0,
+   "weight_abs": 582.0,
+   "share": 0.016990716412681732,
+   "n_connections": 48,
+   "n_synapses": 582,
+   "sign": "exc",
+   "offset_deg": 171.28239910540702,
+   "offset_R": 0.20024831895573253,
+   "route": "hD_other"
+  },
+  "EPG": {
+   "weight": 1182.0,
+   "weight_abs": 1182.0,
+   "share": 0.03450691889998248,
+   "n_connections": 113,
+   "n_synapses": 1182,
+   "sign": "exc",
+   "offset_deg": -1.1480764785156883,
+   "offset_R": 0.9534956742916223,
+   "route": "H"
+  },
+  "ExR5": {
+   "weight": -1458.0,
+   "weight_abs": 1458.0,
+   "share": 0.04256437204414083,
+   "n_connections": 95,
+   "n_synapses": 1458,
+   "sign": "inh",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  },
+  "FC2C": {
+   "weight": 2700.0,
+   "weight_abs": 2700.0,
+   "share": 0.0788229111928534,
+   "n_connections": 267,
+   "n_synapses": 2700,
+   "sign": "exc",
+   "offset_deg": -17.4124653331322,
+   "offset_R": 0.22453009972664012,
+   "route": "G"
+  },
+  "PFNp": {
+   "weight": 3833.0,
+   "weight_abs": 3833.0,
+   "share": 0.11189934022303964,
+   "n_connections": 757,
+   "n_synapses": 3833,
+   "sign": "exc",
+   "offset_deg": 7.7893678851454995,
+   "offset_R": 0.22719472393892515,
+   "route": "PFN"
+  },
+  "vDeltaK": {
+   "weight": 536.0,
+   "weight_abs": 536.0,
+   "share": 0.015647807555322007,
+   "n_connections": 173,
+   "n_synapses": 536,
+   "sign": "exc",
+   "offset_deg": -11.579235904346103,
+   "offset_R": 0.23810256525343526,
+   "route": "vD"
+  },
+  "vDeltaJ": {
+   "weight": 188.0,
+   "weight_abs": 188.0,
+   "share": 0.005488410112687569,
+   "n_connections": 58,
+   "n_synapses": 188,
+   "sign": "exc",
+   "offset_deg": 62.973305912759656,
+   "offset_R": 0.21126595219617372,
+   "route": "vD"
+  },
+  "PFL3": {
+   "weight": 853.0,
+   "weight_abs": 853.0,
+   "share": 0.024902201202779237,
+   "n_connections": 253,
+   "n_synapses": 853,
+   "sign": "exc",
+   "offset_deg": -168.11688118954888,
+   "offset_R": 0.12033825104219652,
+   "route": "other"
+  },
+  "hDeltaB": {
+   "weight": 32.0,
+   "weight_abs": 32.0,
+   "share": 0.0009341974659893735,
+   "n_connections": 10,
+   "n_synapses": 32,
+   "sign": "exc",
+   "offset_deg": -146.03368736019564,
+   "offset_R": 0.4012115359664417,
+   "route": "T"
+  },
+  "PFL1": {
+   "weight": 71.0,
+   "weight_abs": 71.0,
+   "share": 0.0020727506276639225,
+   "n_connections": 44,
+   "n_synapses": 71,
+   "sign": "exc",
+   "offset_deg": 2.744483498961732,
+   "offset_R": 0.28769942588123487,
+   "route": "other"
+  },
+  "IbSpsP": {
+   "weight": 57.0,
+   "weight_abs": 57.0,
+   "share": 0.0016640392362935715,
+   "n_connections": 21,
+   "n_synapses": 57,
+   "sign": "exc",
+   "offset_deg": 5.643829098400193,
+   "offset_R": 0.9171893958676711,
+   "route": "other"
+  },
+  "FC3": {
+   "weight": 84.0,
+   "weight_abs": 84.0,
+   "share": 0.0024522683482221053,
+   "n_connections": 56,
+   "n_synapses": 84,
+   "sign": "exc",
+   "offset_deg": 16.183553562315584,
+   "offset_R": 0.3785539856391449,
+   "route": "G"
+  },
+  "vDeltaG": {
+   "weight": 127.0,
+   "weight_abs": 127.0,
+   "share": 0.003707596193145326,
+   "n_connections": 76,
+   "n_synapses": 127,
+   "sign": "exc",
+   "offset_deg": -30.122490475785014,
+   "offset_R": 0.15408724589418976,
+   "route": "vD"
+  },
+  "vDeltaI": {
+   "weight": 129.0,
+   "weight_abs": 129.0,
+   "share": 0.003765983534769662,
+   "n_connections": 79,
+   "n_synapses": 129,
+   "sign": "exc",
+   "offset_deg": -2.670386006495901,
+   "offset_R": 0.25393929962503753,
+   "route": "vD"
+  },
+  "FS3": {
+   "weight": 20.0,
+   "weight_abs": 20.0,
+   "share": 0.0005838734162433584,
+   "n_connections": 14,
+   "n_synapses": 20,
+   "sign": "exc",
+   "offset_deg": 0.230471699278907,
+   "offset_R": 0.2984713436638375,
+   "route": "G"
+  },
+  "vDeltaH": {
+   "weight": 67.0,
+   "weight_abs": 67.0,
+   "share": 0.001955975944415251,
+   "n_connections": 37,
+   "n_synapses": 67,
+   "sign": "exc",
+   "offset_deg": -37.49433418029938,
+   "offset_R": 0.1878031763839188,
+   "route": "vD"
+  },
+  "hDeltaJ": {
+   "weight": 85.0,
+   "weight_abs": 85.0,
+   "share": 0.0024814620190342735,
+   "n_connections": 59,
+   "n_synapses": 85,
+   "sign": "exc",
+   "offset_deg": -97.99963617234795,
+   "offset_R": 0.15514917132879077,
+   "route": "hD_other"
+  },
+  "FS1B": {
+   "weight": 8.0,
+   "weight_abs": 8.0,
+   "share": 0.00023354936649734337,
+   "n_connections": 3,
+   "n_synapses": 8,
+   "sign": "exc",
+   "offset_deg": -129.72304295010147,
+   "offset_R": 0.5878203454845318,
+   "route": "G"
+  },
+  "vDeltaL": {
+   "weight": 74.0,
+   "weight_abs": 74.0,
+   "share": 0.0021603316401004264,
+   "n_connections": 46,
+   "n_synapses": 74,
+   "sign": "exc",
+   "offset_deg": 45.199464925262824,
+   "offset_R": 0.26998962327776477,
+   "route": "vD"
+  },
+  "vDeltaE": {
+   "weight": 19.0,
+   "weight_abs": 19.0,
+   "share": 0.0005546797454311905,
+   "n_connections": 8,
+   "n_synapses": 19,
+   "sign": "exc",
+   "offset_deg": 3.3517647244501116,
+   "offset_R": 0.332686682037187,
+   "route": "vD"
+  },
+  "PEN": {
+   "weight": 13.0,
+   "weight_abs": 13.0,
+   "share": 0.000379517720558183,
+   "n_connections": 9,
+   "n_synapses": 13,
+   "sign": "exc",
+   "offset_deg": 156.22135211940173,
+   "offset_R": 0.4009151555232085,
+   "route": "H"
+  },
+  "PEG": {
+   "weight": 11.0,
+   "weight_abs": 11.0,
+   "share": 0.0003211303789338471,
+   "n_connections": 7,
+   "n_synapses": 11,
+   "sign": "exc",
+   "offset_deg": 112.70687569778063,
+   "offset_R": 0.5319855384991488,
+   "route": "H"
+  },
+  "hDeltaF": {
+   "weight": 10.0,
+   "weight_abs": 10.0,
+   "share": 0.0002919367081216792,
+   "n_connections": 5,
+   "n_synapses": 10,
+   "sign": "exc",
+   "offset_deg": -34.975654782222584,
+   "offset_R": 0.45874314096420116,
+   "route": "hD_other"
+  },
+  "vDeltaM": {
+   "weight": 25.0,
+   "weight_abs": 25.0,
+   "share": 0.0007298417703041981,
+   "n_connections": 19,
+   "n_synapses": 25,
+   "sign": "exc",
+   "offset_deg": 12.64948240700747,
+   "offset_R": 0.3175491964930241,
+   "route": "vD"
+  },
+  "PFNm": {
+   "weight": 13.0,
+   "weight_abs": 13.0,
+   "share": 0.000379517720558183,
+   "n_connections": 10,
+   "n_synapses": 13,
+   "sign": "exc",
+   "offset_deg": -146.90155154256877,
+   "offset_R": 0.49701703707272255,
+   "route": "PFN"
+  },
+  "hDeltaL": {
+   "weight": 10.0,
+   "weight_abs": 10.0,
+   "share": 0.0002919367081216792,
+   "n_connections": 7,
+   "n_synapses": 10,
+   "sign": "exc",
+   "offset_deg": -86.68436231865574,
+   "offset_R": 0.37098710646669725,
+   "route": "hD_other"
+  },
+  "FC1B": {
+   "weight": 9.0,
+   "weight_abs": 9.0,
+   "share": 0.0002627430373095113,
+   "n_connections": 6,
+   "n_synapses": 9,
+   "sign": "exc",
+   "offset_deg": 59.90197337726332,
+   "offset_R": 0.35961514152955926,
+   "route": "G"
+  },
+  "PFR": {
+   "weight": 19.0,
+   "weight_abs": 19.0,
+   "share": 0.0005546797454311905,
+   "n_connections": 15,
+   "n_synapses": 19,
+   "sign": "exc",
+   "offset_deg": -26.416021056864622,
+   "offset_R": 0.37270279345439955,
+   "route": "other"
+  },
+  "PFL2": {
+   "weight": 36.0,
+   "weight_abs": 36.0,
+   "share": 0.0010509721492380452,
+   "n_connections": 30,
+   "n_synapses": 36,
+   "sign": "exc",
+   "offset_deg": -146.22111067210446,
+   "offset_R": 0.11842098146079905,
+   "route": "other"
+  },
+  "PFNa": {
+   "weight": 13.0,
+   "weight_abs": 13.0,
+   "share": 0.000379517720558183,
+   "n_connections": 9,
+   "n_synapses": 13,
+   "sign": "exc",
+   "offset_deg": -179.22539934354626,
+   "offset_R": 0.22368551840345002,
+   "route": "PFN"
+  },
+  "vDeltaF": {
+   "weight": 18.0,
+   "weight_abs": 18.0,
+   "share": 0.0005254860746190226,
+   "n_connections": 13,
+   "n_synapses": 18,
+   "sign": "exc",
+   "offset_deg": 69.82135625492771,
+   "offset_R": 0.2236139983073955,
+   "route": "vD"
+  },
+  "hDeltaC": {
+   "weight": 23.0,
+   "weight_abs": 23.0,
+   "share": 0.0006714544286798622,
+   "n_connections": 20,
+   "n_synapses": 23,
+   "sign": "exc",
+   "offset_deg": -100.59694372085931,
+   "offset_R": 0.42248037931784943,
+   "route": "hD_other"
+  },
+  "FS4A": {
+   "weight": 4.0,
+   "weight_abs": 4.0,
+   "share": 0.00011677468324867169,
+   "n_connections": 3,
+   "n_synapses": 4,
+   "sign": "exc",
+   "offset_deg": 22.33793703857663,
+   "offset_R": 0.8105683662241562,
+   "route": "G"
+  },
+  "FC1D": {
+   "weight": 19.0,
+   "weight_abs": 19.0,
+   "share": 0.0005546797454311905,
+   "n_connections": 16,
+   "n_synapses": 19,
+   "sign": "exc",
+   "offset_deg": 24.17769296795644,
+   "offset_R": 0.30464841525406683,
+   "route": "G"
+  },
+  "FC1A": {
+   "weight": 17.0,
+   "weight_abs": 17.0,
+   "share": 0.0004962924038068547,
+   "n_connections": 14,
+   "n_synapses": 17,
+   "sign": "exc",
+   "offset_deg": 24.534605655312305,
+   "offset_R": 0.31122084697452684,
+   "route": "G"
+  },
+  "FC1E": {
+   "weight": 9.0,
+   "weight_abs": 9.0,
+   "share": 0.0002627430373095113,
+   "n_connections": 8,
+   "n_synapses": 9,
+   "sign": "exc",
+   "offset_deg": 35.03624515374223,
+   "offset_R": 0.32053948987737735,
+   "route": "G"
+  },
+  "FC1F": {
+   "weight": 12.0,
+   "weight_abs": 12.0,
+   "share": 0.0003503240497460151,
+   "n_connections": 11,
+   "n_synapses": 12,
+   "sign": "exc",
+   "offset_deg": -73.00437222320915,
+   "offset_R": 0.4205169302105838,
+   "route": "G"
+  },
+  "PFNd": {
+   "weight": 9.0,
+   "weight_abs": 9.0,
+   "share": 0.0002627430373095113,
+   "n_connections": 8,
+   "n_synapses": 9,
+   "sign": "exc",
+   "offset_deg": -0.18201941345846742,
+   "offset_R": 0.3823910280067215,
+   "route": "PFN"
+  },
+  "PFNv": {
+   "weight": 5.0,
+   "weight_abs": 5.0,
+   "share": 0.0001459683540608396,
+   "n_connections": 5,
+   "n_synapses": 5,
+   "sign": "exc",
+   "offset_deg": 35.6772414721775,
+   "offset_R": 0.6954536290385875,
+   "route": "PFN"
+  },
+  "ER3d": {
+   "weight": -1.0,
+   "weight_abs": 1.0,
+   "share": 2.9193670812167922e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "inh",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  },
+  "ER3a": {
+   "weight": -3.0,
+   "weight_abs": 3.0,
+   "share": 8.758101243650377e-05,
+   "n_connections": 3,
+   "n_synapses": 3,
+   "sign": "inh",
+   "offset_deg": -5.886225053944313,
+   "offset_R": 0.5630216108840566,
+   "route": "other"
+  },
+  "SpsP": {
+   "weight": -4.0,
+   "weight_abs": 4.0,
+   "share": 0.00011677468324867169,
+   "n_connections": 4,
+   "n_synapses": 4,
+   "sign": "inh",
+   "offset_deg": -47.88882023053157,
+   "offset_R": 0.6292086054050061,
+   "route": "other"
+  },
+  "FC1C": {
+   "weight": 3.0,
+   "weight_abs": 3.0,
+   "share": 8.758101243650377e-05,
+   "n_connections": 3,
+   "n_synapses": 3,
+   "sign": "exc",
+   "offset_deg": 127.15236229206943,
+   "offset_R": 0.4386611998296874,
+   "route": "G"
+  },
+  "hDeltaK": {
+   "weight": 2.0,
+   "weight_abs": 2.0,
+   "share": 5.8387341624335844e-05,
+   "n_connections": 2,
+   "n_synapses": 2,
+   "sign": "exc",
+   "offset_deg": 141.61803079527158,
+   "offset_R": 0.9349992780719456,
+   "route": "hD_other"
+  },
+  "hDeltaE": {
+   "weight": 1.0,
+   "weight_abs": 1.0,
+   "share": 2.9193670812167922e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "exc",
+   "offset_deg": -113.45830663612992,
+   "offset_R": 0.9999999981715733,
+   "route": "hD_other"
+  },
+  "FS2": {
+   "weight": 8.0,
+   "weight_abs": 8.0,
+   "share": 0.00023354936649734337,
+   "n_connections": 8,
+   "n_synapses": 8,
+   "sign": "exc",
+   "offset_deg": 6.242324511496848,
+   "offset_R": 0.22212395216785508,
+   "route": "G"
+  },
+  "FS1A": {
+   "weight": 6.0,
+   "weight_abs": 6.0,
+   "share": 0.00017516202487300754,
+   "n_connections": 6,
+   "n_synapses": 6,
+   "sign": "exc",
+   "offset_deg": 32.19256862452227,
+   "offset_R": 0.7150928021264904,
+   "route": "G"
+  },
+  "vDeltaA": {
+   "weight": 7.0,
+   "weight_abs": 7.0,
+   "share": 0.00020435569568517546,
+   "n_connections": 7,
+   "n_synapses": 7,
+   "sign": "exc",
+   "offset_deg": -5.194607750622592,
+   "offset_R": 0.12405866202084967,
+   "route": "vD"
+  },
+  "FR2": {
+   "weight": 2.0,
+   "weight_abs": 2.0,
+   "share": 5.8387341624335844e-05,
+   "n_connections": 2,
+   "n_synapses": 2,
+   "sign": "exc",
+   "offset_deg": -4.5950678825118345,
+   "offset_R": 0.2902821400526597,
+   "route": "G"
+  },
+  "ER4m": {
+   "weight": -1.0,
+   "weight_abs": 1.0,
+   "share": 2.9193670812167922e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "inh",
+   "offset_deg": 143.07310305043916,
+   "offset_R": 1.0000000060807839,
+   "route": "other"
+  },
+  "ExR7": {
+   "weight": 1.0,
+   "weight_abs": 1.0,
+   "share": 2.9193670812167922e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "exc",
+   "offset_deg": -149.4376399410769,
+   "offset_R": 0.9999999818834142,
+   "route": "other"
+  },
+  "ExR1": {
+   "weight": 2.0,
+   "weight_abs": 2.0,
+   "share": 5.8387341624335844e-05,
+   "n_connections": 2,
+   "n_synapses": 2,
+   "sign": "exc",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  },
+  "ExR6": {
+   "weight": -1.0,
+   "weight_abs": 1.0,
+   "share": 2.9193670812167922e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "inh",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  }
+ },
+ "pfl3_input_total_abs": 34254.0,
+ "pfl3_routes": {
+  "hD_other": {
+   "share": 0.3485140421556606,
+   "weight": 11938.0,
+   "types": [
+    "hDeltaA",
+    "hDeltaC",
+    "hDeltaE",
+    "hDeltaF",
+    "hDeltaG",
+    "hDeltaH",
+    "hDeltaI",
+    "hDeltaJ",
+    "hDeltaK",
+    "hDeltaL",
+    "hDeltaM"
+   ]
+  },
+  "H": {
+   "share": 0.19918841595142175,
+   "weight": -4411.0,
+   "types": [
+    "Delta7",
+    "EPG",
+    "PEG",
+    "PEN"
+   ]
+  },
+  "G": {
+   "share": 0.230367256378817,
+   "weight": 7891.0,
+   "types": [
+    "FC1A",
+    "FC1B",
+    "FC1C",
+    "FC1D",
+    "FC1E",
+    "FC1F",
+    "FC2A",
+    "FC2B",
+    "FC2C",
+    "FC3",
+    "FR2",
+    "FS1A",
+    "FS1B",
+    "FS2",
+    "FS3",
+    "FS4A"
+   ]
+  },
+  "other": {
+   "share": 0.07318853272610497,
+   "weight": -429.0,
+   "types": [
+    "ER3a",
+    "ER3d",
+    "ER4m",
+    "ExR1",
+    "ExR5",
+    "ExR6",
+    "ExR7",
+    "IbSpsP",
+    "PFL1",
+    "PFL2",
+    "PFL3",
+    "PFR",
+    "SpsP"
+   ]
+  },
+  "PFN": {
+   "share": 0.11306708705552636,
+   "weight": 3873.0,
+   "types": [
+    "PFNa",
+    "PFNd",
+    "PFNm",
+    "PFNp",
+    "PFNv"
+   ]
+  },
+  "vD": {
+   "share": 0.03474046826647983,
+   "weight": 1190.0,
+   "types": [
+    "vDeltaA",
+    "vDeltaE",
+    "vDeltaF",
+    "vDeltaG",
+    "vDeltaH",
+    "vDeltaI",
+    "vDeltaJ",
+    "vDeltaK",
+    "vDeltaL",
+    "vDeltaM"
+   ]
+  },
+  "T": {
+   "share": 0.0009341974659893735,
+   "weight": 32.0,
+   "types": [
+    "hDeltaB"
+   ]
+  }
+ },
+ "fc2_inputs": {
+  "hDeltaH": {
+   "weight": 2776.0,
+   "weight_abs": 2776.0,
+   "share": 0.06279690539745736,
+   "n_connections": 135,
+   "n_synapses": 2776,
+   "sign": "exc",
+   "offset_deg": 165.42038356427395,
+   "offset_R": 0.7523814821229391,
+   "route": "hD_other"
+  },
+  "hDeltaG": {
+   "weight": 3171.0,
+   "weight_abs": 3171.0,
+   "share": 0.07173234402569786,
+   "n_connections": 180,
+   "n_synapses": 3171,
+   "sign": "exc",
+   "offset_deg": 166.28615169240396,
+   "offset_R": 0.7279817647940887,
+   "route": "hD_other"
+  },
+  "hDeltaJ": {
+   "weight": 5732.0,
+   "weight_abs": 5732.0,
+   "share": 0.1296656562457585,
+   "n_connections": 464,
+   "n_synapses": 5732,
+   "sign": "exc",
+   "offset_deg": -127.53408349938695,
+   "offset_R": 0.7001446163554186,
+   "route": "hD_other"
+  },
+  "hDeltaE": {
+   "weight": 2220.0,
+   "weight_abs": 2220.0,
+   "share": 0.050219427227073246,
+   "n_connections": 114,
+   "n_synapses": 2220,
+   "sign": "exc",
+   "offset_deg": 166.1486175232095,
+   "offset_R": 0.7399774896053528,
+   "route": "hD_other"
+  },
+  "hDeltaL": {
+   "weight": 3781.0,
+   "weight_abs": 3781.0,
+   "share": 0.08553137583133512,
+   "n_connections": 198,
+   "n_synapses": 3781,
+   "sign": "exc",
+   "offset_deg": -125.62022758996163,
+   "offset_R": 0.7325192705514176,
+   "route": "hD_other"
+  },
+  "hDeltaD": {
+   "weight": 1376.0,
+   "weight_abs": 1376.0,
+   "share": 0.031126996335339094,
+   "n_connections": 92,
+   "n_synapses": 1376,
+   "sign": "exc",
+   "offset_deg": 172.2096474866251,
+   "offset_R": 0.7468553726811136,
+   "route": "hD_other"
+  },
+  "hDeltaM": {
+   "weight": 1370.0,
+   "weight_abs": 1370.0,
+   "share": 0.0309912681536443,
+   "n_connections": 117,
+   "n_synapses": 1370,
+   "sign": "exc",
+   "offset_deg": 164.59205899358054,
+   "offset_R": 0.7527914477530311,
+   "route": "hD_other"
+  },
+  "hDeltaF": {
+   "weight": 2414.0,
+   "weight_abs": 2414.0,
+   "share": 0.05460797176853821,
+   "n_connections": 155,
+   "n_synapses": 2414,
+   "sign": "exc",
+   "offset_deg": 131.1672145273081,
+   "offset_R": 0.45129954190727894,
+   "route": "hD_other"
+  },
+  "hDeltaC": {
+   "weight": 3439.0,
+   "weight_abs": 3439.0,
+   "share": 0.07779486947473194,
+   "n_connections": 332,
+   "n_synapses": 3439,
+   "sign": "exc",
+   "offset_deg": -131.85685327491794,
+   "offset_R": 0.7327832991548733,
+   "route": "hD_other"
+  },
+  "vDeltaI": {
+   "weight": 1834.0,
+   "weight_abs": 1834.0,
+   "share": 0.04148758087137493,
+   "n_connections": 436,
+   "n_synapses": 1834,
+   "sign": "exc",
+   "offset_deg": 2.6019298391004564,
+   "offset_R": 0.7835982531972601,
+   "route": "vD"
+  },
+  "vDeltaH": {
+   "weight": 813.0,
+   "weight_abs": 813.0,
+   "share": 0.01839116861964439,
+   "n_connections": 137,
+   "n_synapses": 813,
+   "sign": "exc",
+   "offset_deg": 1.8644149235955756,
+   "offset_R": 0.699896128993042,
+   "route": "vD"
+  },
+  "vDeltaG": {
+   "weight": 1489.0,
+   "weight_abs": 1489.0,
+   "share": 0.03368321042392435,
+   "n_connections": 268,
+   "n_synapses": 1489,
+   "sign": "exc",
+   "offset_deg": 1.787491831089453,
+   "offset_R": 0.8543281729625257,
+   "route": "vD"
+  },
+  "PFNp": {
+   "weight": 5242.0,
+   "weight_abs": 5242.0,
+   "share": 0.1185811880740171,
+   "n_connections": 1783,
+   "n_synapses": 5242,
+   "sign": "exc",
+   "offset_deg": -0.06437226216396187,
+   "offset_R": 0.9171261428619294,
+   "route": "PFN"
+  },
+  "PFNm": {
+   "weight": 2031.0,
+   "weight_abs": 2031.0,
+   "share": 0.045943989503687284,
+   "n_connections": 478,
+   "n_synapses": 2031,
+   "sign": "exc",
+   "offset_deg": -4.042404041128933,
+   "offset_R": 0.7098412150051031,
+   "route": "PFN"
+  },
+  "vDeltaF": {
+   "weight": 1011.0,
+   "weight_abs": 1011.0,
+   "share": 0.022870198615572546,
+   "n_connections": 248,
+   "n_synapses": 1011,
+   "sign": "exc",
+   "offset_deg": 5.915588769746566,
+   "offset_R": 0.681786561540977,
+   "route": "vD"
+  },
+  "hDeltaB": {
+   "weight": 146.0,
+   "weight_abs": 146.0,
+   "share": 0.003302719087906619,
+   "n_connections": 76,
+   "n_synapses": 146,
+   "sign": "exc",
+   "offset_deg": -126.12232227807148,
+   "offset_R": 0.7640109176012324,
+   "route": "T"
+  },
+  "vDeltaE": {
+   "weight": 536.0,
+   "weight_abs": 536.0,
+   "share": 0.012125050898068136,
+   "n_connections": 217,
+   "n_synapses": 536,
+   "sign": "exc",
+   "offset_deg": 0.3420152443765232,
+   "offset_R": 0.7570254772333117,
+   "route": "vD"
+  },
+  "hDeltaA": {
+   "weight": 135.0,
+   "weight_abs": 135.0,
+   "share": 0.003053884088132833,
+   "n_connections": 56,
+   "n_synapses": 135,
+   "sign": "exc",
+   "offset_deg": -113.85887160147313,
+   "offset_R": 0.6260548352402336,
+   "route": "hD_other"
+  },
+  "FC2B": {
+   "weight": 618.0,
+   "weight_abs": 618.0,
+   "share": 0.013980002714563634,
+   "n_connections": 360,
+   "n_synapses": 618,
+   "sign": "exc",
+   "offset_deg": -2.3313081523255783,
+   "offset_R": 0.5471669929445792,
+   "route": "G"
+  },
+  "FC2A": {
+   "weight": 640.0,
+   "weight_abs": 640.0,
+   "share": 0.014477672714111206,
+   "n_connections": 255,
+   "n_synapses": 640,
+   "sign": "exc",
+   "offset_deg": -5.8510760256430165,
+   "offset_R": 0.29306277585877566,
+   "route": "G"
+  },
+  "vDeltaD": {
+   "weight": 250.0,
+   "weight_abs": 250.0,
+   "share": 0.00565534090394969,
+   "n_connections": 144,
+   "n_synapses": 250,
+   "sign": "exc",
+   "offset_deg": -0.7298818544200126,
+   "offset_R": 0.5928622261799015,
+   "route": "vD"
+  },
+  "FC1B": {
+   "weight": 79.0,
+   "weight_abs": 79.0,
+   "share": 0.001787087725648102,
+   "n_connections": 54,
+   "n_synapses": 79,
+   "sign": "exc",
+   "offset_deg": -0.08373900946861629,
+   "offset_R": 0.9680117665028274,
+   "route": "G"
+  },
+  "EPGt": {
+   "weight": 18.0,
+   "weight_abs": 18.0,
+   "share": 0.0004071845450843777,
+   "n_connections": 6,
+   "n_synapses": 18,
+   "sign": "exc",
+   "offset_deg": 1.868701136370927,
+   "offset_R": 0.8277043476248542,
+   "route": "H"
+  },
+  "FC3": {
+   "weight": 484.0,
+   "weight_abs": 484.0,
+   "share": 0.0109487399900466,
+   "n_connections": 291,
+   "n_synapses": 484,
+   "sign": "exc",
+   "offset_deg": 0.07428606462022214,
+   "offset_R": 0.9505180889313372,
+   "route": "G"
+  },
+  "hDeltaI": {
+   "weight": 125.0,
+   "weight_abs": 125.0,
+   "share": 0.002827670451974845,
+   "n_connections": 75,
+   "n_synapses": 125,
+   "sign": "exc",
+   "offset_deg": -128.0733124754494,
+   "offset_R": 0.6466299642656875,
+   "route": "hD_other"
+  },
+  "FS1B": {
+   "weight": 56.0,
+   "weight_abs": 56.0,
+   "share": 0.0012667963624847305,
+   "n_connections": 23,
+   "n_synapses": 56,
+   "sign": "exc",
+   "offset_deg": -34.29882158644696,
+   "offset_R": 0.7609662624936376,
+   "route": "G"
+  },
+  "FC2C": {
+   "weight": 862.0,
+   "weight_abs": 862.0,
+   "share": 0.01949961543681853,
+   "n_connections": 569,
+   "n_synapses": 862,
+   "sign": "exc",
+   "offset_deg": 0.5813858953217051,
+   "offset_R": 0.5582001298573136,
+   "route": "G"
+  },
+  "PFL3": {
+   "weight": 28.0,
+   "weight_abs": 28.0,
+   "share": 0.0006333981812423653,
+   "n_connections": 19,
+   "n_synapses": 28,
+   "sign": "exc",
+   "offset_deg": 23.000087021395935,
+   "offset_R": 0.5247393494733374,
+   "route": "other"
+  },
+  "FC1D": {
+   "weight": 133.0,
+   "weight_abs": 133.0,
+   "share": 0.003008641360901235,
+   "n_connections": 93,
+   "n_synapses": 133,
+   "sign": "exc",
+   "offset_deg": 2.286622579290367,
+   "offset_R": 0.8920214950932306,
+   "route": "G"
+  },
+  "FS1A": {
+   "weight": 161.0,
+   "weight_abs": 161.0,
+   "share": 0.0036420395421436005,
+   "n_connections": 122,
+   "n_synapses": 161,
+   "sign": "exc",
+   "offset_deg": -0.6580872153854331,
+   "offset_R": 0.190628739681008,
+   "route": "G"
+  },
+  "FC1E": {
+   "weight": 133.0,
+   "weight_abs": 133.0,
+   "share": 0.003008641360901235,
+   "n_connections": 78,
+   "n_synapses": 133,
+   "sign": "exc",
+   "offset_deg": -0.5484560170532069,
+   "offset_R": 0.9383184941883217,
+   "route": "G"
+  },
+  "ExR5": {
+   "weight": -87.0,
+   "weight_abs": 87.0,
+   "share": 0.0019680586345744923,
+   "n_connections": 54,
+   "n_synapses": 87,
+   "sign": "inh",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  },
+  "PFNa": {
+   "weight": 50.0,
+   "weight_abs": 50.0,
+   "share": 0.001131068180789938,
+   "n_connections": 40,
+   "n_synapses": 50,
+   "sign": "exc",
+   "offset_deg": 8.373327753823874,
+   "offset_R": 0.6740547539393189,
+   "route": "PFN"
+  },
+  "FC1A": {
+   "weight": 56.0,
+   "weight_abs": 56.0,
+   "share": 0.0012667963624847305,
+   "n_connections": 43,
+   "n_synapses": 56,
+   "sign": "exc",
+   "offset_deg": 3.305560595830097,
+   "offset_R": 0.9231986476999632,
+   "route": "G"
+  },
+  "FC1C": {
+   "weight": 70.0,
+   "weight_abs": 70.0,
+   "share": 0.0015834954531059131,
+   "n_connections": 54,
+   "n_synapses": 70,
+   "sign": "exc",
+   "offset_deg": 2.125898081555509,
+   "offset_R": 0.6720733639121433,
+   "route": "G"
+  },
+  "vDeltaC": {
+   "weight": 124.0,
+   "weight_abs": 124.0,
+   "share": 0.002805049088359046,
+   "n_connections": 98,
+   "n_synapses": 124,
+   "sign": "exc",
+   "offset_deg": 1.8380024368055377,
+   "offset_R": 0.7862608771518595,
+   "route": "vD"
+  },
+  "vDeltaA": {
+   "weight": 86.0,
+   "weight_abs": 86.0,
+   "share": 0.0019454372709586934,
+   "n_connections": 71,
+   "n_synapses": 86,
+   "sign": "exc",
+   "offset_deg": -0.7631055773486137,
+   "offset_R": 0.6590055965474334,
+   "route": "vD"
+  },
+  "vDeltaJ": {
+   "weight": 64.0,
+   "weight_abs": 64.0,
+   "share": 0.0014477672714111208,
+   "n_connections": 49,
+   "n_synapses": 64,
+   "sign": "exc",
+   "offset_deg": -5.143254564278288,
+   "offset_R": 0.6666295364757924,
+   "route": "vD"
+  },
+  "PFNv": {
+   "weight": 53.0,
+   "weight_abs": 53.0,
+   "share": 0.0011989322716373344,
+   "n_connections": 43,
+   "n_synapses": 53,
+   "sign": "exc",
+   "offset_deg": 5.798101956120768,
+   "offset_R": 0.746403589906553,
+   "route": "PFN"
+  },
+  "vDeltaB": {
+   "weight": 82.0,
+   "weight_abs": 82.0,
+   "share": 0.0018549518164954982,
+   "n_connections": 62,
+   "n_synapses": 82,
+   "sign": "exc",
+   "offset_deg": 2.923679670016206,
+   "offset_R": 0.7593252595950336,
+   "route": "vD"
+  },
+  "FC1F": {
+   "weight": 42.0,
+   "weight_abs": 42.0,
+   "share": 0.000950097271863548,
+   "n_connections": 37,
+   "n_synapses": 42,
+   "sign": "exc",
+   "offset_deg": 0.501739723403033,
+   "offset_R": 0.9631542410129793,
+   "route": "G"
+  },
+  "ExR1": {
+   "weight": 10.0,
+   "weight_abs": 10.0,
+   "share": 0.0002262136361579876,
+   "n_connections": 8,
+   "n_synapses": 10,
+   "sign": "exc",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  },
+  "vDeltaK": {
+   "weight": 35.0,
+   "weight_abs": 35.0,
+   "share": 0.0007917477265529566,
+   "n_connections": 29,
+   "n_synapses": 35,
+   "sign": "exc",
+   "offset_deg": 0.7559180965852301,
+   "offset_R": 0.8373939995741856,
+   "route": "vD"
+  },
+  "PFNd": {
+   "weight": 51.0,
+   "weight_abs": 51.0,
+   "share": 0.0011536895444057367,
+   "n_connections": 42,
+   "n_synapses": 51,
+   "sign": "exc",
+   "offset_deg": -9.696713272090905,
+   "offset_R": 0.7990573126168611,
+   "route": "PFN"
+  },
+  "PFR": {
+   "weight": 56.0,
+   "weight_abs": 56.0,
+   "share": 0.0012667963624847305,
+   "n_connections": 44,
+   "n_synapses": 56,
+   "sign": "exc",
+   "offset_deg": -0.42051323236190263,
+   "offset_R": 0.7360222219553131,
+   "route": "other"
+  },
+  "PFL1": {
+   "weight": 9.0,
+   "weight_abs": 9.0,
+   "share": 0.00020359227254218885,
+   "n_connections": 5,
+   "n_synapses": 9,
+   "sign": "exc",
+   "offset_deg": 24.594954279222563,
+   "offset_R": 0.22361416667671513,
+   "route": "other"
+  },
+  "FS3": {
+   "weight": 53.0,
+   "weight_abs": 53.0,
+   "share": 0.0011989322716373344,
+   "n_connections": 46,
+   "n_synapses": 53,
+   "sign": "exc",
+   "offset_deg": -16.120959201626704,
+   "offset_R": 0.6528703891725702,
+   "route": "G"
+  },
+  "vDeltaM": {
+   "weight": 10.0,
+   "weight_abs": 10.0,
+   "share": 0.0002262136361579876,
+   "n_connections": 8,
+   "n_synapses": 10,
+   "sign": "exc",
+   "offset_deg": 16.585612032481833,
+   "offset_R": 0.6951079457615199,
+   "route": "vD"
+  },
+  "EPG": {
+   "weight": 25.0,
+   "weight_abs": 25.0,
+   "share": 0.000565534090394969,
+   "n_connections": 19,
+   "n_synapses": 25,
+   "sign": "exc",
+   "offset_deg": 6.9601732087021375,
+   "offset_R": 0.8813704715409721,
+   "route": "H"
+  },
+  "FS2": {
+   "weight": 68.0,
+   "weight_abs": 68.0,
+   "share": 0.0015382527258743157,
+   "n_connections": 63,
+   "n_synapses": 68,
+   "sign": "exc",
+   "offset_deg": -4.043243022027256,
+   "offset_R": 0.929260226770055,
+   "route": "G"
+  },
+  "FS4A": {
+   "weight": 11.0,
+   "weight_abs": 11.0,
+   "share": 0.00024883499977378635,
+   "n_connections": 9,
+   "n_synapses": 11,
+   "sign": "exc",
+   "offset_deg": 10.450760041519812,
+   "offset_R": 0.7873448192118819,
+   "route": "G"
+  },
+  "vDeltaL": {
+   "weight": 6.0,
+   "weight_abs": 6.0,
+   "share": 0.00013572818169479257,
+   "n_connections": 5,
+   "n_synapses": 6,
+   "sign": "exc",
+   "offset_deg": 3.8694202656219985,
+   "offset_R": 0.952086564364346,
+   "route": "vD"
+  },
+  "hDeltaK": {
+   "weight": 15.0,
+   "weight_abs": 15.0,
+   "share": 0.0003393204542369814,
+   "n_connections": 14,
+   "n_synapses": 15,
+   "sign": "exc",
+   "offset_deg": -145.51416528131753,
+   "offset_R": 0.6991089050535118,
+   "route": "hD_other"
+  },
+  "FR1": {
+   "weight": 21.0,
+   "weight_abs": 21.0,
+   "share": 0.000475048635931774,
+   "n_connections": 19,
+   "n_synapses": 21,
+   "sign": "exc",
+   "offset_deg": -25.37610908168215,
+   "offset_R": 0.2455422218951584,
+   "route": "G"
+  },
+  "PEN": {
+   "weight": 3.0,
+   "weight_abs": 3.0,
+   "share": 6.786409084739628e-05,
+   "n_connections": 3,
+   "n_synapses": 3,
+   "sign": "exc",
+   "offset_deg": 29.08434499648217,
+   "offset_R": 0.9932192353126537,
+   "route": "H"
+  },
+  "PEG": {
+   "weight": 2.0,
+   "weight_abs": 2.0,
+   "share": 4.5242727231597524e-05,
+   "n_connections": 2,
+   "n_synapses": 2,
+   "sign": "exc",
+   "offset_deg": -25.305100529648204,
+   "offset_R": 0.9999993480949011,
+   "route": "H"
+  },
+  "FS4C": {
+   "weight": 1.0,
+   "weight_abs": 1.0,
+   "share": 2.2621363615798762e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "exc",
+   "offset_deg": 74.95237733576444,
+   "offset_R": 0.9999999715116163,
+   "route": "G"
+  },
+  "FR2": {
+   "weight": 6.0,
+   "weight_abs": 6.0,
+   "share": 0.00013572818169479257,
+   "n_connections": 6,
+   "n_synapses": 6,
+   "sign": "exc",
+   "offset_deg": -59.751267939447175,
+   "offset_R": 0.25985239676857264,
+   "route": "G"
+  },
+  "PFL2": {
+   "weight": 4.0,
+   "weight_abs": 4.0,
+   "share": 9.048545446319505e-05,
+   "n_connections": 4,
+   "n_synapses": 4,
+   "sign": "exc",
+   "offset_deg": -149.88049949614407,
+   "offset_R": 0.7763699597697538,
+   "route": "other"
+  },
+  "ExR7": {
+   "weight": 1.0,
+   "weight_abs": 1.0,
+   "share": 2.2621363615798762e-05,
+   "n_connections": 1,
+   "n_synapses": 1,
+   "sign": "exc",
+   "offset_deg": 16.236234978040642,
+   "offset_R": 0.9999999873728543,
+   "route": "other"
+  },
+  "ExR6": {
+   "weight": -2.0,
+   "weight_abs": 2.0,
+   "share": 4.5242727231597524e-05,
+   "n_connections": 2,
+   "n_synapses": 2,
+   "sign": "inh",
+   "offset_deg": null,
+   "offset_R": 0.0,
+   "route": "other"
+  }
+ },
+ "fc2_input_total_abs": 44206.0,
+ "fc2_routes": {
+  "hD_other": {
+   "share": 0.6006876894539201,
+   "weight": 26554.0,
+   "types": [
+    "hDeltaA",
+    "hDeltaC",
+    "hDeltaD",
+    "hDeltaE",
+    "hDeltaF",
+    "hDeltaG",
+    "hDeltaH",
+    "hDeltaI",
+    "hDeltaJ",
+    "hDeltaK",
+    "hDeltaL",
+    "hDeltaM"
+   ]
+  },
+  "vD": {
+   "share": 0.1434194453241642,
+   "weight": 6340.0,
+   "types": [
+    "vDeltaA",
+    "vDeltaB",
+    "vDeltaC",
+    "vDeltaD",
+    "vDeltaE",
+    "vDeltaF",
+    "vDeltaG",
+    "vDeltaH",
+    "vDeltaI",
+    "vDeltaJ",
+    "vDeltaK",
+    "vDeltaL",
+    "vDeltaM"
+   ]
+  },
+  "PFN": {
+   "share": 0.1680088675745374,
+   "weight": 7427.0,
+   "types": [
+    "PFNa",
+    "PFNd",
+    "PFNm",
+    "PFNp",
+    "PFNv"
+   ]
+  },
+  "T": {
+   "share": 0.003302719087906619,
+   "weight": 146.0,
+   "types": [
+    "hDeltaB"
+   ]
+  },
+  "G": {
+   "share": 0.07903904447360086,
+   "weight": 3494.0,
+   "types": [
+    "FC1A",
+    "FC1B",
+    "FC1C",
+    "FC1D",
+    "FC1E",
+    "FC1F",
+    "FC2A",
+    "FC2B",
+    "FC2C",
+    "FC3",
+    "FR1",
+    "FR2",
+    "FS1A",
+    "FS1B",
+    "FS2",
+    "FS3",
+    "FS4A",
+    "FS4C"
+   ]
+  },
+  "H": {
+   "share": 0.0010858254535583405,
+   "weight": 48.0,
+   "types": [
+    "EPG",
+    "EPGt",
+    "PEG",
+    "PEN"
+   ]
+  },
+  "other": {
+   "share": 0.004456408632312356,
+   "weight": 19.0,
+   "types": [
+    "ExR1",
+    "ExR5",
+    "ExR6",
+    "ExR7",
+    "PFL1",
+    "PFL2",
+    "PFL3",
+    "PFR"
+   ]
+  }
+ },
+ "direct_note": "weight = 符号つきシナプス数、n_connections = 細胞ペアの本数。この 2 つは別物（hΔB→PFL3 は結合 10 本・シナプス 32 個）。",
+ "direct": {
+  "hdb_to_pfl3": {
+   "weight": 32.0,
+   "n_connections": 10,
+   "n_synapses": 32
+  },
+  "hdb_to_fc2": {
+   "weight": 146.0,
+   "n_connections": 76,
+   "n_synapses": 146
+  },
+  "fc2_to_pfl3": {
+   "weight": 7690.0,
+   "n_connections": 576,
+   "n_synapses": 7690
+  },
+  "epg_to_pfl3": {
+   "weight": 1182.0,
+   "n_connections": 113,
+   "n_synapses": 1182
+  },
+  "d7_to_pfl3": {
+   "weight": -5617.0,
+   "n_connections": 278,
+   "n_synapses": 5617
+  }
+ },
+ "hdb_to_pfl3_two_hop": [
+  {
+   "via_type": "hDeltaI",
+   "strength": 764185.0,
+   "share": 0.4145618100898579,
+   "n_cells": 17
+  },
+  {
+   "via_type": "hDeltaA",
+   "strength": 720665.0,
+   "share": 0.3909526971458579,
+   "n_cells": 12
+  },
+  {
+   "via_type": "hDeltaH",
+   "strength": 183331.0,
+   "share": 0.09945501574302522,
+   "n_cells": 8
+  },
+  {
+   "via_type": "hDeltaM",
+   "strength": 77563.0,
+   "share": 0.04207705945026354,
+   "n_cells": 8
+  },
+  {
+   "via_type": "hDeltaG",
+   "strength": 54451.0,
+   "share": 0.029539058109231207,
+   "n_cells": 8
+  }
+ ],
+ "pfl3_inputs_per_side": {
+  "L": {
+   "inputs": {
+    "hDeltaA": {
+     "weight": 2023.0,
+     "weight_abs": 2023.0,
+     "share": 0.11688912000924481,
+     "n_connections": 47,
+     "n_synapses": 2023,
+     "sign": "exc",
+     "offset_deg": -60.062821633628225,
+     "offset_R": 0.7669887764485926,
+     "route": "hD_other"
+    },
+    "hDeltaM": {
+     "weight": 1274.0,
+     "weight_abs": 1274.0,
+     "share": 0.07361183336222338,
+     "n_connections": 27,
+     "n_synapses": 1274,
+     "sign": "exc",
+     "offset_deg": -120.8292823335936,
+     "offset_R": 0.7841189487348336,
+     "route": "hD_other"
+    },
+    "hDeltaI": {
+     "weight": 1747.0,
+     "weight_abs": 1747.0,
+     "share": 0.1009418154503958,
+     "n_connections": 66,
+     "n_synapses": 1747,
+     "sign": "exc",
+     "offset_deg": -58.13394006702455,
+     "offset_R": 0.7620662079068202,
+     "route": "hD_other"
+    },
+    "hDeltaH": {
+     "weight": 760.0,
+     "weight_abs": 760.0,
+     "share": 0.04391286762581614,
+     "n_connections": 28,
+     "n_synapses": 760,
+     "sign": "exc",
+     "offset_deg": -122.23565671665999,
+     "offset_R": 0.7916144337425688,
+     "route": "hD_other"
+    },
+    "Delta7": {
+     "weight": -2727.0,
+     "weight_abs": 2727.0,
+     "share": 0.15756630265210608,
+     "n_connections": 139,
+     "n_synapses": 2727,
+     "sign": "inh",
+     "offset_deg": -8.352490164701997,
+     "offset_R": 0.9216384405216436,
+     "route": "H"
+    },
+    "FC2A": {
+     "weight": 1371.0,
+     "weight_abs": 1371.0,
+     "share": 0.07921650199341307,
+     "n_connections": 65,
+     "n_synapses": 1371,
+     "sign": "exc",
+     "offset_deg": 69.12550467023443,
+     "offset_R": 0.8546893465712936,
+     "route": "G"
+    },
+    "FC2B": {
+     "weight": 1274.0,
+     "weight_abs": 1274.0,
+     "share": 0.07361183336222338,
+     "n_connections": 89,
+     "n_synapses": 1274,
+     "sign": "exc",
+     "offset_deg": 71.80047328826949,
+     "offset_R": 0.8768621923581955,
+     "route": "G"
+    },
+    "EPG": {
+     "weight": 562.0,
+     "weight_abs": 562.0,
+     "share": 0.03247241000751141,
+     "n_connections": 52,
+     "n_synapses": 562,
+     "sign": "exc",
+     "offset_deg": -1.2941655738967328,
+     "offset_R": 0.962406337195601,
+     "route": "H"
+    },
+    "ExR5": {
+     "weight": -714.0,
+     "weight_abs": 714.0,
+     "share": 0.04125498353267464,
+     "n_connections": 48,
+     "n_synapses": 714,
+     "sign": "inh",
+     "offset_deg": null,
+     "offset_R": 0.0,
+     "route": "other"
+    },
+    "FC2C": {
+     "weight": 1266.0,
+     "weight_abs": 1266.0,
+     "share": 0.07314959265037269,
+     "n_connections": 133,
+     "n_synapses": 1266,
+     "sign": "exc",
+     "offset_deg": 70.55896031856143,
+     "offset_R": 0.8675654376489704,
+     "route": "G"
+    },
+    "hDeltaG": {
+     "weight": 297.0,
+     "weight_abs": 297.0,
+     "share": 0.0171606864274571,
+     "n_connections": 22,
+     "n_synapses": 297,
+     "sign": "exc",
+     "offset_deg": -120.902487082742,
+     "offset_R": 0.7474141618201291,
+     "route": "hD_other"
+    },
+    "PFNp": {
+     "weight": 1984.0,
+     "weight_abs": 1984.0,
+     "share": 0.11463569653897267,
+     "n_connections": 380,
+     "n_synapses": 1984,
+     "sign": "exc",
+     "offset_deg": 71.20421642666228,
+     "offset_R": 0.7920781652462684,
+     "route": "PFN"
+    },
+    "vDeltaK": {
+     "weight": 236.0,
+     "weight_abs": 236.0,
+     "share": 0.01363610099959554,
+     "n_connections": 77,
+     "n_synapses": 236,
+     "sign": "exc",
+     "offset_deg": 71.34778344166193,
+     "offset_R": 0.8041768258009466,
+     "route": "vD"
+    },
+    "vDeltaJ": {
+     "weight": 108.0,
+     "weight_abs": 108.0,
+     "share": 0.0062402496099844,
+     "n_connections": 30,
+     "n_synapses": 108,
+     "sign": "exc",
+     "offset_deg": 83.85423411656802,
+     "offset_R": 0.685070874154953,
+     "route": "vD"
+    },
+    "PFL3": {
+     "weight": 421.0,
+     "weight_abs": 421.0,
+     "share": 0.02432541746114289,
+     "n_connections": 128,
+     "n_synapses": 421,
+     "sign": "exc",
+     "offset_deg": 174.02250950953163,
+     "offset_R": 0.1297920459463184,
+     "route": "other"
+    },
+    "IbSpsP": {
+     "weight": 37.0,
+     "weight_abs": 37.0,
+     "share": 0.0021378632923094703,
+     "n_connections": 11,
+     "n_synapses": 37,
+     "sign": "exc",
+     "offset_deg": -6.150009354448179,
+     "offset_R": 0.9558083794051834,
+     "route": "other"
+    },
+    "FC3": {
+     "weight": 48.0,
+     "weight_abs": 48.0,
+     "share": 0.0027734442711041776,
+     "n_connections": 27,
+     "n_synapses": 48,
+     "sign": "exc",
+     "offset_deg": 62.62426595912637,
+     "offset_R": 0.8864748541163817,
+     "route": "G"
+    },
+    "FS3": {
+     "weight": 14.0,
+     "weight_abs": 14.0,
+     "share": 0.0008089212457387184,
+     "n_connections": 9,
+     "n_synapses": 14,
+     "sign": "exc",
+     "offset_deg": 0.43713389642907635,
+     "offset_R": 0.4988531042529937,
+     "route": "G"
+    },
+    "hDeltaB": {
+     "weight": 15.0,
+     "weight_abs": 15.0,
+     "share": 0.0008667013347200555,
+     "n_connections": 4,
+     "n_synapses": 15,
+     "sign": "exc",
+     "offset_deg": -70.91766883192253,
+     "offset_R": 0.8091090884077017,
+     "route": "T"
+    },
+    "vDeltaI": {
+     "weight": 58.0,
+     "weight_abs": 58.0,
+     "share": 0.0033512451609175476,
+     "n_connections": 34,
+     "n_synapses": 58,
+     "sign": "exc",
+     "offset_deg": 69.27473905877228,
+     "offset_R": 0.7664715721321746,
+     "route": "vD"
+    },
+    "vDeltaL": {
+     "weight": 48.0,
+     "weight_abs": 48.0,
+     "share": 0.0027734442711041776,
+     "n_connections": 24,
+     "n_synapses": 48,
+     "sign": "exc",
+     "offset_deg": 73.80669779580042,
+     "offset_R": 0.7030594936951812,
+     "route": "vD"
+    },
+    "hDeltaJ": {
+     "weight": 45.0,
+     "weight_abs": 45.0,
+     "share": 0.0026001040041601664,
+     "n_connections": 33,
+     "n_synapses": 45,
+     "sign": "exc",
+     "offset_deg": -48.702364950989086,
+     "offset_R": 0.6557496698458929,
+     "route": "hD_other"
+    },
+    "vDeltaE": {
+     "weight": 10.0,
+     "weight_abs": 10.0,
+     "share": 0.0005778008898133703,
+     "n_connections": 4,
+     "n_synapses": 10,
+     "sign": "exc",
+     "offset_deg": 44.38726531611758,
+     "offset_R": 0.9677843898809941,
+     "route": "vD"
+    },
+    "PFL1": {
+     "weight": 29.0,
+     "weight_abs": 29.0,
+     "share": 0.0016756225804587738,
+     "n_connections": 21,
+     "n_synapses": 29,
+     "sign": "exc",
+     "offset_deg": 35.396433178139404,
+     "offset_R": 0.1757361337381894,
+     "route": "other"
+    },
+    "PEN": {
+     "weight": 7.0,
+     "weight_abs": 7.0,
+     "share": 0.0004044606228693592,
+     "n_connections": 4,
+     "n_synapses": 7,
+     "sign": "exc",
+     "offset_deg": 115.37258047881133,
+     "offset_R": 0.6798972318470564,
+     "route": "H"
+    },
+    "vDeltaG": {
+     "weight": 53.0,
+     "weight_abs": 53.0,
+     "share": 0.003062344716010863,
+     "n_connections": 35,
+     "n_synapses": 53,
+     "sign": "exc",
+     "offset_deg": 84.78361319325171,
+     "offset_R": 0.7717773153153697,
+     "route": "vD"
+    },
+    "PEG": {
+     "weight": 8.0,
+     "weight_abs": 8.0,
+     "share": 0.0004622407118506963,
+     "n_connections": 4,
+     "n_synapses": 8,
+     "sign": "exc",
+     "offset_deg": 112.34847437029735,
+     "offset_R": 0.9223914711548649,
+     "route": "H"
+    },
+    "hDeltaF": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003466805338880222,
+     "n_connections": 3,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": -56.56591695386638,
+     "offset_R": 0.2009062149461114,
+     "route": "hD_other"
+    },
+    "hDeltaL": {
+     "weight": 7.0,
+     "weight_abs": 7.0,
+     "share": 0.0004044606228693592,
+     "n_connections": 4,
+     "n_synapses": 7,
+     "sign": "exc",
+     "offset_deg": -61.46561590193499,
+     "offset_R": 0.7133088539123725,
+     "route": "hD_other"
+    },
+    "FC1B": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003466805338880222,
+     "n_connections": 4,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": 76.15720034329614,
+     "offset_R": 0.9906593585697183,
+     "route": "G"
+    },
+    "PFNa": {
+     "weight": 7.0,
+     "weight_abs": 7.0,
+     "share": 0.0004044606228693592,
+     "n_connections": 6,
+     "n_synapses": 7,
+     "sign": "exc",
+     "offset_deg": 117.4579049562196,
+     "offset_R": 0.5770382511999269,
+     "route": "PFN"
+    },
+    "PFL2": {
+     "weight": 20.0,
+     "weight_abs": 20.0,
+     "share": 0.0011556017796267406,
+     "n_connections": 18,
+     "n_synapses": 20,
+     "sign": "exc",
+     "offset_deg": -99.57197116876375,
+     "offset_R": 0.19081178379460037,
+     "route": "other"
+    },
+    "PFR": {
+     "weight": 8.0,
+     "weight_abs": 8.0,
+     "share": 0.0004622407118506963,
+     "n_connections": 7,
+     "n_synapses": 8,
+     "sign": "exc",
+     "offset_deg": 42.96304739133231,
+     "offset_R": 0.6646666969386159,
+     "route": "other"
+    },
+    "vDeltaM": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003466805338880222,
+     "n_connections": 5,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": 88.21399067928174,
+     "offset_R": 0.9882778717663929,
+     "route": "vD"
+    },
+    "vDeltaF": {
+     "weight": 11.0,
+     "weight_abs": 11.0,
+     "share": 0.0006355809787947073,
+     "n_connections": 8,
+     "n_synapses": 11,
+     "sign": "exc",
+     "offset_deg": 95.61561161723606,
+     "offset_R": 0.6216357104888776,
+     "route": "vD"
+    },
+    "FS1B": {
+     "weight": 2.0,
+     "weight_abs": 2.0,
+     "share": 0.00011556017796267407,
+     "n_connections": 1,
+     "n_synapses": 2,
+     "sign": "exc",
+     "offset_deg": -8.017139607989037,
+     "offset_R": 0.9999999961072152,
+     "route": "G"
+    },
+    "vDeltaH": {
+     "weight": 23.0,
+     "weight_abs": 23.0,
+     "share": 0.0013289420465707517,
+     "n_connections": 16,
+     "n_synapses": 23,
+     "sign": "exc",
+     "offset_deg": 61.645432809222015,
+     "offset_R": 0.815503572693444,
+     "route": "vD"
+    },
+    "hDeltaC": {
+     "weight": 16.0,
+     "weight_abs": 16.0,
+     "share": 0.0009244814237013925,
+     "n_connections": 13,
+     "n_synapses": 16,
+     "sign": "exc",
+     "offset_deg": -87.05857626504039,
+     "offset_R": 0.7041115843822435,
+     "route": "hD_other"
+    },
+    "FC1A": {
+     "weight": 10.0,
+     "weight_abs": 10.0,
+     "share": 0.0005778008898133703,
+     "n_connections": 9,
+     "n_synapses": 10,
+     "sign": "exc",
+     "offset_deg": 70.82438194879929,
+     "offset_R": 0.8975677692623855,
+     "route": "G"
+    },
+    "FC1D": {
+     "weight": 11.0,
+     "weight_abs": 11.0,
+     "share": 0.0006355809787947073,
+     "n_connections": 9,
+     "n_synapses": 11,
+     "sign": "exc",
+     "offset_deg": 68.80272902762934,
+     "offset_R": 0.9097570676464973,
+     "route": "G"
+    },
+    "PFNv": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.00023112035592534814,
+     "n_connections": 4,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": 27.073206390810142,
+     "offset_R": 0.6460250195046845,
+     "route": "PFN"
+    },
+    "PFNd": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.00023112035592534814,
+     "n_connections": 4,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": 43.85291562546031,
+     "offset_R": 0.571509208388896,
+     "route": "PFN"
+    },
+    "FC1F": {
+     "weight": 3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001733402669440111,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "exc",
+     "offset_deg": 66.23736119456058,
+     "offset_R": 0.9239723829307418,
+     "route": "G"
+    },
+    "FC1E": {
+     "weight": 5.0,
+     "weight_abs": 5.0,
+     "share": 0.00028890044490668514,
+     "n_connections": 5,
+     "n_synapses": 5,
+     "sign": "exc",
+     "offset_deg": 93.89802138369667,
+     "offset_R": 0.9263895626473981,
+     "route": "G"
+    },
+    "FC1C": {
+     "weight": 2.0,
+     "weight_abs": 2.0,
+     "share": 0.00011556017796267407,
+     "n_connections": 2,
+     "n_synapses": 2,
+     "sign": "exc",
+     "offset_deg": 96.3498570716434,
+     "offset_R": 0.9345899368414949,
+     "route": "G"
+    },
+    "SpsP": {
+     "weight": -1.0,
+     "weight_abs": 1.0,
+     "share": 5.7780088981337034e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "inh",
+     "offset_deg": -55.03942740400373,
+     "offset_R": 0.9999999641871551,
+     "route": "other"
+    },
+    "PFNm": {
+     "weight": 3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001733402669440111,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "exc",
+     "offset_deg": 119.0774762987088,
+     "offset_R": 0.5042193515305304,
+     "route": "PFN"
+    },
+    "hDeltaE": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.7780088981337034e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": -113.45830663612992,
+     "offset_R": 0.9999999981715733,
+     "route": "hD_other"
+    },
+    "FS2": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.00023112035592534814,
+     "n_connections": 4,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": 79.65851855965239,
+     "offset_R": 0.9276614137159709,
+     "route": "G"
+    },
+    "FS1A": {
+     "weight": 5.0,
+     "weight_abs": 5.0,
+     "share": 0.00028890044490668514,
+     "n_connections": 5,
+     "n_synapses": 5,
+     "sign": "exc",
+     "offset_deg": 45.64377757301356,
+     "offset_R": 0.8470318807960238,
+     "route": "G"
+    },
+    "FS4A": {
+     "weight": 2.0,
+     "weight_abs": 2.0,
+     "share": 0.00011556017796267407,
+     "n_connections": 2,
+     "n_synapses": 2,
+     "sign": "exc",
+     "offset_deg": 56.41664572776701,
+     "offset_R": 0.9245770436355242,
+     "route": "G"
+    },
+    "FR2": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.7780088981337034e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": 68.53008643577776,
+     "offset_R": 0.9999999889181076,
+     "route": "G"
+    },
+    "vDeltaA": {
+     "weight": 3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001733402669440111,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "exc",
+     "offset_deg": 114.33393039211342,
+     "offset_R": 0.9490810453423689,
+     "route": "vD"
+    }
+   },
+   "total_abs": 17307.0,
+   "routes": {
+    "hD_other": {
+     "share": 0.3568498295487375,
+     "weight": 6176.0,
+     "types": [
+      "hDeltaA",
+      "hDeltaC",
+      "hDeltaE",
+      "hDeltaF",
+      "hDeltaG",
+      "hDeltaH",
+      "hDeltaI",
+      "hDeltaJ",
+      "hDeltaL",
+      "hDeltaM"
+     ]
+    },
+    "H": {
+     "share": 0.19090541399433755,
+     "weight": -2150.0,
+     "types": [
+      "Delta7",
+      "EPG",
+      "PEG",
+      "PEN"
+     ]
+    },
+    "G": {
+     "share": 0.23250707806090026,
+     "weight": 4024.0,
+     "types": [
+      "FC1A",
+      "FC1B",
+      "FC1C",
+      "FC1D",
+      "FC1E",
+      "FC1F",
+      "FC2A",
+      "FC2B",
+      "FC2C",
+      "FC3",
+      "FR2",
+      "FS1A",
+      "FS1B",
+      "FS2",
+      "FS3",
+      "FS4A"
+     ]
+    },
+    "other": {
+     "share": 0.07106950944704457,
+     "weight": -200.0,
+     "types": [
+      "ExR5",
+      "IbSpsP",
+      "PFL1",
+      "PFL2",
+      "PFL3",
+      "PFR",
+      "SpsP"
+     ]
+    },
+    "PFN": {
+     "share": 0.11567573814063674,
+     "weight": 2002.0,
+     "types": [
+      "PFNa",
+      "PFNd",
+      "PFNm",
+      "PFNp",
+      "PFNv"
+     ]
+    },
+    "vD": {
+     "share": 0.03212572947362339,
+     "weight": 556.0,
+     "types": [
+      "vDeltaA",
+      "vDeltaE",
+      "vDeltaF",
+      "vDeltaG",
+      "vDeltaH",
+      "vDeltaI",
+      "vDeltaJ",
+      "vDeltaK",
+      "vDeltaL",
+      "vDeltaM"
+     ]
+    },
+    "T": {
+     "share": 0.0008667013347200555,
+     "weight": 15.0,
+     "types": [
+      "hDeltaB"
+     ]
+    }
+   },
+   "n_cells": 12
+  },
+  "R": {
+   "inputs": {
+    "hDeltaA": {
+     "weight": 1858.0,
+     "weight_abs": 1858.0,
+     "share": 0.10963592376231782,
+     "n_connections": 45,
+     "n_synapses": 1858,
+     "sign": "exc",
+     "offset_deg": 157.7751021529034,
+     "offset_R": 0.7114727104713506,
+     "route": "hD_other"
+    },
+    "hDeltaM": {
+     "weight": 1154.0,
+     "weight_abs": 1154.0,
+     "share": 0.06809464802029858,
+     "n_connections": 31,
+     "n_synapses": 1154,
+     "sign": "exc",
+     "offset_deg": 91.09929505512315,
+     "offset_R": 0.7966926080487791,
+     "route": "hD_other"
+    },
+    "Delta7": {
+     "weight": -2890.0,
+     "weight_abs": 2890.0,
+     "share": 0.17053165752050511,
+     "n_connections": 139,
+     "n_synapses": 2890,
+     "sign": "inh",
+     "offset_deg": -15.944060403497819,
+     "offset_R": 0.8870618566061629,
+     "route": "H"
+    },
+    "hDeltaI": {
+     "weight": 1721.0,
+     "weight_abs": 1721.0,
+     "share": 0.10155189709093054,
+     "n_connections": 62,
+     "n_synapses": 1721,
+     "sign": "exc",
+     "offset_deg": 157.7498741857433,
+     "offset_R": 0.7123031413308825,
+     "route": "hD_other"
+    },
+    "FC2A": {
+     "weight": 1141.0,
+     "weight_abs": 1141.0,
+     "share": 0.06732755059892606,
+     "n_connections": 61,
+     "n_synapses": 1141,
+     "sign": "exc",
+     "offset_deg": -73.79757007038752,
+     "offset_R": 0.8444882226228652,
+     "route": "G"
+    },
+    "hDeltaH": {
+     "weight": 688.0,
+     "weight_abs": 688.0,
+     "share": 0.040597155838791525,
+     "n_connections": 29,
+     "n_synapses": 688,
+     "sign": "exc",
+     "offset_deg": 86.19130055076232,
+     "offset_R": 0.7588811367750936,
+     "route": "hD_other"
+    },
+    "hDeltaG": {
+     "weight": 285.0,
+     "weight_abs": 285.0,
+     "share": 0.016817135776243584,
+     "n_connections": 26,
+     "n_synapses": 285,
+     "sign": "exc",
+     "offset_deg": 90.32839289980502,
+     "offset_R": 0.7303068356677466,
+     "route": "hD_other"
+    },
+    "ExR5": {
+     "weight": -744.0,
+     "weight_abs": 744.0,
+     "share": 0.04390157550008851,
+     "n_connections": 47,
+     "n_synapses": 744,
+     "sign": "inh",
+     "offset_deg": null,
+     "offset_R": 0.0,
+     "route": "other"
+    },
+    "EPG": {
+     "weight": 620.0,
+     "weight_abs": 620.0,
+     "share": 0.03658464625007376,
+     "n_connections": 61,
+     "n_synapses": 620,
+     "sign": "exc",
+     "offset_deg": -1.0132751451546786,
+     "offset_R": 0.9454240418627218,
+     "route": "H"
+    },
+    "FC2B": {
+     "weight": 1204.0,
+     "weight_abs": 1204.0,
+     "share": 0.07104502271788517,
+     "n_connections": 94,
+     "n_synapses": 1204,
+     "sign": "exc",
+     "offset_deg": -72.55895792404762,
+     "offset_R": 0.831946726239099,
+     "route": "G"
+    },
+    "FC2C": {
+     "weight": 1434.0,
+     "weight_abs": 1434.0,
+     "share": 0.0846167463267835,
+     "n_connections": 134,
+     "n_synapses": 1434,
+     "sign": "exc",
+     "offset_deg": -80.07895476391258,
+     "offset_R": 0.8616502194056773,
+     "route": "G"
+    },
+    "PFNp": {
+     "weight": 1849.0,
+     "weight_abs": 1849.0,
+     "share": 0.10910485631675222,
+     "n_connections": 377,
+     "n_synapses": 1849,
+     "sign": "exc",
+     "offset_deg": -75.4312967349447,
+     "offset_R": 0.7663021190596137,
+     "route": "PFN"
+    },
+    "vDeltaK": {
+     "weight": 300.0,
+     "weight_abs": 300.0,
+     "share": 0.017702248185519562,
+     "n_connections": 96,
+     "n_synapses": 300,
+     "sign": "exc",
+     "offset_deg": -72.61308203840267,
+     "offset_R": 0.7175684979899368,
+     "route": "vD"
+    },
+    "PFL3": {
+     "weight": 432.0,
+     "weight_abs": 432.0,
+     "share": 0.025491237387148168,
+     "n_connections": 125,
+     "n_synapses": 432,
+     "sign": "exc",
+     "offset_deg": -149.80511317495302,
+     "offset_R": 0.12347375648050321,
+     "route": "other"
+    },
+    "hDeltaB": {
+     "weight": 17.0,
+     "weight_abs": 17.0,
+     "share": 0.0010031273971794418,
+     "n_connections": 6,
+     "n_synapses": 17,
+     "sign": "exc",
+     "offset_deg": 163.6181706823912,
+     "offset_R": 0.8961346113515332,
+     "route": "T"
+    },
+    "PFL1": {
+     "weight": 42.0,
+     "weight_abs": 42.0,
+     "share": 0.0024783147459727386,
+     "n_connections": 23,
+     "n_synapses": 42,
+     "sign": "exc",
+     "offset_deg": -6.926277777200439,
+     "offset_R": 0.38972202529609457,
+     "route": "other"
+    },
+    "IbSpsP": {
+     "weight": 20.0,
+     "weight_abs": 20.0,
+     "share": 0.0011801498790346373,
+     "n_connections": 10,
+     "n_synapses": 20,
+     "sign": "exc",
+     "offset_deg": 27.901518874067055,
+     "offset_R": 0.9541684444136547,
+     "route": "other"
+    },
+    "vDeltaJ": {
+     "weight": 80.0,
+     "weight_abs": 80.0,
+     "share": 0.004720599516138549,
+     "n_connections": 28,
+     "n_synapses": 80,
+     "sign": "exc",
+     "offset_deg": -75.14529166500422,
+     "offset_R": 0.4937754135905359,
+     "route": "vD"
+    },
+    "vDeltaG": {
+     "weight": 74.0,
+     "weight_abs": 74.0,
+     "share": 0.004366554552428159,
+     "n_connections": 41,
+     "n_synapses": 74,
+     "sign": "exc",
+     "offset_deg": -75.35890420256328,
+     "offset_R": 0.7061117347842768,
+     "route": "vD"
+    },
+    "vDeltaI": {
+     "weight": 71.0,
+     "weight_abs": 71.0,
+     "share": 0.0041895320705729626,
+     "n_connections": 45,
+     "n_synapses": 71,
+     "sign": "exc",
+     "offset_deg": -68.48734846083116,
+     "offset_R": 0.652569631430429,
+     "route": "vD"
+    },
+    "vDeltaH": {
+     "weight": 44.0,
+     "weight_abs": 44.0,
+     "share": 0.002596329733876202,
+     "n_connections": 21,
+     "n_synapses": 44,
+     "sign": "exc",
+     "offset_deg": -87.45196362351221,
+     "offset_R": 0.5497529375210871,
+     "route": "vD"
+    },
+    "hDeltaJ": {
+     "weight": 40.0,
+     "weight_abs": 40.0,
+     "share": 0.0023602997580692746,
+     "n_connections": 26,
+     "n_synapses": 40,
+     "sign": "exc",
+     "offset_deg": 156.85282894112166,
+     "offset_R": 0.5793971969519237,
+     "route": "hD_other"
+    },
+    "FS1B": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003540449637103912,
+     "n_connections": 2,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": -146.19736801267524,
+     "offset_R": 0.999999986646232,
+     "route": "G"
+    },
+    "FC3": {
+     "weight": 36.0,
+     "weight_abs": 36.0,
+     "share": 0.002124269782262347,
+     "n_connections": 29,
+     "n_synapses": 36,
+     "sign": "exc",
+     "offset_deg": -69.22445971922893,
+     "offset_R": 0.8592840597359345,
+     "route": "G"
+    },
+    "hDeltaF": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.0002360299758069275,
+     "n_connections": 2,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": -27.6840641028413,
+     "offset_R": 0.8737077939665391,
+     "route": "hD_other"
+    },
+    "vDeltaM": {
+     "weight": 19.0,
+     "weight_abs": 19.0,
+     "share": 0.0011211423850829056,
+     "n_connections": 14,
+     "n_synapses": 19,
+     "sign": "exc",
+     "offset_deg": -28.982932721098877,
+     "offset_R": 0.4549336632246696,
+     "route": "vD"
+    },
+    "vDeltaE": {
+     "weight": 9.0,
+     "weight_abs": 9.0,
+     "share": 0.0005310674455655868,
+     "n_connections": 4,
+     "n_synapses": 9,
+     "sign": "exc",
+     "offset_deg": -95.40741185806637,
+     "offset_R": 0.714304302702994,
+     "route": "vD"
+    },
+    "vDeltaL": {
+     "weight": 26.0,
+     "weight_abs": 26.0,
+     "share": 0.0015341948427450287,
+     "n_connections": 22,
+     "n_synapses": 26,
+     "sign": "exc",
+     "offset_deg": -75.64170021311168,
+     "offset_R": 0.7238187278845765,
+     "route": "vD"
+    },
+    "PFNm": {
+     "weight": 10.0,
+     "weight_abs": 10.0,
+     "share": 0.0005900749395173187,
+     "n_connections": 7,
+     "n_synapses": 10,
+     "sign": "exc",
+     "offset_deg": -133.961568748089,
+     "offset_R": 0.6738412365048368,
+     "route": "PFN"
+    },
+    "PFR": {
+     "weight": 11.0,
+     "weight_abs": 11.0,
+     "share": 0.0006490824334690505,
+     "n_connections": 8,
+     "n_synapses": 11,
+     "sign": "exc",
+     "offset_deg": -70.11106813999082,
+     "offset_R": 0.654907821069327,
+     "route": "other"
+    },
+    "PFL2": {
+     "weight": 16.0,
+     "weight_abs": 16.0,
+     "share": 0.00094411990322771,
+     "n_connections": 12,
+     "n_synapses": 16,
+     "sign": "exc",
+     "offset_deg": 154.4140518310482,
+     "offset_R": 0.20157288419355138,
+     "route": "other"
+    },
+    "FS3": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003540449637103912,
+     "n_connections": 5,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": -178.34709511736838,
+     "offset_R": 0.16913064405808384,
+     "route": "G"
+    },
+    "vDeltaF": {
+     "weight": 7.0,
+     "weight_abs": 7.0,
+     "share": 0.0004130524576621231,
+     "n_connections": 5,
+     "n_synapses": 7,
+     "sign": "exc",
+     "offset_deg": -55.796184997101676,
+     "offset_R": 0.522891146044498,
+     "route": "vD"
+    },
+    "FC1B": {
+     "weight": 3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001770224818551956,
+     "n_connections": 2,
+     "n_synapses": 3,
+     "sign": "exc",
+     "offset_deg": -86.13141686822958,
+     "offset_R": 0.9926514973182261,
+     "route": "G"
+    },
+    "FS4A": {
+     "weight": 2.0,
+     "weight_abs": 2.0,
+     "share": 0.00011801498790346374,
+     "n_connections": 1,
+     "n_synapses": 2,
+     "sign": "exc",
+     "offset_deg": -8.864902797638884,
+     "offset_R": 1.0000000043083066,
+     "route": "G"
+    },
+    "PFNa": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003540449637103912,
+     "n_connections": 3,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": -106.0893007389629,
+     "offset_R": 0.628545449106645,
+     "route": "PFN"
+    },
+    "FC1D": {
+     "weight": 8.0,
+     "weight_abs": 8.0,
+     "share": 0.000472059951613855,
+     "n_connections": 7,
+     "n_synapses": 8,
+     "sign": "exc",
+     "offset_deg": -76.56790133583235,
+     "offset_R": 0.8944072431100556,
+     "route": "G"
+    },
+    "FC1A": {
+     "weight": 7.0,
+     "weight_abs": 7.0,
+     "share": 0.0004130524576621231,
+     "n_connections": 5,
+     "n_synapses": 7,
+     "sign": "exc",
+     "offset_deg": -73.46288658578897,
+     "offset_R": 0.9359620848201357,
+     "route": "G"
+    },
+    "PEN": {
+     "weight": 6.0,
+     "weight_abs": 6.0,
+     "share": 0.0003540449637103912,
+     "n_connections": 5,
+     "n_synapses": 6,
+     "sign": "exc",
+     "offset_deg": -141.15297832957737,
+     "offset_R": 0.5842346795089244,
+     "route": "H"
+    },
+    "FC1E": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.0002360299758069275,
+     "n_connections": 3,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": -47.92297682143909,
+     "offset_R": 0.9986777194942817,
+     "route": "G"
+    },
+    "FC1F": {
+     "weight": 9.0,
+     "weight_abs": 9.0,
+     "share": 0.0005310674455655868,
+     "n_connections": 8,
+     "n_synapses": 9,
+     "sign": "exc",
+     "offset_deg": -87.21583332826845,
+     "offset_R": 0.8190492421925765,
+     "route": "G"
+    },
+    "PFNd": {
+     "weight": 5.0,
+     "weight_abs": 5.0,
+     "share": 0.00029503746975865933,
+     "n_connections": 4,
+     "n_synapses": 5,
+     "sign": "exc",
+     "offset_deg": -41.65047799732503,
+     "offset_R": 0.47991502357138655,
+     "route": "PFN"
+    },
+    "PEG": {
+     "weight": 3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001770224818551956,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "exc",
+     "offset_deg": -69.02437176009418,
+     "offset_R": 0.5092812966942161,
+     "route": "H"
+    },
+    "PFNv": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": 58.41998906074497,
+     "offset_R": 1.000000010806989,
+     "route": "PFN"
+    },
+    "ER3d": {
+     "weight": -1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "inh",
+     "offset_deg": null,
+     "offset_R": 0.0,
+     "route": "other"
+    },
+    "ER3a": {
+     "weight": -3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001770224818551956,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "inh",
+     "offset_deg": -5.886225053944313,
+     "offset_R": 0.5630216108840566,
+     "route": "other"
+    },
+    "SpsP": {
+     "weight": -3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001770224818551956,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "inh",
+     "offset_deg": -43.22122328895217,
+     "offset_R": 0.5098950590963152,
+     "route": "other"
+    },
+    "hDeltaL": {
+     "weight": 3.0,
+     "weight_abs": 3.0,
+     "share": 0.0001770224818551956,
+     "n_connections": 3,
+     "n_synapses": 3,
+     "sign": "exc",
+     "offset_deg": 162.5336744247252,
+     "offset_R": 0.7585046254552167,
+     "route": "hD_other"
+    },
+    "hDeltaC": {
+     "weight": 7.0,
+     "weight_abs": 7.0,
+     "share": 0.0004130524576621231,
+     "n_connections": 7,
+     "n_synapses": 7,
+     "sign": "exc",
+     "offset_deg": 144.2976025046001,
+     "offset_R": 0.4160601986791611,
+     "route": "hD_other"
+    },
+    "hDeltaK": {
+     "weight": 2.0,
+     "weight_abs": 2.0,
+     "share": 0.00011801498790346374,
+     "n_connections": 2,
+     "n_synapses": 2,
+     "sign": "exc",
+     "offset_deg": 141.61803079527158,
+     "offset_R": 0.9349992780719456,
+     "route": "hD_other"
+    },
+    "FC1C": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": -126.01811094248217,
+     "offset_R": 0.9999999971039504,
+     "route": "G"
+    },
+    "FS2": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.0002360299758069275,
+     "n_connections": 4,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": -72.34477097550035,
+     "offset_R": 0.9070083542516078,
+     "route": "G"
+    },
+    "vDeltaA": {
+     "weight": 4.0,
+     "weight_abs": 4.0,
+     "share": 0.0002360299758069275,
+     "n_connections": 4,
+     "n_synapses": 4,
+     "sign": "exc",
+     "offset_deg": -52.67498741545503,
+     "offset_R": 0.840319267702675,
+     "route": "vD"
+    },
+    "FR2": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": -77.72021744133147,
+     "offset_R": 1.0000000141163974,
+     "route": "G"
+    },
+    "ER4m": {
+     "weight": -1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "inh",
+     "offset_deg": 143.07310305043916,
+     "offset_R": 1.0000000060807839,
+     "route": "other"
+    },
+    "ExR7": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": -149.4376399410769,
+     "offset_R": 0.9999999818834142,
+     "route": "other"
+    },
+    "ExR1": {
+     "weight": 2.0,
+     "weight_abs": 2.0,
+     "share": 0.00011801498790346374,
+     "n_connections": 2,
+     "n_synapses": 2,
+     "sign": "exc",
+     "offset_deg": null,
+     "offset_R": 0.0,
+     "route": "other"
+    },
+    "FS1A": {
+     "weight": 1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "exc",
+     "offset_deg": -47.92803928217488,
+     "offset_R": 1.0000000057287668,
+     "route": "G"
+    },
+    "ExR6": {
+     "weight": -1.0,
+     "weight_abs": 1.0,
+     "share": 5.900749395173187e-05,
+     "n_connections": 1,
+     "n_synapses": 1,
+     "sign": "inh",
+     "offset_deg": null,
+     "offset_R": 0.0,
+     "route": "other"
+    }
+   },
+   "total_abs": 16947.0,
+   "routes": {
+    "hD_other": {
+     "share": 0.340001180149879,
+     "weight": 5762.0,
+     "types": [
+      "hDeltaA",
+      "hDeltaC",
+      "hDeltaF",
+      "hDeltaG",
+      "hDeltaH",
+      "hDeltaI",
+      "hDeltaJ",
+      "hDeltaK",
+      "hDeltaL",
+      "hDeltaM"
+     ]
+    },
+    "H": {
+     "share": 0.20764737121614446,
+     "weight": -2261.0,
+     "types": [
+      "Delta7",
+      "EPG",
+      "PEG",
+      "PEN"
+     ]
+    },
+    "G": {
+     "share": 0.2281819791113472,
+     "weight": 3867.0,
+     "types": [
+      "FC1A",
+      "FC1B",
+      "FC1C",
+      "FC1D",
+      "FC1E",
+      "FC1F",
+      "FC2A",
+      "FC2B",
+      "FC2C",
+      "FC3",
+      "FR2",
+      "FS1A",
+      "FS1B",
+      "FS2",
+      "FS3",
+      "FS4A"
+     ]
+    },
+    "other": {
+     "share": 0.07535256977636157,
+     "weight": -229.0,
+     "types": [
+      "ER3a",
+      "ER3d",
+      "ER4m",
+      "ExR1",
+      "ExR5",
+      "ExR6",
+      "ExR7",
+      "IbSpsP",
+      "PFL1",
+      "PFL2",
+      "PFL3",
+      "PFR",
+      "SpsP"
+     ]
+    },
+    "PFN": {
+     "share": 0.11040302118369032,
+     "weight": 1871.0,
+     "types": [
+      "PFNa",
+      "PFNd",
+      "PFNm",
+      "PFNp",
+      "PFNv"
+     ]
+    },
+    "vD": {
+     "share": 0.03741075116539801,
+     "weight": 634.0,
+     "types": [
+      "vDeltaA",
+      "vDeltaE",
+      "vDeltaF",
+      "vDeltaG",
+      "vDeltaH",
+      "vDeltaI",
+      "vDeltaJ",
+      "vDeltaK",
+      "vDeltaL",
+      "vDeltaM"
+     ]
+    },
+    "T": {
+     "share": 0.0010031273971794418,
+     "weight": 17.0,
+     "types": [
+      "hDeltaB"
+     ]
+    }
+   },
+   "n_cells": 12
+  }
+ }
+}

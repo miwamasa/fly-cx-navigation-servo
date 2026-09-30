@@ -1,0 +1,651 @@
+{
+ "note": "これはコネクトームの測定ではなく、文献の描像を書き下した理想化モデル。実測値を使う項目は measured に出典を明記してある。",
+ "pref_literature_deg": {
+  "PFNd-L": 45.0,
+  "PFNd-R": -45.0,
+  "PFNv-L": -135.0,
+  "PFNv-R": 135.0
+ },
+ "criteria": {
+  "heading_gain": [
+   0.8,
+   1.2
+  ],
+  "travel_gain": [
+   0.8,
+   1.2
+  ],
+  "residual_R_min": 0.8,
+  "amplitude_r2_min": 0.9
+ },
+ "exactness": {
+  "max_angle_err_deg": 1.0177774980683254e-13,
+  "mag_min": 0.9999999999999994,
+  "mag_max": 1.0000000000000002,
+  "ripple": 8.881784197001252e-16
+ },
+ "ripple_vs_n": {
+  "2": {
+   "mag_min": 0.002178633958635283,
+   "mag_max": 1.0,
+   "ripple": 458.00321898333465
+  },
+  "3": {
+   "mag_min": 0.5000042190489528,
+   "mag_max": 1.0,
+   "ripple": 0.9999831239465908
+  },
+  "4": {
+   "mag_min": 0.9999999999999998,
+   "mag_max": 1.0000000000000002,
+   "ripple": 4.440892098500626e-16
+  },
+  "5": {
+   "mag_min": 1.1909830056250525,
+   "mag_max": 1.309016635819577,
+   "ripple": 0.09910605746433632
+  },
+  "6": {
+   "mag_min": 1.4999999999999993,
+   "mag_max": 1.5000000000000004,
+   "ripple": 6.661338147750939e-16
+  },
+  "8": {
+   "mag_min": 1.9999999999999996,
+   "mag_max": 2.0000000000000004,
+   "ripple": 4.440892098500626e-16
+  }
+ },
+ "measured": {
+  "write_offset_deg": {
+   "PFNd-L": 29.69799756015329,
+   "PFNd-R": -22.18010668943668,
+   "PFNv-L": -146.252733610763,
+   "PFNv-R": 141.260309412909
+  },
+  "concentration": {
+   "PFNd-L": 0.1583267682550648,
+   "PFNd-R": 0.19457043916983824,
+   "PFNv-L": 0.773058274539494,
+   "PFNv-R": 0.7311569287237433
+  },
+  "weight_norm": {
+   "PFNd-L": 0.9594791565445535,
+   "PFNd-R": 1.0,
+   "PFNv-L": 0.20357594014187153,
+   "PFNv-R": 0.2185404722573122
+  },
+  "total_weight": {
+   "PFNd-L": 9874.0,
+   "PFNd-R": 10291.0,
+   "PFNv-L": 2095.0,
+   "PFNv-R": 2249.0
+  },
+  "collapsed_pref_deg": {
+   "PFNd-L": 29.37896731579176,
+   "PFNd-R": -41.562724373334675,
+   "PFNv-L": 11.401595181596436,
+   "PFNv-R": -44.52836470304235
+  },
+  "source": {
+   "write_offset_deg": "data/pfn_basis.json",
+   "concentration": "data/pfn_basis.json",
+   "weight_norm": "data/pfn_basis.json",
+   "collapsed_pref_deg": "data/shunting.json（分流 f=1.0）"
+  }
+ },
+ "conditions": [
+  {
+   "name": "理想（文献どおり）",
+   "why": "p=Δ=±45/±135、重みも集中度も等しい。命題そのもの",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 1.0000000000000022,
+    "offset_deg": -7.140345259885595e-13,
+    "residual_R": 1.0,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 0.0,
+    "PFNd-R": 0.0,
+    "PFNv-L": 0.0,
+    "PFNv-R": 0.0
+   },
+   "delta_spread_deg": -0.0,
+   "mag_min": 0.9999999999999998,
+   "mag_max": 1.0000000000000002,
+   "n_silent": 0
+  },
+  {
+   "name": "実測の書き込みオフセット",
+   "why": "Δ だけ実測（+30/−22/−146/+141）に替える",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 1.0500000000000025,
+    "offset_deg": -7.24263038303939,
+    "residual_R": 0.9861215719519961,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 29.69799756015329,
+    "PFNd-R": -22.18010668943668,
+    "PFNv-L": -146.252733610763,
+    "PFNv-R": 141.260309412909
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": -15.30200243984671,
+    "PFNd-R": 22.81989331056332,
+    "PFNv-L": -11.25273361076299,
+    "PFNv-R": 6.260309412909016
+   },
+   "delta_spread_deg": 15.223211928223975,
+   "mag_min": 0.6631415199770103,
+   "mag_max": 1.2717454775256547,
+   "n_silent": 0
+  },
+  {
+   "name": "＋実測の重み",
+   "why": "さらに w をシナプス総重みに。PFNv は PFNd の 1/5 しかない",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 1.1500000000000021,
+    "offset_deg": -22.22323763312912,
+    "residual_R": 0.9205263392523588,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 29.69799756015329,
+    "PFNd-R": -22.18010668943668,
+    "PFNv-L": -146.252733610763,
+    "PFNv-R": 141.260309412909
+   },
+   "weight": {
+    "PFNd-L": 0.9594791565445535,
+    "PFNd-R": 1.0,
+    "PFNv-L": 0.20357594014187153,
+    "PFNv-R": 0.2185404722573122
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": -15.30200243984671,
+    "PFNd-R": 22.81989331056332,
+    "PFNv-L": -11.25273361076299,
+    "PFNv-R": 6.260309412909016
+   },
+   "delta_spread_deg": 15.223211928223975,
+   "mag_min": 0.2035759401418715,
+   "mag_max": 1.2460424099674625,
+   "n_silent": 0
+  },
+  {
+   "name": "＋実測の集中度",
+   "why": "さらに基底の長さに R を掛ける。PFNd の R は 0.2 以下",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 1.1000000000000023,
+    "offset_deg": -13.882164425206021,
+    "residual_R": 0.9853854625560616,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 29.69799756015329,
+    "PFNd-R": -22.18010668943668,
+    "PFNv-L": -146.252733610763,
+    "PFNv-R": 141.260309412909
+   },
+   "weight": {
+    "PFNd-L": 0.9594791565445535,
+    "PFNd-R": 1.0,
+    "PFNv-L": 0.20357594014187153,
+    "PFNv-R": 0.2185404722573122
+   },
+   "length": {
+    "PFNd-L": 0.1583267682550648,
+    "PFNd-R": 0.19457043916983824,
+    "PFNv-L": 0.773058274539494,
+    "PFNv-R": 0.7311569287237433
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": -15.30200243984671,
+    "PFNd-R": 22.81989331056332,
+    "PFNv-L": -11.25273361076299,
+    "PFNv-R": 6.260309412909016
+   },
+   "delta_spread_deg": 15.223211928223975,
+   "mag_min": 0.11898479398148094,
+   "mag_max": 0.22071299231258498,
+   "n_silent": 0
+  },
+  {
+   "name": "入口が抑制性（一様に 180° 反転）",
+   "why": "4 本とも同じだけ回るので、定数項に吸収されて壊れない",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 1.0000000000000022,
+    "offset_deg": 179.9999999999993,
+    "residual_R": 1.0,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 225.0,
+    "PFNd-R": 135.0,
+    "PFNv-L": 45.0,
+    "PFNv-R": 315.0
+   },
+   "write_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": -180.0,
+    "PFNd-R": -180.0,
+    "PFNv-L": -180.0,
+    "PFNv-R": -180.0
+   },
+   "delta_spread_deg": -0.0,
+   "mag_min": 0.9999999999999998,
+   "mag_max": 1.0000000000000002,
+   "n_silent": 0
+  },
+  {
+   "name": "Δ−p のばらつき ±15°",
+   "why": "書き込みオフセットと選好の差を集団ごとにずらす",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 0.9000000000000021,
+    "offset_deg": 15.761632985976307,
+    "residual_R": 0.9889952129962394,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 60.0,
+    "PFNd-R": -60.0,
+    "PFNv-L": -150.0,
+    "PFNv-R": 150.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 15.000000000000007,
+    "PFNd-R": -15.000000000000007,
+    "PFNv-L": -15.000000000000007,
+    "PFNv-R": 15.000000000000007
+   },
+   "delta_spread_deg": 15.087020413154827,
+   "mag_min": 0.7071067811865477,
+   "mag_max": 1.2247448713915892,
+   "n_silent": 0
+  },
+  {
+   "name": "Δ−p のばらつき ±30°",
+   "why": "書き込みオフセットと選好の差を集団ごとにずらす",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 0.800000000000002,
+    "offset_deg": 31.59470441490293,
+    "residual_R": 0.9565424691673943,
+    "n": 128
+   },
+   "pass": true,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 75.0,
+    "PFNd-R": -75.0,
+    "PFNv-L": -165.0,
+    "PFNv-R": 165.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 29.999999999999993,
+    "PFNd-R": -29.999999999999993,
+    "PFNv-L": -29.999999999999993,
+    "PFNv-R": 29.999999999999993
+   },
+   "delta_spread_deg": 30.731165520188856,
+   "mag_min": 0.3660254037844383,
+   "mag_max": 1.3660254037844386,
+   "n_silent": 0
+  },
+  {
+   "name": "Δ−p のばらつき ±45°",
+   "why": "書き込みオフセットと選好の差を集団ごとにずらす",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 0.5500000000000016,
+    "offset_deg": 80.99999999999933,
+    "residual_R": 0.962147355431959,
+    "n": 112
+   },
+   "pass": false,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 90.0,
+    "PFNd-R": -90.0,
+    "PFNv-L": -180.0,
+    "PFNv-R": 180.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -45.0,
+    "PFNv-R": 45.0
+   },
+   "delta_spread_deg": 47.701865433491434,
+   "mag_min": 0.0,
+   "mag_max": 1.414213562373095,
+   "n_silent": 16
+  },
+  {
+   "name": "Δ−p のばらつき ±60°",
+   "why": "書き込みオフセットと選好の差を集団ごとにずらす",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 0.3000000000000016,
+    "offset_deg": 132.60112163510135,
+    "residual_R": 0.8796983119805762,
+    "n": 128
+   },
+   "pass": false,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 105.0,
+    "PFNd-R": -105.0,
+    "PFNv-L": -195.0,
+    "PFNv-R": 195.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 59.999999999999986,
+    "PFNd-R": -59.999999999999986,
+    "PFNv-L": -59.999999999999986,
+    "PFNv-R": 59.999999999999986
+   },
+   "delta_spread_deg": 67.46062504653992,
+   "mag_min": 0.3660254037844385,
+   "mag_max": 1.3660254037844388,
+   "n_silent": 0
+  },
+  {
+   "name": "Δ−p のばらつき ±90°",
+   "why": "書き込みオフセットと選好の差を集団ごとにずらす",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 0.10000000000000142,
+    "offset_deg": 164.5529717597112,
+    "residual_R": 0.8671869143890701,
+    "n": 128
+   },
+   "pass": false,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 135.0,
+    "PFNd-R": -135.0,
+    "PFNv-L": -225.0,
+    "PFNv-R": 225.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 90.0,
+    "PFNd-R": -90.0,
+    "PFNv-L": -90.0,
+    "PFNv-R": 90.0
+   },
+   "delta_spread_deg": null,
+   "mag_min": 0.9999999999999999,
+   "mag_max": 1.0000000000000004,
+   "n_silent": 0
+  },
+  {
+   "name": "選好が前方に潰れた場合",
+   "why": "実測の φ 選好（+29/−42/+11/−45）を使う",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": 0.8500000000000023,
+    "offset_deg": -58.96755260675379,
+    "residual_R": 0.7821871629382502,
+    "n": 80
+   },
+   "pass": false,
+   "pref_deg": {
+    "PFNd-L": 29.37896731579176,
+    "PFNd-R": -41.562724373334675,
+    "PFNv-L": 11.401595181596436,
+    "PFNv-R": -44.52836470304235
+   },
+   "write_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 15.621032684208254,
+    "PFNd-R": -3.4372756266653286,
+    "PFNv-L": -146.40159518159646,
+    "PFNv-R": 179.52836470304234
+   },
+   "delta_spread_deg": 125.77153883334483,
+   "mag_min": 0.0,
+   "mag_max": 0.29289927482587547,
+   "n_silent": 48
+  },
+  {
+   "name": "PFNv が沈黙（＝PFNd の 2 本だけ）",
+   "why": "本リポジトリの既定の動作点で起きていたこと。2 本では後方が表せない",
+   "fit": {
+    "heading_gain": 1.0000000000000022,
+    "travel_gain": -0.2499999999999989,
+    "offset_deg": 36.10183614772891,
+    "residual_R": 0.914290934410176,
+    "n": 80
+   },
+   "pass": false,
+   "pref_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "write_deg": {
+    "PFNd-L": 45.0,
+    "PFNd-R": -45.0,
+    "PFNv-L": -135.0,
+    "PFNv-R": 135.0
+   },
+   "weight": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 0.0,
+    "PFNv-R": 0.0
+   },
+   "length": {
+    "PFNd-L": 1.0,
+    "PFNd-R": 1.0,
+    "PFNv-L": 1.0,
+    "PFNv-R": 1.0
+   },
+   "delta_minus_pref_deg": {
+    "PFNd-L": 0.0,
+    "PFNd-R": 0.0,
+    "PFNv-L": 0.0,
+    "PFNv-R": 0.0
+   },
+   "delta_spread_deg": -0.0,
+   "mag_min": 0.0,
+   "mag_max": 1.0000000000000002,
+   "n_silent": 48
+  }
+ ]
+}

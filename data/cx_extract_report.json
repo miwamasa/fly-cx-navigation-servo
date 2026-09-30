@@ -1,0 +1,49 @@
+{
+  "neurons": 2308,
+  "cell_types": 118,
+  "edges_signed": 187137,
+  "synapses_total": 1426993.0,
+  "excitatory_edges": 136883,
+  "inhibitory_edges": 50254,
+  "neurotransmitters": {
+    "gaba": 286,
+    "glutamate": 58,
+    "acetylcholine": 1912,
+    "serotonin": 2,
+    "octopamine": 18,
+    "unclear": 28,
+    "dopamine": 4
+  },
+  "phase": {
+    "ring_embedding": "ok",
+    "glomeruli": 18,
+    "columns": 9,
+    "after_labels": 1675,
+    "propagated_round_1": 375,
+    "propagated_round_2": 60,
+    "with_phase": 2110,
+    "total": 2308
+  },
+  "roles": {
+    "EPG": 50,
+    "EL": 18,
+    "PEN": 42,
+    "PEG": 18,
+    "D7": 42,
+    "ER": 282,
+    "ExR": 26,
+    "PFL1": 14,
+    "PFL2": 12,
+    "PFL3": 24,
+    "PFN": 456,
+    "hDelta": 189,
+    "vDelta": 430,
+    "FC": 274,
+    "FR": 36,
+    "FS": 308,
+    "PFR": 44,
+    "LNO": 8,
+    "SpsP": 35
+  },
+  "out": "data/cx_network.npz"
+}

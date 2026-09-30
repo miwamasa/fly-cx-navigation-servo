@@ -1,0 +1,444 @@
+{
+ "note": "回路を通さない理想化した閉ループ。K_H・K_T の出典は GAINS に記す。",
+ "task": {
+  "dt": 0.02,
+  "K_plant": 2.6,
+  "settle": 150,
+  "sigma_deg": 55.0,
+  "tau_s": 4.0,
+  "max_deg": 60.0,
+  "seed": 20260919,
+  "trials": 12,
+  "steps": 900,
+  "goals_deg": [
+   30,
+   90,
+   150,
+   210,
+   270,
+   330
+  ]
+ },
+ "gains": {
+  "plain": {
+   "K_H": 0.7483,
+   "K_T": -0.0185,
+   "c": -0.0301,
+   "source": "data/servo_identify.json（実測・分流なし）"
+  },
+  "augmented": {
+   "K_H": 0.06,
+   "K_T": 0.703,
+   "c": 0.0,
+   "source": "GPT-6 Astra の報告（再現していない。c は報告なしのため 0）"
+  },
+  "ideal_heading": {
+   "K_H": 1.0,
+   "K_T": 0.0,
+   "c": 0.0,
+   "source": "理想"
+  },
+  "ideal_travel": {
+   "K_H": 0.0,
+   "K_T": 1.0,
+   "c": 0.0,
+   "source": "理想"
+  }
+ },
+ "reported": {
+  "augmented_sideslip_median_deg": 15.14,
+  "augmented_sideslip_p90_deg": 36.48,
+  "flipped_rho": 0.978,
+  "flipped_err_deg": 160.49
+ },
+ "A_static": {
+  "rows": [
+   {
+    "model": "plain",
+    "phi_deg": 5,
+    "exact_deg": 5.1265738273868715,
+    "linear_deg": 5.126747053987394,
+    "one_minus_rho": 0.9758737610850287
+   },
+   {
+    "model": "plain",
+    "phi_deg": 10,
+    "exact_deg": 10.252110368981285,
+    "linear_deg": 10.253494107974788,
+    "one_minus_rho": 0.9758737610850287
+   },
+   {
+    "model": "plain",
+    "phi_deg": 20,
+    "exact_deg": 20.495984283031348,
+    "linear_deg": 20.506988215949576,
+    "one_minus_rho": 0.9758737610850287
+   },
+   {
+    "model": "plain",
+    "phi_deg": 40,
+    "exact_deg": 40.928008564649176,
+    "linear_deg": 41.01397643189915,
+    "one_minus_rho": 0.9758737610850287
+   },
+   {
+    "model": "plain",
+    "phi_deg": 60,
+    "exact_deg": 61.241890062611255,
+    "linear_deg": 61.52096464784873,
+    "one_minus_rho": 0.9758737610850287
+   },
+   {
+    "model": "augmented",
+    "phi_deg": 5,
+    "exact_deg": 0.39279732889344215,
+    "linear_deg": 0.3931847968545216,
+    "one_minus_rho": 0.07863695937090431
+   },
+   {
+    "model": "augmented",
+    "phi_deg": 10,
+    "exact_deg": 0.7832703170284097,
+    "linear_deg": 0.7863695937090432,
+    "one_minus_rho": 0.07863695937090431
+   },
+   {
+    "model": "augmented",
+    "phi_deg": 20,
+    "exact_deg": 1.5479603684089462,
+    "linear_deg": 1.5727391874180865,
+    "one_minus_rho": 0.07863695937090431
+   },
+   {
+    "model": "augmented",
+    "phi_deg": 40,
+    "exact_deg": 2.9477984311128287,
+    "linear_deg": 3.145478374836173,
+    "one_minus_rho": 0.07863695937090431
+   },
+   {
+    "model": "augmented",
+    "phi_deg": 60,
+    "exact_deg": 4.054848596677719,
+    "linear_deg": 4.718217562254259,
+    "one_minus_rho": 0.07863695937090431
+   }
+  ],
+  "note": "線形近似 |e*| = K_H/(K_H+K_T)·|φ|。K_H, K_T > 0 のときだけ (1−ρ)|φ| に等しい。"
+ },
+ "B_stability": {
+  "flipped (ρ=0.978, K_T<0)": {
+   "K_H": 0.0155,
+   "K_T": -0.689,
+   "rho": 0.9779985805535841,
+   "sum_positive": false,
+   "equilibria": {
+    "0": [
+     {
+      "e": 0.0,
+      "stable": false
+     },
+     {
+      "e": -3.141592653589793,
+      "stable": true
+     }
+    ],
+    "20": [
+     {
+      "e": -3.1337324374145483,
+      "stable": true
+     },
+     {
+      "e": 0.007860216175245238,
+      "stable": false
+     }
+    ],
+    "40": [
+     {
+      "e": -3.1268797575371616,
+      "stable": true
+     },
+     {
+      "e": 0.01471289605263193,
+      "stable": false
+     }
+    ]
+   },
+   "median_stable_err_deg": 179.34274986717608
+  },
+  "augmented": {
+   "K_H": 0.06,
+   "K_T": 0.703,
+   "rho": 0.9213630406290957,
+   "sum_positive": true,
+   "equilibria": {
+    "0": [
+     {
+      "e": 0.0,
+      "stable": true
+     },
+     {
+      "e": -3.141592653589793,
+      "stable": false
+     }
+    ],
+    "20": [
+     {
+      "e": -0.02701700511912053,
+      "stable": true
+     },
+     {
+      "e": 3.114575648470672,
+      "stable": false
+     }
+    ],
+    "40": [
+     {
+      "e": -0.051448788308042115,
+      "stable": true
+     },
+     {
+      "e": 3.0901438652817514,
+      "stable": false
+     }
+    ]
+   },
+   "median_stable_err_deg": 2.275572282449599
+  },
+  "note": "K_H + K_T < 0 だと e = 0 が不安定になり、安定点は e ≈ π 側へ移る。符号の反転だけで説明できるのは「≈180° 付近」までで、報告の 160.49° との差はここでは説明しない。"
+ },
+ "C_phasor": {
+  "max_phase_err_deg": 1.0177774980683254e-13,
+  "magnitude_min": 0.9999999999999993,
+  "magnitude_max": 1.0000000000000004
+ },
+ "D_comparator": {
+  "max_abs_err_squared": 4.440892098500626e-16,
+  "max_abs_linear_side_sum": 3.3306690738754696e-15,
+  "note": "二乗ありで (R−L)/(R+L) = sin(G−T) が 12 細胞の離散和で厳密に成り立つ。二乗を外すと、細胞位相で和をとった左右の入力はどちらも恒等的に 0 になり、G−T の情報が残らない。"
+ },
+ "E_pll": {
+  "K_loop": 2.6,
+  "rows": [
+   {
+    "rate_over_K": 0.1,
+    "rate_deg_s": 14.896902673401405,
+    "mean_err_deg": -5.739170477266884,
+    "pred_deg": 5.739170477266787,
+    "cycle_slips": 0.015942140214630238
+   },
+   {
+    "rate_over_K": 0.3,
+    "rate_deg_s": 44.69070802020421,
+    "mean_err_deg": -17.457603123720396,
+    "pred_deg": 17.45760312372209,
+    "cycle_slips": 0.04849334201033464
+   },
+   {
+    "rate_over_K": 0.5,
+    "rate_deg_s": 74.48451336700703,
+    "mean_err_deg": -30.00000000000066,
+    "pred_deg": 30.000000000000004,
+    "cycle_slips": 0.08333333333333154
+   },
+   {
+    "rate_over_K": 0.8,
+    "rate_deg_s": 119.17522138721124,
+    "mean_err_deg": -53.13010235415465,
+    "pred_deg": 53.13010235415599,
+    "cycle_slips": 0.14758361765042963
+   },
+   {
+    "rate_over_K": 0.95,
+    "rate_deg_s": 141.52057539731334,
+    "mean_err_deg": -71.80512766120988,
+    "pred_deg": 71.80512766123321,
+    "cycle_slips": 0.19945868794785163
+   },
+   {
+    "rate_over_K": 1.2,
+    "rate_deg_s": 178.76283208081685,
+    "mean_err_deg": -57.547879885239034,
+    "pred_deg": null,
+    "cycle_slips": 16.27094902147217
+   },
+   {
+    "rate_over_K": 2.0,
+    "rate_deg_s": 297.9380534680281,
+    "mean_err_deg": -29.188330000699324,
+    "pred_deg": null,
+    "cycle_slips": 43.0095240055182
+   }
+  ],
+  "note": "一次 PLL と同じ ė = −K sin e − φ̇。|φ̇| < K でロックし誤差は arcsin(φ̇/K)。|φ̇| > K ではロックが外れ、位相が周回する。"
+ },
+ "F_worldwind": {
+  "rows": [
+   {
+    "beta": 0.3,
+    "min_dT_dH": 0.7000001523086867,
+    "monotone": true,
+    "reached_fraction": 1.0
+   },
+   {
+    "beta": 0.7,
+    "min_dT_dH": 0.3000003553869357,
+    "monotone": true,
+    "reached_fraction": 1.0
+   },
+   {
+    "beta": 0.95,
+    "min_dT_dH": 0.05000048231084131,
+    "monotone": true,
+    "reached_fraction": 0.9861111111111112
+   },
+   {
+    "beta": 1.3,
+    "min_dT_dH": -0.29999933999569084,
+    "monotone": false,
+    "reached_fraction": 0.9583333333333334
+   },
+   {
+    "beta": 2.0,
+    "min_dT_dH": -0.9999989846087551,
+    "monotone": false,
+    "reached_fraction": 0.7916666666666666
+   }
+  ],
+  "note": "風が世界に固定されていると φ は H に依存し、Ṫ = (1 + ∂φ/∂H)·Ḣ。β < 1（常に 1 + ∂φ/∂H > 0）なら全方向に到達できる。"
+ },
+ "G_task": {
+  "plain": {
+   "K_H": 0.7483,
+   "K_T": -0.0185,
+   "c": -0.0301,
+   "source": "data/servo_identify.json（実測・分流なし）",
+   "rho": 0.024126238914971312,
+   "sideslip": {
+    "median_deg": 40.72531010681385,
+    "p90_deg": 63.32010683636168
+   },
+   "no_sideslip": {
+    "median_deg": 2.3637877316302,
+    "p90_deg": 2.3648855955465096
+   },
+   "linear_sigma_deg": 56.233686899841736,
+   "linear_median_deg": 37.92962181394325,
+   "static_component_median_deg": 41.04958614576824
+  },
+  "augmented": {
+   "K_H": 0.06,
+   "K_T": 0.703,
+   "c": 0.0,
+   "source": "GPT-6 Astra の報告（再現していない。c は報告なしのため 0）",
+   "rho": 0.9213630406290957,
+   "sideslip": {
+    "median_deg": 9.462269239474075,
+    "p90_deg": 25.375755220019883
+   },
+   "no_sideslip": {
+    "median_deg": 7.05122738993286e-08,
+    "p90_deg": 0.013173088562841674
+   },
+   "linear_sigma_deg": 18.845717348306195,
+   "linear_median_deg": 12.711436351432528,
+   "static_component_median_deg": 3.148209384961351
+  },
+  "ideal_heading": {
+   "K_H": 1.0,
+   "K_T": 0.0,
+   "c": 0.0,
+   "source": "理想",
+   "rho": 0.0,
+   "sideslip": {
+    "median_deg": 40.034729345425454,
+    "p90_deg": 60.0000000000185
+   },
+   "no_sideslip": {
+    "median_deg": 8.152397759527286e-11,
+    "p90_deg": 0.0007339650800683408
+   },
+   "linear_sigma_deg": 55.0,
+   "linear_median_deg": 37.0975
+  },
+  "ideal_travel": {
+   "K_H": 0.0,
+   "K_T": 1.0,
+   "c": 0.0,
+   "source": "理想",
+   "rho": 1.0,
+   "sideslip": {
+    "median_deg": 7.757833147875736,
+    "p90_deg": 22.218216511749528
+   },
+   "no_sideslip": {
+    "median_deg": 8.152397759527286e-11,
+    "p90_deg": 0.0007339650800683408
+   },
+   "linear_sigma_deg": 16.28959413837504,
+   "linear_median_deg": 10.987331246333964
+  },
+  "median_abs_phi_deg": 40.03472934542518,
+  "travel_gain_sweep": [
+   {
+    "K_loop": 0.5,
+    "median_deg": 19.455181593380544,
+    "linear_median_deg": 21.41825161126214
+   },
+   {
+    "K_loop": 1.0,
+    "median_deg": 12.737034045081664,
+    "linear_median_deg": 16.590506359059688
+   },
+   {
+    "K_loop": 2.0,
+    "median_deg": 8.939705269534741,
+    "linear_median_deg": 12.365833333333333
+   },
+   {
+    "K_loop": 2.6,
+    "median_deg": 7.757833147875736,
+    "linear_median_deg": 10.987331246333964
+   },
+   {
+    "K_loop": 5.0,
+    "median_deg": 5.515397741406589,
+    "linear_median_deg": 8.095338183029726
+   },
+   {
+    "K_loop": 10.0,
+    "median_deg": 3.9303007937417838,
+    "linear_median_deg": 5.793656131662563
+   },
+   {
+    "K_loop": 20.0,
+    "median_deg": 3.006568045385455,
+    "linear_median_deg": 4.121944444444445
+   }
+  ],
+  "budget": {
+   "assumption": "独立な二成分の中央値が RSS で合成される（近似）",
+   "plain": {
+    "observed_sideslip_deg": 42.57063785999945,
+    "observed_ci95": [
+     41.44866354979427,
+     43.62099094933328
+    ],
+    "observed_no_sideslip_deg": 15.51552196113471,
+    "law_sideslip_deg": 40.72531010681385,
+    "law_no_sideslip_deg": 2.3637877316302,
+    "floor_deg": 15.334403453876124,
+    "rss_prediction_sideslip_deg": 43.51660387234282,
+    "prediction_within_ci": true
+   },
+   "augmented": {
+    "observed_sideslip_deg": 15.14,
+    "law_sideslip_deg": 9.462269239474075,
+    "static_component_deg": 3.148209384961351,
+    "implied_floor_deg": 11.818843464557043,
+    "predicted_no_sideslip_deg": 11.818843464557043,
+    "note": "追加モデルの「横滑りなし」の誤差は報告されていない。RSS の仮定が正しければ ≈ implied_floor_deg になるはず（検証可能な予測）。"
+   }
+  }
+ }
+}

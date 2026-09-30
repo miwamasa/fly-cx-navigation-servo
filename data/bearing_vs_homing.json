@@ -1,0 +1,124 @@
+{
+ "prereg": {
+  "bearing_err_deg_max": 20.0,
+  "sideslip_sigma_deg": 55.0,
+  "sideslip_tau_s": 4.0,
+  "sideslip_max_deg": 60.0
+ },
+ "protocol": {
+  "trials": 12,
+  "steps": 900,
+  "dt": 0.02,
+  "settle": 150,
+  "goals_deg": [
+   30,
+   90,
+   150,
+   210,
+   270,
+   330
+  ]
+ },
+ "note": "課題 B（帰巣）は 6.7 節の 4 試験と同じものなので、ここでは走らせずdata/pi_benchmark.json を参照する（基準を作り直さないため）。",
+ "synthetic": {
+  "bearing": {
+   "by_cond": {
+    "横滑りあり（σ=55°）": {
+     "median_deg": 7.757833147875736,
+     "ci95": [
+      7.495370495648449,
+      7.979443823607432
+     ],
+     "pass": true
+    },
+    "横滑りなし（σ=0°、対照）": {
+     "median_deg": 8.152397759527286e-11,
+     "ci95": [
+      5.358598527329733e-11,
+      1.260008542608587e-10
+     ],
+     "pass": true
+    }
+   },
+   "expected": [
+    true,
+    true
+   ],
+   "passes_control": true
+  },
+  "heading": {
+   "by_cond": {
+    "横滑りあり（σ=55°）": {
+     "median_deg": 40.034729345425454,
+     "ci95": [
+      39.26006239047862,
+      40.65440001051322
+     ],
+     "pass": false
+    },
+    "横滑りなし（σ=0°、対照）": {
+     "median_deg": 8.152397759527286e-11,
+     "ci95": [
+      5.358598527329733e-11,
+      1.260008542608587e-10
+     ],
+     "pass": true
+    }
+   },
+   "expected": [
+    false,
+    true
+   ],
+   "passes_control": true
+  },
+  "none": {
+   "by_cond": {
+    "横滑りあり（σ=55°）": {
+     "median_deg": 90.0,
+     "ci95": [
+      90.0,
+      90.00000000000001
+     ],
+     "pass": false
+    },
+    "横滑りなし（σ=0°、対照）": {
+     "median_deg": 90.0,
+     "ci95": [
+      90.0,
+      90.0
+     ],
+     "pass": false
+    }
+   },
+   "expected": [
+    false,
+    false
+   ],
+   "passes_control": true
+  }
+ },
+ "network": {
+  "横滑りあり（σ=55°）": {
+   "median_deg": 42.57063785999945,
+   "ci95": [
+    41.44866354979427,
+    43.62099094933328
+   ],
+   "pass": false,
+   "n_samples": 9000
+  },
+  "横滑りなし（σ=0°、対照）": {
+   "median_deg": 15.51552196113471,
+   "ci95": [
+    14.954927105215983,
+    18.021985227772763
+   ],
+   "pass": true,
+   "n_samples": 9000
+  }
+ },
+ "homing_reference": {
+  "source": "data/pi_benchmark.json（6.7 節の 4 試験）",
+  "note": "新しい採点系を作らないため、ここでは再実行していない。"
+ }
+}
