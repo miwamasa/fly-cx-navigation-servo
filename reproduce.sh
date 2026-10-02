@@ -38,6 +38,7 @@ figures() {
 tests() {
   for t in tests/test_*.py; do step "$t"; $PY "$t"; done
   step "tests/test_cxnet.mjs"; node tests/test_cxnet.mjs
+  step "tests/test_minimal_demo.mjs"; node tests/test_minimal_demo.mjs
 }
 
 case "${1:-figures}" in

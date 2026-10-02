@@ -30,6 +30,7 @@ PAPER_A = os.path.join(PAPER, 'a_navigation', 'PAPER.md')
 PAPER_B = os.path.join(PAPER, 'b_servo_control', 'PAPER.md')
 MED_A = os.path.join(MEDIUM, 'a_fly_brain_navigation.md')
 MED_B = os.path.join(MEDIUM, 'b_fly_brain_servo_control.md')
+MED_A1 = os.path.join(MEDIUM, 'a1_minimal_brain_demo.md')       # the demo article
 
 
 def read(path):
@@ -48,7 +49,7 @@ def sheet(name):
 # The Medium articles are optional: the stand-alone reproduction package (toGitHub/)
 # carries the papers only, and every Medium check is skipped when they are absent.
 HAS_MEDIUM = os.path.exists(MED_A) and os.path.exists(MED_B)
-TEXT = {p: read(p) for p in (PAPER_A, PAPER_B, MED_A, MED_B) if os.path.exists(p)}
+TEXT = {p: read(p) for p in (PAPER_A, PAPER_B, MED_A, MED_B, MED_A1) if os.path.exists(p)}
 
 
 def forms(s):
@@ -436,6 +437,8 @@ class TestLinksAndFigures(unittest.TestCase):
         if not HAS_MEDIUM:
             self.skipTest('no medium/ in this checkout')
         for name in os.listdir(os.path.join(MEDIUM, 'images')):
+            if not name.startswith('fig'):        # demo screenshots are not paper figures
+                continue
             src = os.path.join(PAPER, 'a_navigation' if name.startswith('figA') else 'b_servo_control',
                                'figures', name)
             with open(src, 'rb') as a, open(os.path.join(MEDIUM, 'images', name), 'rb') as b:
@@ -480,7 +483,7 @@ class TestScope(unittest.TestCase):
 @unittest.skipUnless(HAS_MEDIUM, 'no medium/ in this checkout')
 class TestMediumFormat(unittest.TestCase):
     def test_no_latex_and_no_tables(self):
-        for path in (MED_A, MED_B):
+        for path in (p for p in (MED_A, MED_B, MED_A1) if p in TEXT):
             text = TEXT[path]
             self.assertNotIn('$$', text)
             self.assertNotIn('\\(', text)
@@ -492,7 +495,7 @@ class TestMediumFormat(unittest.TestCase):
         self.assertIn('../paper/b_servo_control/PAPER.md', TEXT[MED_B])
 
     def test_length(self):
-        for path in (MED_A, MED_B):
+        for path in (p for p in (MED_A, MED_B, MED_A1) if p in TEXT):
             words = len(re.findall(r"[A-Za-z][A-Za-z'-]*", TEXT[path]))
             self.assertTrue(1500 <= words <= 3500, f'{os.path.relpath(path, ROOT)}: {words} words')
 

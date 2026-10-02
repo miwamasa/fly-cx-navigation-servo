@@ -9,6 +9,8 @@ This is the minimal package needed to reproduce two papers built on a rate model
 
 The HTML files are self-contained, with all figures and the typeset maths embedded.
 
+**Interactive demo.** [`web/minimal.html`](web/minimal.html) is **Minimal Brain**, a browser game built on paper A §5. You delete cell types, lower the bits per weight and prune synapses, and see whether the fly can still cross a maze. [`web/minimal-standalone.html`](web/minimal-standalone.html) is the same page as one self-contained file that opens with a double-click (see *Running the demo* below).
+
 ## Requirements
 
 - Python ≥ 3.10 with `numpy`, `scipy`, `matplotlib` and `markdown` (`pip install -r requirements.txt`). Tested with Python 3.11, numpy 2.4, scipy 1.17, matplotlib 3.11 and markdown 3.11.
@@ -40,6 +42,8 @@ model/flybrain-cx.gguf        the connectome model: CSR sparse matrix, Q8_0 weig
 data/                         measurement outputs cited by the papers (see the table below)
 scripts/                      numpy engine and every experiment script the papers rely on
 web/gguf.js, web/cxnet.js     the dependency-free JavaScript engine (runs the same model)
+web/minimal.html              the Minimal Brain demo (needs a local web server)
+web/minimal-standalone.html   the same demo with engine and model inlined (double-click to open)
 paper/a_navigation/           paper A: PAPER.md, PAPER.html, figures/
 paper/b_servo_control/        paper B: PAPER.md, PAPER.html, figures/
 paper/data/                   number sheets: every value the papers quote, with its source
@@ -47,6 +51,21 @@ paper/scripts/                figure generators (fig_a.py, fig_b.py) and the HTM
 tests/                        consistency and regression tests
 reproduce.sh                  one entry point for the steps above
 ```
+
+## Running the demo
+
+- **No setup:** open `web/minimal-standalone.html` in any modern browser.
+- **From a clone:** run `python3 -m http.server 8000` in the repository root and open <http://localhost:8000/web/minimal.html>. A server is needed because browsers block module scripts and `fetch` on `file://` pages.
+- **Online:** if GitHub Pages is enabled for this repository (Settings → Pages → deploy from the `main` branch, root folder), the demo is served at `https://<user>.github.io/<repository>/web/minimal.html`.
+
+After changing `web/minimal.html` or the engine, rebuild the standalone file and run the demo test:
+
+```sh
+python3 scripts/bundle.py --page minimal.html -o web/minimal-standalone.html
+node tests/test_minimal_demo.mjs
+```
+
+The test recomputes the numbers the page shows from the model: the intact size of 1,495.8 kbit, and 166 neurons / 932 synapses / 3.7 kbit for EPG + FC2 + PFL3 at 4 bit. It checks that this circuit steers correctly in 24 open-loop probes, that the page is in English, and that the standalone file matches a fresh rebuild. The game's pass rule (reach the goal within 60 s with at least 80% steering-sign accuracy) is looser than paper A's tests, so smaller brains than 3.7 kbit can pass in the game. The page says so.
 
 ## Where every number comes from
 
@@ -87,11 +106,12 @@ reproduce.sh                  one entry point for the steps above
 | `tests/test_servo_theory.py` | The control theory of B §3 and §6: (1 − ρ)φ, stability, the phasor identity, the squaring comparator, the PLL lag and cycle slips, world-fixed wind, and bit-for-bit reproduction of the task. |
 | `tests/test_pi.py` | Rate-model invariants, including that shunting inhibition at f = 0 is bit-identical to the base model (B §4.3). |
 | `tests/test_cxnet.mjs` | The JavaScript engine and GGUF reader. |
+| `tests/test_minimal_demo.mjs` | The Minimal Brain demo: the numbers it displays, the record circuit's steering, English text, and an up-to-date standalone file. |
 
 ## What is not included, and why
 
 - **Extraction from the raw connectome.** `model/flybrain-cx.gguf` and `data/cx_network.npz` were built from the 1.05 GB MaleCNS v1.0 connection and annotation tables (Janelia FlyEM, CC-BY 4.0, <https://male-cns.janelia.org/>). The extraction and GGUF build scripts need those tables and are not part of this package. The derived files are included, so every step from the model onward is reproducible here.
-- **Interactive browser demos** (maze, "minimal brain" puzzle, 3D viewer) and the Japanese-language project documents referenced in some script comments. Neither is needed to reproduce the papers.
+- **The other browser demos** (the maze game and the 3D viewer) and the Japanese-language project documents referenced in some script comments. Neither is needed to reproduce the papers. The Minimal Brain demo is included.
 - **The Medium articles** that accompany the papers.
 
 ## Notes

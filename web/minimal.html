@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
+<title>Minimal Brain: how far can a fly connectome be cut?</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --line:#2a3038; --ink:#e6edf3; --dim:#8b949e;
+    --accent:#f0a35e; --accent2:#5ec8f0; --ok:#5ed48a; --warn:#f06e6e; --floor:#12161c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  header{padding:14px 20px;border-bottom:1px solid var(--line)}
+  h1{font-size:17px;margin:0 0 2px;font-weight:650}
+  .sub{color:var(--dim);font-size:12px}
+  main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;padding:16px;
+       align-items:start;max-width:1320px;margin:0 auto}
+  @media (max-width:940px){main{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:16px}
+  .card h2{font-size:12px;margin:0 0 10px;color:var(--dim);font-weight:600;
+           text-transform:uppercase;letter-spacing:.08em}
+  canvas{display:block;width:100%;height:auto;border-radius:8px;background:var(--floor)}
+  #brain{background:transparent}
+  .row{display:flex;justify-content:space-between;gap:10px;padding:3px 0;
+       font-variant-numeric:tabular-nums;font-size:13px}
+  .row span:last-child{color:var(--accent2)}
+  .big{font-size:30px;font-weight:660;font-variant-numeric:tabular-nums;line-height:1.1}
+  .big small{font-size:14px;color:var(--dim);font-weight:400}
+  .meter{height:9px;background:#0d1117;border-radius:5px;overflow:hidden;margin:8px 0 4px;
+         border:1px solid var(--line)}
+  .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--ok),var(--accent));}
+  button{background:#21262d;color:var(--ink);border:1px solid var(--line);
+         border-radius:7px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}
+  button:hover{border-color:var(--accent)}
+  button.primary{background:var(--accent);color:#1b1005;border-color:var(--accent);font-weight:640}
+  .chips{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 10px}
+  .chip{font-size:11px;padding:2px 7px;border-radius:11px;cursor:pointer;user-select:none;
+        border:1px solid var(--line);background:#0d1117;color:var(--dim);white-space:nowrap}
+  .chip.on{background:rgba(240,163,94,.16);border-color:var(--accent);color:var(--accent)}
+  .chip.core{border-style:dashed}
+  .grp{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px}
+  .grp b{font-weight:600}
+  .grp .cnt{color:var(--dim);font-size:11px}
+  .grp button{padding:1px 8px;font-size:11px}
+  label.sl{display:grid;grid-template-columns:1fr auto;gap:6px;font-size:12px;
+           color:var(--dim);margin:10px 0 0}
+  label.sl input{grid-column:1/3;width:100%;accent-color:var(--accent)}
+  .status{padding:9px 12px;border-radius:7px;background:#0d1117;border:1px solid var(--line);
+          font-size:13px;margin-bottom:10px}
+  .status.win{border-color:var(--ok);color:var(--ok)}
+  .status.lose{border-color:var(--warn);color:var(--warn)}
+  .foot{color:var(--dim);font-size:11px;padding:0 20px 24px;max-width:1320px;margin:0 auto}
+  a{color:var(--accent2)}
+  .scroll{max-height:330px;overflow-y:auto;padding-right:6px}
+  table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+  td{padding:3px 0;border-bottom:1px solid var(--line)}
+  td:last-child{text-align:right;color:var(--accent2)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Minimal Brain</h1>
+  <div class="sub">How far can the 2,308-neuron central complex of the MaleCNS v1.0 connectome be cut
+    and still solve a maze? Shrink it three ways: delete cell types, quantize weights, prune weak synapses.</div>
+</header>
+
+<main>
+  <div>
+    <div class="card">
+      <div class="status" id="status">Loading…</div>
+      <canvas id="maze" width="600" height="440"></canvas>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="primary" id="btnRun">Run</button>
+        <button id="btnStop">Stop</button>
+        <button id="btnMaze">New maze</button>
+        <span class="sub">The route is given to the fly. What you decide is <b>only what is inside its brain</b>.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Records</h2>
+      <table id="records"><tr><td colspan="3" style="color:var(--dim)">No records yet</td></tr></table>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Brain size</h2>
+      <div class="big"><span id="kbit">–</span><small> kbit</small>
+        <small id="ratio"></small></div>
+      <div class="meter"><i id="meterFill" style="width:100%"></i></div>
+      <div class="row"><span>Neurons kept</span><span id="nNeu">–</span></div>
+      <div class="row"><span>Synapses kept</span><span id="nSyn">–</span></div>
+      <div class="row"><span>Steering accuracy</span><span id="mErr">–</span></div>
+      <div class="row"><span>Bump sharpness</span><span id="mStr">–</span></div>
+      <div class="row"><span>PFL3 output</span><span id="mPfl">–</span></div>
+      <div class="sub" style="margin-top:8px;line-height:1.5">
+        Paper A's smallest circuit under its stricter tests:
+        <b>166 neurons / 932 synapses / 4 bit = 3.7 kbit</b>
+        (EPG + PFL3 + FC2, 1/401 of the intact brain). This game's rule is looser,
+        so smaller brains can pass here. How small can you go?</div>
+    </div>
+
+    <div class="card">
+      <h2>Weight information</h2>
+      <label class="sl">Quantization bits<span id="vBits"></span>
+        <input id="sBits" type="range" min="1" max="8" step="1" value="8"></label>
+      <label class="sl">Prune weak synapses<span id="vPrune"></span>
+        <input id="sPrune" type="range" min="0" max="0.4" step="0.01" value="0"></label>
+      <div class="sub" style="margin-top:6px">
+        The threshold is a fraction of each cell's strongest input. Connections of only one or two
+        synapses are often treated as noise in connectome analyses.</div>
+    </div>
+
+    <div class="card">
+      <h2>Cell types (click to delete)</h2>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+        <button id="pAll">Keep all</button>
+        <button id="pCore">Core circuit</button>
+        <button id="pNone">Delete all</button>
+      </div>
+      <div class="scroll" id="types"></div>
+    </div>
+
+    <div class="card">
+      <h2>Inside the brain</h2>
+      <canvas id="brain" width="340" height="210"></canvas>
+    </div>
+  </div>
+</main>
+
+<p class="foot">
+  Data: <a href="https://male-cns.janelia.org/">Janelia FlyEM MaleCNS v1.0</a> (CC-BY 4.0).
+  kbit = surviving synapses × quantization bits. The intact brain is 1,496 kbit.
+  Background: paper A, section 5 (paper/a_navigation/PAPER.md in the repository).
+</p>
+
+<script type="module">
+import { GGUF } from './gguf.js';
+import { CXNetwork, ROLE_NAMES } from './cxnet.js';
+
+const TAU = Math.PI * 2;
+const wrap = (x) => ((x + Math.PI) % TAU + TAU) % TAU - Math.PI;
+const $ = (id) => document.getElementById(id);
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+const FULL_KBIT = 1495.768;      // size of the intact brain (reference)
+const TIME_LIMIT = 60;           // seconds
+const ACC_LIMIT = 0.80;          // minimum steering accuracy: rejects brains that only got there by bumping into walls
+
+// ---------------------------------------------------------------- maze
+const COLS = 15, ROWS = 11, CELL = 40;
+function mulberry(seed) {
+  return function () {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const DX = [0, 1, 0, -1], DY = [-1, 0, 1, 0];
+
+function makeMaze(seed) {
+  const rnd = mulberry(seed);
+  const g = Array.from({ length: ROWS }, () => Array.from({ length: COLS },
+    () => ({ w: [1, 1, 1, 1], seen: false })));
+  const stack = [[0, 0]]; g[0][0].seen = true;
+  while (stack.length) {
+    const [x, y] = stack[stack.length - 1];
+    const opts = [];
+    for (let d = 0; d < 4; d++) {
+      const nx = x + DX[d], ny = y + DY[d];
+      if (nx >= 0 && ny >= 0 && nx < COLS && ny < ROWS && !g[ny][nx].seen) opts.push(d);
+    }
+    if (!opts.length) { stack.pop(); continue; }
+    const d = opts[Math.floor(rnd() * opts.length)];
+    const nx = x + DX[d], ny = y + DY[d];
+    g[y][x].w[d] = 0; g[ny][nx].w[(d + 2) % 4] = 0; g[ny][nx].seen = true;
+    stack.push([nx, ny]);
+  }
+  for (let k = 0; k < COLS * ROWS * 0.15; k++) {
+    const x = 1 + Math.floor(rnd() * (COLS - 2)), y = 1 + Math.floor(rnd() * (ROWS - 2));
+    const d = Math.floor(rnd() * 4), nx = x + DX[d], ny = y + DY[d];
+    if (nx >= 0 && ny >= 0 && nx < COLS && ny < ROWS) {
+      g[y][x].w[d] = 0; g[ny][nx].w[(d + 2) % 4] = 0;
+    }
+  }
+  return g;
+}
+
+/** Distance field from the goal. It picks the next cell to head for (route planning is not the brain's job). */
+function distanceField(maze) {
+  const D = Array.from({ length: ROWS }, () => new Int32Array(COLS).fill(-1));
+  const q = [[COLS - 1, ROWS - 1]]; D[ROWS - 1][COLS - 1] = 0;
+  for (let h = 0; h < q.length; h++) {
+    const [x, y] = q[h];
+    for (let d = 0; d < 4; d++) {
+      if (maze[y][x].w[d]) continue;
+      const nx = x + DX[d], ny = y + DY[d];
+      if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS || D[ny][nx] >= 0) continue;
+      D[ny][nx] = D[y][x] + 1; q.push([nx, ny]);
+    }
+  }
+  return D;
+}
+
+const S = { maze: null, dist: null, fly: null, running: false, seed: 7,
+            t0: 0, result: null, errAcc: 0, errN: 0, records: [],
+            pflAcc: 0, strAcc: 0, obsN: 0 };
+
+function resetFly() {
+  S.fly = { x: CELL * 0.5, y: CELL * 0.5, th: 0, bumps: 0 };
+  S.errAcc = 0; S.errN = 0; S.pflAcc = 0; S.strAcc = 0; S.obsN = 0; S.result = null;
+}
+function newMaze(seed) {
+  S.seed = seed; S.maze = makeMaze(seed); S.dist = distanceField(S.maze); resetFly();
+}
+
+function blocked(x0, y0, x1, y1) {
+  const cx = Math.floor(x0 / CELL), cy = Math.floor(y0 / CELL);
+  const nx = Math.floor(x1 / CELL), ny = Math.floor(y1 / CELL);
+  if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) return true;
+  if (cx === nx && cy === ny) return false;
+  const c = S.maze[cy]?.[cx]; if (!c) return true;
+  if (nx === cx + 1 && ny === cy) return !!c.w[1];
+  if (nx === cx - 1 && ny === cy) return !!c.w[3];
+  if (ny === cy + 1 && nx === cx) return !!c.w[2];
+  if (ny === cy - 1 && nx === cx) return !!c.w[0];
+  return true;
+}
+
+/** Heading the fly should take next. The fly knows the route; turning towards it is computed by the brain. */
+function autoGoal() {
+  const f = S.fly, cx = Math.floor(f.x / CELL), cy = Math.floor(f.y / CELL);
+  let best = null, bd = S.dist[cy][cx];
+  for (let d = 0; d < 4; d++) {
+    if (S.maze[cy][cx].w[d]) continue;
+    const nx = cx + DX[d], ny = cy + DY[d];
+    if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) continue;
+    if (S.dist[ny][nx] >= 0 && S.dist[ny][nx] < bd) { bd = S.dist[ny][nx]; best = [nx, ny]; }
+  }
+  const tx = best ? (best[0] + 0.5) * CELL : (COLS - 0.5) * CELL;
+  const ty = best ? (best[1] + 0.5) * CELL : (ROWS - 0.5) * CELL;
+  return Math.atan2(ty - f.y, tx - f.x);
+}
+
+// ---------------------------------------------------------------- drawing
+const mz = $('maze'), mx = mz.getContext('2d');
+mz.width = COLS * CELL; mz.height = ROWS * CELL;
+
+function drawMaze(goalDir) {
+  mx.fillStyle = css('--floor'); mx.fillRect(0, 0, mz.width, mz.height);
+  mx.fillStyle = 'rgba(94,212,138,.16)';
+  mx.fillRect((COLS - 1) * CELL + 4, (ROWS - 1) * CELL + 4, CELL - 8, CELL - 8);
+  mx.strokeStyle = css('--ok'); mx.lineWidth = 1.5;
+  mx.strokeRect((COLS - 1) * CELL + 4, (ROWS - 1) * CELL + 4, CELL - 8, CELL - 8);
+
+  mx.strokeStyle = '#39404a'; mx.lineWidth = 3; mx.lineCap = 'round';
+  mx.beginPath();
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const c = S.maze[y][x], X = x * CELL, Y = y * CELL;
+    if (c.w[0]) { mx.moveTo(X, Y); mx.lineTo(X + CELL, Y); }
+    if (c.w[3]) { mx.moveTo(X, Y); mx.lineTo(X, Y + CELL); }
+    if (y === ROWS - 1 && c.w[2]) { mx.moveTo(X, Y + CELL); mx.lineTo(X + CELL, Y + CELL); }
+    if (x === COLS - 1 && c.w[1]) { mx.moveTo(X + CELL, Y); mx.lineTo(X + CELL, Y + CELL); }
+  }
+  mx.stroke();
+
+  const f = S.fly;
+  mx.save(); mx.translate(f.x, f.y); mx.rotate(goalDir);
+  mx.strokeStyle = css('--accent2'); mx.lineWidth = 2; mx.setLineDash([4, 4]);
+  mx.beginPath(); mx.moveTo(0, 0); mx.lineTo(40, 0); mx.stroke(); mx.setLineDash([]);
+  mx.restore();
+  mx.save(); mx.translate(f.x, f.y); mx.rotate(f.th);
+  mx.fillStyle = css('--accent');
+  mx.beginPath(); mx.moveTo(9, 0); mx.lineTo(-6, -5.5); mx.lineTo(-3, 0); mx.lineTo(-6, 5.5);
+  mx.closePath(); mx.fill(); mx.restore();
+}
+
+const bc = $('brain'), bx = bc.getContext('2d');
+function drawBrain(net, head, steer, goalDir) {
+  const W = bc.width, H = bc.height, cx = 105, cy = 100, R = 74;
+  bx.clearRect(0, 0, W, H);
+  const prof = net.ringProfile(32);
+  const max = Math.max(0.02, ...prof);
+  for (let i = 0; i < prof.length; i++) {
+    const a0 = (i / prof.length) * TAU - Math.PI / 2;   // bin i covers phase [i, i+1) * TAU/n
+    bx.beginPath();
+    bx.arc(cx, cy, R, a0, a0 + TAU / prof.length);
+    bx.arc(cx, cy, R - 20, a0 + TAU / prof.length, a0, true); bx.closePath();
+    bx.fillStyle = `rgba(240,163,94,${0.06 + 0.9 * prof[i] / max})`; bx.fill();
+  }
+  bx.strokeStyle = css('--line'); bx.lineWidth = 1;
+  bx.beginPath(); bx.arc(cx, cy, R, 0, TAU); bx.stroke();
+  const ray = (a, c, len, w) => { bx.save(); bx.translate(cx, cy); bx.rotate(a);   // same angle convention as the ring
+    bx.strokeStyle = c; bx.lineWidth = w; bx.beginPath(); bx.moveTo(0, 0); bx.lineTo(0, -len);
+    bx.stroke(); bx.restore(); };
+  ray(S.fly.th, css('--accent'), R - 24, 2);
+  ray(goalDir, css('--accent2'), R - 24, 2);
+  if (head.sum > 1e-4) ray(head.theta, '#fff', R + 10, 1.5);
+
+  const bw = 66, by = 190, mid = 250;
+  const tot = Math.max(1e-6, steer.left + steer.right);
+  bx.fillStyle = '#0d1117';
+  bx.fillRect(mid - bw - 5, by, bw, 11); bx.fillRect(mid + 5, by, bw, 11);
+  bx.fillStyle = css('--warn');
+  bx.fillRect(mid - 5 - bw * steer.left / tot, by, bw * steer.left / tot, 11);
+  bx.fillStyle = css('--ok');
+  bx.fillRect(mid + 5, by, bw * steer.right / tot, 11);
+  bx.fillStyle = css('--dim'); bx.font = '10px sans-serif'; bx.textAlign = 'center';
+  bx.fillText('Ellipsoid body (EPG bump)', cx, 16);
+  bx.fillText('PFL3  left / right', mid, by - 5);
+  bx.textAlign = 'left';
+  bx.fillText('white = bump', 195, 40);
+  bx.fillText('orange = actual heading', 195, 56);
+  bx.fillText('blue = heading to take', 195, 72);
+}
+
+// ---------------------------------------------------------------- editing the brain
+let net = null;
+const CORE = ['EPG', 'Delta7', 'PFL3', 'FC2'];
+let typeOn = null;   // cell type -> kept?
+
+function buildTypeUI() {
+  const host = $('types');
+  const byRole = new Map();
+  for (let i = 0; i < net.N; i++) {
+    const t = net.typeNames[net.typeId[i]] || '?';
+    const r = ROLE_NAMES[net.role[i]];
+    if (!byRole.has(r)) byRole.set(r, new Map());
+    const m = byRole.get(r);
+    m.set(t, (m.get(t) || 0) + 1);
+  }
+  typeOn = new Map();
+  for (const m of byRole.values()) for (const t of m.keys()) typeOn.set(t, true);
+
+  const roles = [...byRole.entries()].sort((a, b) => {
+    const s = (m) => [...m.values()].reduce((x, y) => x + y, 0);
+    return s(b[1]) - s(a[1]);
+  });
+  host.innerHTML = '';
+  for (const [role, m] of roles) {
+    const total = [...m.values()].reduce((a, b) => a + b, 0);
+    const g = document.createElement('div'); g.className = 'grp';
+    g.innerHTML = `<b>${role}</b><span class="cnt">${total}</span>`;
+    const on = document.createElement('button'); on.textContent = 'keep';
+    const off = document.createElement('button'); off.textContent = 'delete';
+    g.append(on, off); host.appendChild(g);
+
+    const chips = document.createElement('div'); chips.className = 'chips';
+    const els = [];
+    for (const [t, n] of [...m.entries()].sort()) {
+      const c = document.createElement('span');
+      c.className = 'chip on' + (CORE.some((p) => t.startsWith(p)) ? ' core' : '');
+      c.textContent = `${t} ${n}`;
+      c.onclick = () => { typeOn.set(t, !typeOn.get(t)); c.classList.toggle('on'); refresh(); };
+      chips.appendChild(c); els.push([t, c]);
+    }
+    on.onclick = () => { for (const [t, c] of els) { typeOn.set(t, true); c.classList.add('on'); } refresh(); };
+    off.onclick = () => { for (const [t, c] of els) { typeOn.set(t, false); c.classList.remove('on'); } refresh(); };
+    host.appendChild(chips);
+  }
+}
+
+function setAllTypes(pred) {
+  for (const c of document.querySelectorAll('#types .chip')) {
+    const t = c.textContent.replace(/\s\d+$/, '');
+    const v = pred(t);
+    typeOn.set(t, v); c.classList.toggle('on', v);
+  }
+  refresh();
+}
+
+function refresh() {
+  const mask = new Uint8Array(net.N);
+  for (let i = 0; i < net.N; i++) {
+    mask[i] = typeOn.get(net.typeNames[net.typeId[i]] || '?') ? 1 : 0;
+  }
+  net.setAlive(mask);
+  net.applyWeightBudget(+$('sBits').value, +$('sPrune').value);
+  const b = net.budget();
+  $('kbit').textContent = b.kbit.toFixed(1);
+  $('ratio').textContent = ` — 1/${(FULL_KBIT / Math.max(b.kbit, 1e-6)).toFixed(0)} of intact`;
+  $('nNeu').textContent = `${b.neurons} / ${net.N}`;
+  $('nSyn').textContent = b.edges.toLocaleString();
+  $('meterFill').style.width = Math.max(0.4, 100 * b.kbit / FULL_KBIT) + '%';
+  $('vBits').textContent = $('sBits').value + ' bit';
+  $('vPrune').textContent = (+$('sPrune').value).toFixed(2);
+}
+
+// ---------------------------------------------------------------- loop
+function start() {
+  resetFly(); net.reset(7);
+  for (let k = 0; k < 200; k++) {
+    net.clearDrive(); net.setVisualScene(S.fly.th, 1); net.step(0.02);
+  }
+  S.t0 = performance.now(); S.running = true;
+}
+
+function tick() {
+  requestAnimationFrame(tick);
+  if (!net) return;
+  const f = S.fly;
+  const goalDir = autoGoal();
+
+  if (S.running) {
+    net.clearDrive();
+    net.setVisualScene(f.th, 1);
+    net.injectGoal(goalDir, 0.3);
+    net.step(0.02);
+
+    const steer = net.readSteering();
+    f.th = wrap(f.th + 2.6 * steer.turn * 0.02);
+    const spd = 1.4 * 40 * 0.02;
+    const nx = f.x + Math.cos(f.th) * spd, ny = f.y + Math.sin(f.th) * spd;
+    const okX = !blocked(f.x, f.y, nx, f.y) && nx > 2 && nx < mz.width - 2;
+    const okY = !blocked(f.x, f.y, f.x, ny) && ny > 2 && ny < mz.height - 2;
+    if (okX) f.x = nx;
+    if (okY) f.y = ny;
+    if (!okX && !okY) f.th = wrap(f.th + (Math.random() - 0.5) * 0.5);
+
+    // Count whether the brain turns towards the heading it should take.
+    // The heading error itself is dominated by waypoint geometry, so only the sign is checked.
+    // Averages are kept over the whole run (the last instant alone would mislead the diagnosis).
+    const hd = net.readHeading();
+    S.pflAcc += steer.left + steer.right;
+    S.strAcc += hd.sum > 1e-4 ? hd.strength : 0;
+    S.obsN++;
+
+    const d = wrap(goalDir - f.th);
+    if (Math.abs(d) > 0.17) {          // judged only when more than 10 degrees off
+      S.errN++;
+      if (Math.sign(steer.turn) === Math.sign(d)) S.errAcc++;
+    }
+
+    const t = (performance.now() - S.t0) / 1000;
+    if (Math.floor(f.x / CELL) === COLS - 1 && Math.floor(f.y / CELL) === ROWS - 1) {
+      finish(steerAcc() >= ACC_LIMIT, t);
+    } else if (t > TIME_LIMIT) finish(false, t);
+  }
+
+  const head = net.readHeading(), steer = net.readSteering();
+  drawMaze(goalDir); drawBrain(net, head, steer, goalDir);
+  const acc = steerAcc();
+  $('mErr').textContent = S.errN ? `${(acc * 100).toFixed(0)}% / ${ACC_LIMIT * 100}%` : '–';
+  $('mErr').style.color = !S.errN ? '' : (acc >= ACC_LIMIT ? css('--ok') : css('--warn'));
+  $('mStr').textContent = head.sum > 1e-4 ? head.strength.toFixed(2) : '— (no bump)';
+  $('mPfl').textContent = (steer.left + steer.right).toFixed(3);
+
+  if (S.running) {
+    const t = (performance.now() - S.t0) / 1000;
+    $('status').className = 'status';
+    $('status').textContent = `Running ${t.toFixed(0)} / ${TIME_LIMIT} s · ` +
+      `brain ${net.budget().kbit.toFixed(1)} kbit`;
+  }
+}
+
+function steerAcc() { return S.errN ? S.errAcc / S.errN : 0; }
+
+function finish(won, t) {
+  S.running = false;
+  const b = net.budget();
+  const st = $('status');
+  if (won) {
+    st.className = 'status win';
+    st.textContent = `Passed! ${t.toFixed(1)} s · steering accuracy ${(steerAcc() * 100).toFixed(0)}% · ` +
+      `brain ${b.kbit.toFixed(1)} kbit ` +
+      `(${b.neurons} neurons / ${b.edges.toLocaleString()} synapses / ${b.bits} bit) ` +
+      `— 1/${(FULL_KBIT / b.kbit).toFixed(0)} of intact`;
+    S.records.push({ kbit: b.kbit, neurons: b.neurons, edges: b.edges, bits: b.bits, t });
+    S.records.sort((a, c) => a.kbit - c.kbit);
+    S.records = S.records.slice(0, 8);
+    drawRecords();
+  } else {
+    st.className = 'status lose';
+    const e = steerAcc();
+    const pfl = S.obsN ? S.pflAcc / S.obsN : 0;
+    const str = S.obsN ? S.strAcc / S.obsN : 0;
+    let why;
+    if (str < 0.05) why = 'No EPG bump: the brain has lost its sense of heading.';
+    else if (pfl < 0.02) why = 'PFL3 never fired: there is no steering output stage.';
+    else if (e < 0.6) why = 'The goal is not getting through: the FC2 cells that carry it to PFL3 are missing.';
+    else if (str < 0.5) why = 'The bump is too broad to define a heading: global inhibition is not working.';
+    else why = 'It steers, but not accurately enough. Try more bits or less pruning.';
+    const reached = Math.floor(S.fly.x / CELL) === COLS - 1 && Math.floor(S.fly.y / CELL) === ROWS - 1;
+    st.className = 'status lose';
+    st.textContent = (reached
+      ? `Reached the goal, but the steering was wrong — accuracy ${(e * 100).toFixed(0)}% (pass needs ${ACC_LIMIT * 100}% or more).`
+      : `Time is up — steering accuracy ${(e * 100).toFixed(0)}%.`) + ' ' + why;
+  }
+}
+
+function drawRecords() {
+  const t = $('records');
+  if (!S.records.length) { t.innerHTML = '<tr><td colspan="3" style="color:var(--dim)">No records yet</td></tr>'; return; }
+  t.innerHTML = S.records.map((r, i) =>
+    `<tr><td>${i + 1}</td><td>${r.neurons} neurons · ${r.edges.toLocaleString()} synapses · ${r.bits} bit · ${r.t.toFixed(1)} s</td>` +
+    `<td>${r.kbit.toFixed(1)} kbit</td></tr>`).join('');
+}
+
+// ---------------------------------------------------------------- start-up
+$('btnRun').onclick = start;
+$('btnStop').onclick = () => { S.running = false; $('status').className = 'status';
+  $('status').textContent = 'Stopped. Edit the brain, then press Run.'; };
+$('btnMaze').onclick = () => { newMaze((Math.random() * 1e6) | 0); S.running = false; };
+$('pAll').onclick = () => setAllTypes(() => true);
+$('pCore').onclick = () => setAllTypes((t) => CORE.some((p) => t.startsWith(p)));
+$('pNone').onclick = () => setAllTypes(() => false);
+$('sBits').oninput = refresh;
+$('sPrune').oninput = refresh;
+
+async function boot() {
+  let gguf;
+  try { gguf = await GGUF.fromURL('../model/flybrain-cx.gguf'); }
+  catch (e) {
+    $('status').textContent = 'Could not load model/flybrain-cx.gguf. ' +
+      'Open this page through a local web server (python3 -m http.server), ' +
+      'or use web/minimal-standalone.html, which works by double-clicking.';
+    throw e;
+  }
+  net = new CXNetwork(gguf);
+  newMaze(20260909);
+  buildTypeUI(); refresh(); drawRecords();
+  $('status').textContent = `Press Run to start. To pass, reach the goal within ${TIME_LIMIT} s ` +
+    `with steering accuracy of at least ${ACC_LIMIT * 100}%. Delete cell types and lower the bits to find the smallest brain.`;
+  requestAnimationFrame(tick);
+}
+boot();
+</script>
+</body>
+</html>

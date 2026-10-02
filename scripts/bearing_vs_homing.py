@@ -211,16 +211,12 @@ def main():
         print(f"  {name:24s} {med:6.1f}°  CI [{ci[0]:.1f}, {ci[1]:.1f}]  "
               f"{'合格' if passed else '不合格'}")
 
-    # --- 課題 B は既存の結果を参照する
-    try:
-        bench = json.load(open(os.path.join(ROOT, 'data', 'pi_benchmark.json'),
-                               encoding='utf-8'))
-        out['homing_reference'] = {
-            'source': 'data/pi_benchmark.json（6.7 節の 4 試験）',
-            'note': '新しい採点系を作らないため、ここでは再実行していない。'}
-        del bench
-    except Exception as e:  # noqa: BLE001
-        out['homing_reference'] = {'error': str(e)}
+    # --- 課題 B は既存の結果を参照する（参照先を記録するだけで、読み込みはしない）。
+    # Only a pointer is recorded, so the output does not depend on whether
+    # data/pi_benchmark.json is present (it is not part of the paper package).
+    out['homing_reference'] = {
+        'source': 'data/pi_benchmark.json（6.7 節の 4 試験）',
+        'note': '新しい採点系を作らないため、ここでは再実行していない。'}
 
     with open(a.out, 'w', encoding='utf-8') as fh:
         json.dump(out, fh, ensure_ascii=False, indent=1)
