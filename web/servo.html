@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%AA%B0%3C/text%3E%3C/svg%3E">
+<title>Fly Servo Lab: heading servo vs travel servo on a fly connectome</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --line:#e1e6ed; --ink:#1d2733; --dim:#6b7686; --soft:#eef1f5;
+    --plain:#4363d8; --added:#008979; --purple:#9a5fc9; --goal:#b9c2cf; --warn:#c94f4f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+         padding:14px 22px;background:var(--card);border-bottom:1px solid var(--line)}
+  header h1{font-size:18px;margin:0}
+  header p{margin:0;color:var(--dim);font-size:13px}
+  .chain{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:14px;padding:3px 10px}
+  main{max-width:1380px;margin:0 auto;padding:16px 18px 30px}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+           background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:14px}
+  .toolbar .grp{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  button,select{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;color:var(--ink);
+                border-radius:7px;padding:6px 11px;cursor:pointer}
+  button:hover:not(:disabled){border-color:#9aa6b6}
+  button.primary{background:var(--ink);color:#fff;border-color:var(--ink);min-width:96px}
+  button:disabled{opacity:.5;cursor:default}
+  .clock{display:flex;gap:14px;align-items:baseline}
+  #status{color:var(--dim);font-size:13px}
+  #time{font-size:22px;font-variant-numeric:tabular-nums}
+  .workspace{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}
+  @media (max-width:980px){.workspace{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px}
+  .eyebrow{font-size:11px;letter-spacing:.09em;color:var(--dim);font-weight:600}
+  h2{font-size:15px;margin:2px 0 10px}
+  h3{font-size:13px;margin:0}
+  .heads{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+  .heads div{display:flex;align-items:center;gap:7px}
+  .heads span.sub{color:var(--dim);font-size:12px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .dot.plain{background:var(--plain)} .dot.added{background:var(--added)}
+  canvas{display:block;width:100%}
+  #arena{height:380px;border:1px solid var(--line);border-radius:8px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--dim);margin:8px 0}
+  .legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .metrics div{background:var(--soft);border-radius:8px;padding:8px 10px}
+  .metrics span{font-size:12px;color:var(--dim)}
+  .metrics strong{display:block;font-size:24px;font-variant-numeric:tabular-nums}
+  .metrics small{color:var(--dim);font-size:12px}
+  .neural{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ncol{border:1px solid var(--line);border-radius:8px;padding:10px}
+  .stage{margin-bottom:10px}
+  .stage-title{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+  .muted{color:var(--dim);font-weight:400}
+  .bar{display:grid;grid-template-columns:44px 1fr 46px;gap:6px;align-items:center;font-size:12px;
+       font-variant-numeric:tabular-nums;margin:2px 0}
+  .track{height:8px;background:var(--soft);border-radius:4px;overflow:hidden}
+  .fill{height:100%;width:0;background:#7f8ea3}
+  .hrow{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center}
+  .ring{height:120px}
+  .hinfo strong{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+  .hinfo p{margin:2px 0 0;font-size:11px;color:var(--dim)}
+  .ucap{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-top:4px}
+  label{display:block;font-size:12px;color:var(--dim);margin:10px 0 4px}
+  label output{float:right;color:var(--ink);font-variant-numeric:tabular-nums}
+  .ctl select{width:100%}
+  input[type=range]{width:100%;accent-color:var(--added)}
+  .helper{font-size:12px;color:var(--dim);margin:8px 0 0}
+  .toggle{display:flex;gap:9px;align-items:flex-start;margin:9px 0;color:var(--ink);cursor:pointer}
+  .toggle input{margin-top:3px}
+  .toggle small{display:block;color:var(--dim)}
+  .slipbox{display:flex;justify-content:space-between;align-items:center;margin-top:12px;
+           background:var(--soft);border-radius:8px;padding:6px 10px}
+  .slipbox strong{font-size:18px;font-variant-numeric:tabular-nums}
+  #slipGauge{width:90px;height:52px}
+  .linkbtn{border:none;background:none;color:var(--added);padding:0;text-decoration:underline}
+  #history{height:190px}
+  details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  summary{cursor:pointer;font-weight:600}
+  .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:10px}
+  .notes p{font-size:13px;color:#3b4654;margin:4px 0 0}
+  .source{font-size:12px;color:var(--dim);margin-top:12px}
+  .error{background:#fdecec;border:1px solid var(--warn);color:var(--warn);border-radius:8px;padding:10px;margin-top:12px}
+  a{color:var(--added)}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Fly Servo Lab</h1>
+    <p>Two flies, the same crosswind, two circuits. Does the brain steer by where it points, or by where it goes?</p>
+  </div>
+  <span class="chain">PFN → hΔB → PFL3 · paper B, section 7</span>
+</header>
+
+<main>
+  <section class="toolbar">
+    <div class="grp">
+      <button id="play" class="primary" disabled>Loading…</button>
+      <button id="reset" disabled>↺ Reset</button>
+      <button id="step" disabled>Step</button>
+      <label style="margin:0">Speed
+        <select id="rate"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+    </div>
+    <div class="clock"><span id="status">Loading the connectome model…</span><strong id="time">0.00 s</strong></div>
+  </section>
+
+  <div class="workspace">
+    <section>
+      <div class="card">
+        <span class="eyebrow">BEHAVIOUR</span>
+        <h2>The same sideslip, different steering</h2>
+        <div class="heads">
+          <div><span class="dot plain"></span><h3>Plain circuit</h3><span class="sub">connectome only</span></div>
+          <div><span class="dot added"></span><h3>Added circuit</h3><span class="sub" id="addedLabel">variant N, all mechanisms</span></div>
+        </div>
+        <canvas id="arena" role="img" aria-label="Positions, headings and paths of the two flies"></canvas>
+        <div class="legend">
+          <span><i style="background:#243246"></i>body heading H</span>
+          <span><i style="background:var(--added)"></i>travel direction T</span>
+          <span><i style="background:var(--purple)"></i>direction hΔB represents</span>
+          <span><i style="background:var(--goal)"></i>goal G</span>
+        </div>
+        <div class="metrics">
+          <div><span>Travel error |G − T|, plain</span><strong id="err0">—</strong>
+            <small>median after 3 s: <b id="med0">—</b></small></div>
+          <div><span>Travel error |G − T|, added</span><strong id="err1">—</strong>
+            <small>median after 3 s: <b id="med1">—</b></small></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">INSIDE THE CIRCUIT</span>
+        <h2>The three stages, live</h2>
+        <div class="neural"><div class="ncol" id="neural0"></div><div class="ncol" id="neural1"></div></div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card ctl">
+        <span class="eyebrow">ENVIRONMENT</span>
+        <h2>What both flies experience</h2>
+        <label for="scenario">Sideslip</label>
+        <select id="scenario">
+          <option value="reference">Reference trials · fluctuating sideslip</option>
+          <option value="free">Free play · constant sideslip</option>
+        </select>
+        <div id="refControls">
+          <label for="trial">Trial</label>
+          <select id="trial"></select>
+          <p class="helper">The 12 trials of paper B: 18 s of sideslip that fluctuates (σ 55°, τ 4 s, limited to ±60°). The first 3 s are the start-up and are not scored.</p>
+        </div>
+        <div id="freeControls" hidden>
+          <label for="goal">Goal direction <output id="goalOut">270°</output></label>
+          <input id="goal" type="range" min="0" max="345" step="15" value="270">
+          <label for="slip">Sideslip angle <output id="slipOut">30°</output></label>
+          <input id="slip" type="range" min="-60" max="60" step="5" value="30">
+          <label for="speed">Walking speed <output id="speedOut">1.0</output></label>
+          <input id="speed" type="range" min="0" max="1.5" step="0.1" value="1">
+          <p class="helper">Speed is in relative units. At speed 0 there is no travel direction, so no error is scored.</p>
+        </div>
+        <div class="slipbox"><div><span class="muted">Sideslip now</span><br><strong id="slipNow">0°</strong></div>
+          <canvas id="slipGauge" role="img" aria-label="Current sideslip angle"></canvas></div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">ADDED CIRCUIT</span>
+        <h2>Take it apart</h2>
+        <label for="variant">Variant</label>
+        <select id="variant" style="width:100%">
+          <option value="N">N · decoded angles</option>
+          <option value="C">C · cell activity only</option>
+        </select>
+        <label class="toggle"><input type="checkbox" id="m1" checked><span><b>(1) PFN multiplication</b>
+          <small>velocity × heading: builds the travel direction T</small></span></label>
+        <label class="toggle"><input type="checkbox" id="m2" checked><span><b>(2) hΔB alignment</b>
+          <small>non-negative weights on existing PFN → hΔB pairs</small></span></label>
+        <label class="toggle"><input type="checkbox" id="m3" checked><span><b>(3) PFL3 squaring comparator</b>
+          <small>compares goal G with T, turns the result into steering</small></span></label>
+        <p class="helper">Any change restarts both flies. <button id="restore" class="linkbtn">Restore all mechanisms</button></p>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">LOOK FOR THIS</span>
+        <h2>Pointing is not going</h2>
+        <p class="helper" style="margin:0">The plain circuit points its body at the goal, and the sideslip carries it off course. The added circuit compares the goal with where it is actually going and turns to cancel the drift. Watch the blue and green travel arrows against the dashed goal line.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">ERROR OVER TIME</span>
+    <h2>Travel error |G − T|</h2>
+    <canvas id="history" role="img" aria-label="Travel error of both flies over time, in degrees"></canvas>
+  </div>
+
+  <details>
+    <summary>What this demo computes, and what it does not</summary>
+    <div class="notes">
+      <div><h3>A real circuit model, not a cartoon</h3>
+        <p>Each fly runs the full 2,308-neuron rate model of the MaleCNS central complex in 20 ms steps. The goal is injected into FC2, self-motion enters through the noduli (LNO, SpsP), and steering is read from the left–right difference of PFL3. The body turns at 2.6 rad/s × u. Nobody tells the added circuit the true travel direction.</p></div>
+      <div><h3>What the added circuit is</h3>
+        <p>Paper B, section 7: (1) a multiplicative gate on PFN, (2) non-negative weights restricted to PFN → hΔB pairs that exist in the connectome, and (3) a squaring comparator in PFL3, all calibrated once on training conditions and then frozen. Variant N reads angles out of population activity. Variant C uses only cell activities, plus a newly declared hΔB → PFL3 projection, because the connectome has only 32 synapses there. These are declared mechanisms, not findings about the fly.</p></div>
+      <div><h3>Numbers in the paper</h3>
+        <p id="paperNumbers">Over all 12 reference trials, the median travel error is 42.6° for the plain circuit, 17.7° with variant N and 14.8° with variant C. One trial on screen can differ from that median. The browser reproduces the Python run of every reference trial to within 0.01° (checked by tests/test_servo_demo.mjs).</p></div>
+      <div><h3>The task</h3>
+        <p>Hold a fixed goal direction while the sideslip pushes the fly sideways. Travel direction T = heading H + sideslip φ. The paths are drawn by integrating the travel velocity; position is not fed back. There is no maze, no obstacles and no fluid dynamics. 0° is to the right and 90° is up.</p></div>
+    </div>
+    <p class="source">Data: <a href="https://male-cns.janelia.org/">Janelia FlyEM MaleCNS v1.0</a> (CC-BY 4.0). Engine: web/cxnet.js; added circuit: web/servo_augmented.js; calibrated configuration: web/servo_demo_data.json (from scripts/export_servo_demo.py). Paper: paper/b_servo_control/PAPER.md, section 7.</p>
+  </details>
+  <div id="errorBox" class="error" hidden></div>
+</main>
+
+<script type="module">
+import { GGUF } from './gguf.js';
+import { ServoFly, wrap, median } from './servo_augmented.js';
+
+const $ = (id) => document.getElementById(id);
+const DEG = Math.PI / 180;
+const COLORS = ['#4363d8', '#008979'], PURPLE = '#9a5fc9';
+const PFN_SCALE = 0.35, PFL_SCALE = 0.35;
+let gguf = null, DATA = null, flies = null, playing = false, last = 0, carry = 0;
+let paths = [[], []], errs = [[], []], hist = [];
+
+const opts = () => ({
+  scenario: $('scenario').value, trial: +$('trial').value, goal: +$('goal').value,
+  slip: +$('slip').value, speed: +$('speed').value, variant: $('variant').value,
+  mechs: [1, 2, 3].filter((k) => $('m' + k).checked), rate: +$('rate').value,
+});
+const maxSteps = () => (opts().scenario === 'reference' ? DATA.reference.tracks[0].length : 3000);
+const goalNow = () => (opts().scenario === 'reference' ? DATA.reference.goals_deg[opts().trial] : opts().goal) * DEG;
+const phiAt = (n) => (opts().scenario === 'reference'
+  ? DATA.reference.tracks[opts().trial][Math.min(n, DATA.reference.tracks[0].length - 1)] : opts().slip * DEG);
+const speedNow = () => (opts().scenario === 'reference' ? 1 : opts().speed);
+const fmt = (x) => (x === null || x === undefined ? '—' : `${x.toFixed(1)}°`);
+const ang = (x) => ((x / DEG) % 360 + 360) % 360;
+
+// ------------------------------------------------------------------ neural panels
+for (let i = 0; i < 2; i++) {
+  $('neural' + i).innerHTML =
+    `<div class="stage"><div class="stage-title"><b>${i ? 'Added circuit' : 'Plain circuit'}</b></div></div>
+     <div class="stage"><div class="stage-title"><b>PFN <span class="muted">self-motion × heading</span></b><small class="muted">mean rate</small></div>
+       ${['PFNd-L', 'PFNd-R', 'PFNv-L', 'PFNv-R'].map((g, j) => `<div class="bar"><span>${g.replace('PFN', '')}</span>
+         <div class="track"><div class="fill" id="p${i}${j}"></div></div><output id="pv${i}${j}">0.000</output></div>`).join('')}</div>
+     <div class="stage hrow"><canvas class="ring" id="ring${i}" role="img" aria-label="hDeltaB activity by phase"></canvas>
+       <div class="hinfo"><b>hΔB <span class="muted">travel direction</span></b><strong id="hd${i}">—</strong>
+       <p>Dot size = activity of each of the 19 cells. The purple arrow is the population readout.</p></div></div>
+     <div class="stage"><div class="stage-title"><b>PFL3 <span class="muted">steering output</span></b><small class="muted">mean rate</small></div>
+       ${['L', 'R'].map((s) => `<div class="bar"><span>${s === 'L' ? 'left' : 'right'}</span>
+         <div class="track"><div class="fill" id="f${i}${s}"></div></div><output id="fv${i}${s}">0.000</output></div>`).join('')}
+       <div class="ucap"><span>u = (R − L) / (R + L)</span><b id="u${i}">—</b></div></div>`;
+}
+
+// ------------------------------------------------------------------ drawing
+function ctx(id) {
+  const cv = $(id), r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.max(1, r.width), h = Math.max(1, r.height);
+  if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  }
+  const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+  return { c, w, h };
+}
+function arrow(c, x, y, a, len, color, width = 2, dash = false) {
+  const xx = x + Math.cos(a) * len, yy = y - Math.sin(a) * len;
+  c.save(); c.strokeStyle = color; c.fillStyle = color; c.lineWidth = width; c.setLineDash(dash ? [5, 5] : []);
+  c.beginPath(); c.moveTo(x, y); c.lineTo(xx, yy); c.stroke(); c.setLineDash([]);
+  const hd = 5 + width;
+  c.beginPath(); c.moveTo(xx, yy);
+  c.lineTo(xx - Math.cos(a - 0.42) * hd, yy + Math.sin(a - 0.42) * hd);
+  c.lineTo(xx - Math.cos(a + 0.42) * hd, yy + Math.sin(a + 0.42) * hd);
+  c.closePath(); c.fill(); c.restore();
+}
+function drawArena() {
+  const { c, w, h } = ctx('arena'), lane = w / 2, G = goalNow();
+  let x0 = -2, x1 = 2, y0 = -2, y1 = 2;
+  for (const p of paths) for (const [x, y] of p) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  // leave room (in pixels) for the arrows drawn around the fly
+  const scale = Math.min((lane - 150) / (x1 - x0), (h - 150) / (y1 - y0), 45), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  for (let m = 0; m < 2; m++) {
+    const f = flies?.[m];
+    c.save(); c.beginPath(); c.rect(m * lane, 0, lane, h); c.clip();
+    const X = (x) => m * lane + lane / 2 + (x - cx) * scale, Y = (y) => h / 2 - (y - cy) * scale;
+    c.fillStyle = '#fff'; c.fillRect(m * lane, 0, lane, h);
+    c.strokeStyle = '#eef1f5'; c.lineWidth = 0.7;
+    const sp = Math.max(1, Math.ceil(22 / scale));
+    for (let gx = Math.floor(x0 / sp) * sp; gx <= x1; gx += sp) { c.beginPath(); c.moveTo(X(gx), 0); c.lineTo(X(gx), h); c.stroke(); }
+    for (let gy = Math.floor(y0 / sp) * sp; gy <= y1; gy += sp) { c.beginPath(); c.moveTo(m * lane, Y(gy)); c.lineTo((m + 1) * lane, Y(gy)); c.stroke(); }
+    arrow(c, X(0), Y(0), G, Math.max(w, h), '#c9d1dc', 1.3, true);
+    c.strokeStyle = COLORS[m]; c.lineWidth = 2.4; c.lineJoin = 'round';
+    c.beginPath(); c.moveTo(X(0), Y(0)); for (const [x, y] of paths[m]) c.lineTo(X(x), Y(y)); c.stroke();
+    c.fillStyle = '#a3acba'; c.beginPath(); c.arc(X(0), Y(0), 3, 0, 2 * Math.PI); c.fill();
+    c.font = '11px sans-serif'; c.fillStyle = '#8a96a8'; c.fillText('start', X(0) + 6, Y(0) + 13);
+    if (f) {
+      const px = X(f.x), py = Y(f.y), s = f.snapshot();
+      c.fillStyle = m ? 'rgba(0,137,121,.08)' : 'rgba(67,99,216,.08)';
+      c.beginPath(); c.arc(px, py, 32, 0, 2 * Math.PI); c.fill();
+      if (s.hdbAngle !== null && s.hdbMag > 1e-9) arrow(c, px, py, s.hdbAngle, 62, PURPLE, 1.8);
+      const moving = f.n > 0 && f.lastSpeed > 1e-8;
+      if (moving) arrow(c, px, py, f.H + f.lastPhi, 50, COLORS[m], 2.7);
+      arrow(c, px, py, f.H, 33, '#243246', 2);
+      c.save(); c.translate(px, py); c.rotate(-f.H); c.fillStyle = '#243246';
+      c.beginPath(); c.moveTo(10, 0); c.lineTo(-7, -6); c.lineTo(-4, 0); c.lineTo(-7, 6); c.closePath(); c.fill(); c.restore();
+      c.font = '12px sans-serif'; c.fillStyle = '#687689';
+      c.fillText(`body ${ang(f.H).toFixed(0)}°`, m * lane + 12, 20);
+      c.fillText(moving ? `travel ${ang(f.H + f.lastPhi).toFixed(0)}°` : (f.n ? 'not moving' : 'press Play'), m * lane + 12, 38);
+    }
+    c.restore();
+  }
+  c.strokeStyle = '#e1e6ed'; c.beginPath(); c.moveTo(lane, 0); c.lineTo(lane, h); c.stroke();
+}
+function drawRing(i, s) {
+  const { c, w, h } = ctx('ring' + i), cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.36;
+  const off = flies[i].variant ? flies[i].cfg.c_T : 0;
+  c.strokeStyle = '#e2e7ef'; c.lineWidth = 1; c.beginPath(); c.arc(cx, cy, R, 0, 2 * Math.PI); c.stroke();
+  DATA.cells.psi.forEach((p, j) => {
+    const a = p - off, v = s.hdb[j], k = Math.min(v / 0.35, 1);
+    c.fillStyle = v > 1e-8 ? `rgba(154,95,201,${0.3 + 0.7 * k})` : '#d7dde5';
+    c.beginPath(); c.arc(cx + Math.cos(a) * R, cy - Math.sin(a) * R, 2 + 5 * k, 0, 2 * Math.PI); c.fill();
+  });
+  if (s.hdbAngle !== null && s.hdbMag > 1e-9) arrow(c, cx, cy, s.hdbAngle, R - 8, PURPLE, 2);
+}
+function drawHistory() {
+  const { c, w, h } = ctx('history'), pad = { l: 44, r: 18, t: 12, b: 26 }, W = w - pad.l - pad.r, H = h - pad.t - pad.b;
+  const maxT = Math.max(18, (flies?.[0].n ?? 0) * DATA.dt), X = (t) => pad.l + (t / maxT) * W, Y = (v) => pad.t + (1 - v / 180) * H;
+  c.fillStyle = '#f2f4f8'; c.fillRect(pad.l, pad.t, X(DATA.settle_steps * DATA.dt) - pad.l, H);
+  c.font = '11px sans-serif'; c.fillStyle = '#8b96a6'; c.textAlign = 'left'; c.fillText('start-up', pad.l + 5, pad.t + 12);
+  for (let v = 0; v <= 180; v += 60) {
+    c.strokeStyle = '#edf0f4'; c.beginPath(); c.moveTo(pad.l, Y(v)); c.lineTo(w - pad.r, Y(v)); c.stroke();
+    c.textAlign = 'right'; c.fillStyle = '#8390a2'; c.fillText(v + '°', pad.l - 7, Y(v) + 4);
+  }
+  for (let t = 0; t <= maxT; t += maxT > 30 ? 10 : 3) { c.textAlign = 'center'; c.fillText(t + ' s', X(t), h - 7); }
+  for (let m = 0; m < 2; m++) {
+    c.strokeStyle = COLORS[m]; c.lineWidth = 1.7; c.beginPath(); let on = false;
+    for (const row of hist) {
+      if (row[m + 1] === null) { on = false; continue; }
+      if (!on) { c.moveTo(X(row[0]), Y(row[m + 1])); on = true; } else c.lineTo(X(row[0]), Y(row[m + 1]));
+    }
+    c.stroke();
+  }
+}
+function drawGauge(phi) {
+  const { c, w, h } = ctx('slipGauge');
+  arrow(c, w / 2, h - 5, Math.PI / 2, 40, '#cad2dc', 1.3);
+  arrow(c, w / 2, h - 5, Math.PI / 2 + phi, 40, '#008979', 2);
+}
+function render() {
+  if (!flies) return;
+  const n = flies[0].n, phi = n ? flies[0].lastPhi : phiAt(0);
+  drawArena(); drawHistory(); drawGauge(phi);
+  flies.forEach((f, i) => {
+    const s = f.snapshot();
+    drawRing(i, s);
+    const lastRow = hist[hist.length - 1];
+    $('err' + i).textContent = lastRow ? fmt(lastRow[i + 1]) : '—';
+    $('med' + i).textContent = fmt(median(errs[i]));
+    s.pfn.forEach((v, j) => { $(`p${i}${j}`).style.width = Math.min(100, (v / PFN_SCALE) * 100) + '%'; $(`pv${i}${j}`).textContent = v.toFixed(3); });
+    for (const [k, v] of [['L', s.left], ['R', s.right]]) {
+      $(`f${i}${k}`).style.width = Math.min(100, (v / PFL_SCALE) * 100) + '%'; $(`fv${i}${k}`).textContent = v.toFixed(3);
+    }
+    $('hd' + i).textContent = s.hdbAngle !== null && s.hdbMag > 1e-9 ? `${ang(s.hdbAngle).toFixed(1)}°` : 'silent';
+    $('u' + i).textContent = `${s.u >= 0 ? '+' : ''}${s.u.toFixed(3)}`;
+  });
+  $('time').textContent = `${(n * DATA.dt).toFixed(2)} s`;
+  $('slipNow').textContent = `${phi >= 0 ? '+' : ''}${(phi / DEG).toFixed(1)}°`;
+  $('play').textContent = playing ? '❚❚ Pause' : '▶ Play';
+  $('step').disabled = playing;
+  $('status').textContent = n >= maxSteps() ? 'Trial finished' : playing ? (n < DATA.settle_steps ? 'Start-up (not scored)' : 'Running')
+    : n ? 'Paused' : 'Ready';
+}
+
+// ------------------------------------------------------------------ simulation
+function build() {
+  const o = opts();
+  flies = [new ServoFly(gguf, DATA, { variant: null }),
+           new ServoFly(gguf, DATA, { variant: o.variant, mechs: o.mechs })];
+  paths = [[], []]; errs = [[], []]; hist = []; carry = 0;
+  $('addedLabel').textContent = `variant ${o.variant}, ` + (o.mechs.length === 3 ? 'all mechanisms'
+    : o.mechs.length ? `mechanisms ${o.mechs.map((k) => `(${k})`).join(' ')} only` : 'no mechanisms (= plain)');
+}
+function stepOnce() {
+  const n = flies[0].n;
+  if (n >= maxSteps()) { playing = false; return false; }
+  const G = goalNow(), phi = phiAt(n), v = speedNow(), row = [(n + 1) * DATA.dt];
+  flies.forEach((f, i) => {
+    const e = f.step(G, phi, v);
+    row.push(e);
+    if (n >= DATA.settle_steps && e !== null) errs[i].push(e);
+    paths[i].push([f.x, f.y]);
+  });
+  hist.push(row);
+  return true;
+}
+function loop(t) {
+  if (playing) {
+    const dt = Math.min(0.1, (t - last) / 1000);
+    carry += dt * opts().rate / DATA.dt;
+    let k = Math.floor(carry); carry -= k;
+    while (k-- > 0 && playing) playing = stepOnce();
+  }
+  last = t;
+  render();
+  requestAnimationFrame(loop);
+}
+function changed() {
+  const o = opts();
+  $('refControls').hidden = o.scenario !== 'reference';
+  $('freeControls').hidden = o.scenario === 'reference';
+  $('goalOut').textContent = o.goal + '°'; $('slipOut').textContent = o.slip + '°'; $('speedOut').textContent = o.speed.toFixed(1);
+  playing = false;
+  if (DATA) build();
+}
+
+function fail(msg) {
+  $('errorBox').hidden = false; $('errorBox').textContent = msg;
+  $('status').textContent = 'Could not start';
+}
+
+async function boot() {
+  try {
+    gguf = await GGUF.fromURL('../model/flybrain-cx.gguf');
+    DATA = await (await fetch('./servo_demo_data.json')).json();
+  } catch (e) {
+    fail('Could not load the model (model/flybrain-cx.gguf) or the circuit data (web/servo_demo_data.json). ' +
+      'Open this page through a local web server (python3 -m http.server), or use web/servo-standalone.html, ' +
+      'which works by double-clicking.');
+    throw e;
+  }
+  DATA.reference.goals_deg.forEach((g, i) => {
+    const op = document.createElement('option'); op.value = i;
+    op.textContent = `Trial ${String(i + 1).padStart(2, '0')} · goal ${g}°`;
+    $('trial').append(op);
+  });
+  $('trial').value = '0';
+  const pm = DATA.reference.python_median_deg;
+  $('paperNumbers').textContent = `Over all 12 reference trials, the median travel error is ${pm.plain.toFixed(1)}° for the plain circuit, ` +
+    `${pm.N.toFixed(1)}° with variant N and ${pm.C.toFixed(1)}° with variant C. One trial on screen can differ from that median. ` +
+    'The browser reproduces the Python run of every reference trial to within 0.01° (checked by tests/test_servo_demo.mjs).';
+  for (const id of ['scenario', 'trial', 'goal', 'slip', 'speed', 'variant', 'm1', 'm2', 'm3']) $(id).addEventListener('input', changed);
+  $('reset').onclick = changed;
+  $('play').onclick = () => { if (flies[0].n >= maxSteps()) build(); playing = !playing; };
+  $('step').onclick = () => { if (!playing) stepOnce(); };
+  $('restore').onclick = () => { for (const k of [1, 2, 3]) $('m' + k).checked = true; changed(); };
+  window.addEventListener('resize', render);
+  build();
+  for (const id of ['play', 'reset', 'step']) $(id).disabled = false;
+  requestAnimationFrame((t) => { last = t; loop(t); });
+}
+boot();
+</script>
+</body>
+</html>

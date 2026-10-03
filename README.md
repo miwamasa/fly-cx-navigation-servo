@@ -9,19 +9,22 @@ This is the minimal package needed to reproduce two papers built on a rate model
 
 The HTML files are self-contained, with all figures and the typeset maths embedded.
 
-**Interactive demo.** [`web/minimal.html`](web/minimal.html) is **Minimal Brain**, a browser game built on paper A §5. You delete cell types, lower the bits per weight and prune synapses, and see whether the fly can still cross a maze. [`web/minimal-standalone.html`](web/minimal-standalone.html) is the same page as one self-contained file that opens with a double-click (see *Running the demo* below).
+**Interactive demos.** Each page also comes as one self-contained `*-standalone.html` file that opens with a double-click (see *Running the demos* below).
+
+- [`web/minimal.html`](web/minimal.html) is **Minimal Brain**, a browser game built on paper A §5. You delete cell types, lower the bits per weight and prune synapses, and see whether the fly can still cross a maze.
+- [`web/servo.html`](web/servo.html) is **Fly Servo Lab**, built on paper B §7. Two flies fly through the same sideslip: one runs the plain circuit, the other runs it with the added circuit (variant N or C). You can switch each added mechanism on and off and watch the PFN, hΔB and PFL3 activity.
 
 ## Requirements
 
 - Python ≥ 3.10 with `numpy`, `scipy`, `matplotlib` and `markdown` (`pip install -r requirements.txt`). Tested with Python 3.11, numpy 2.4, scipy 1.17, matplotlib 3.11 and markdown 3.11.
-- Node.js ≥ 18, only for the JavaScript engine: `tests/test_cxnet.mjs` and `scripts/audit_claims.mjs`.
+- Node.js ≥ 18, only for the JavaScript engine and the demos: `tests/test_cxnet.mjs`, `tests/test_minimal_demo.mjs`, `tests/test_servo_demo.mjs` and `scripts/audit_claims.mjs`.
 - Optional: KaTeX 0.16.9 (`npm install katex@0.16.9`) with `KATEX_DIR=node_modules/katex/dist`, to embed the maths when re-rendering the HTML.
 
 ## Quick start
 
 ```sh
 pip install -r requirements.txt
-./reproduce.sh test        # all test suites, a few seconds
+./reproduce.sh test        # all test suites, about a minute
 ./reproduce.sh figures     # re-measure paper A, rebuild number sheets, figures and HTML (~2 min)
 git diff --stat            # data, number sheets and figures should not change
 ```
@@ -44,6 +47,10 @@ scripts/                      numpy engine and every experiment script the paper
 web/gguf.js, web/cxnet.js     the dependency-free JavaScript engine (runs the same model)
 web/minimal.html              the Minimal Brain demo (needs a local web server)
 web/minimal-standalone.html   the same demo with engine and model inlined (double-click to open)
+web/servo.html                the Fly Servo Lab demo (paper B section 7; needs a local web server)
+web/servo_augmented.js        JavaScript port of the section 7 added circuit (scripts/servo_augmented.py)
+web/servo_demo_data.json      calibrated N and C circuits and the reference task, for the port
+web/servo-standalone.html     Fly Servo Lab with engine, model and data inlined (double-click to open)
 paper/a_navigation/           paper A: PAPER.md, PAPER.html, figures/
 paper/b_servo_control/        paper B: PAPER.md, PAPER.html, figures/
 paper/data/                   number sheets: every value the papers quote, with its source
@@ -52,11 +59,11 @@ tests/                        consistency and regression tests
 reproduce.sh                  one entry point for the steps above
 ```
 
-## Running the demo
+## Running the demos
 
-- **No setup:** open `web/minimal-standalone.html` in any modern browser.
-- **From a clone:** run `python3 -m http.server 8000` in the repository root and open <http://localhost:8000/web/minimal.html>. A server is needed because browsers block module scripts and `fetch` on `file://` pages.
-- **Online:** if GitHub Pages is enabled for this repository (Settings → Pages → deploy from the `main` branch, root folder), the demo is served at `https://<user>.github.io/<repository>/web/minimal.html`.
+- **No setup:** open `web/minimal-standalone.html` or `web/servo-standalone.html` in any modern browser.
+- **From a clone:** run `python3 -m http.server 8000` in the repository root and open <http://localhost:8000/web/minimal.html> or <http://localhost:8000/web/servo.html>. A server is needed because browsers block module scripts and `fetch` on `file://` pages.
+- **Online:** if GitHub Pages is enabled for this repository (Settings → Pages → deploy from the `main` branch, root folder), the demos are served at `https://<user>.github.io/<repository>/web/minimal.html` and `.../web/servo.html`.
 
 After changing `web/minimal.html` or the engine, rebuild the standalone file and run the demo test:
 
@@ -66,6 +73,17 @@ node tests/test_minimal_demo.mjs
 ```
 
 The test recomputes the numbers the page shows from the model: the intact size of 1,495.8 kbit, and 166 neurons / 932 synapses / 3.7 kbit for EPG + FC2 + PFL3 at 4 bit. It checks that this circuit steers correctly in 24 open-loop probes, that the page is in English, and that the standalone file matches a fresh rebuild. The game's pass rule (reach the goal within 60 s with at least 80% steering-sign accuracy) is looser than paper A's tests, so smaller brains than 3.7 kbit can pass in the game. The page says so.
+
+**Fly Servo Lab** runs the added circuit of paper B §7 through `web/servo_augmented.js`, a line-by-line JavaScript port of `scripts/servo_augmented.py`. The calibrated configuration of both variants comes from `web/servo_demo_data.json`, together with the alignment weights M and the 12 sideslip tracks of the reference task. `data/servo_augmented.json` does not store M, so `scripts/export_servo_demo.py` re-runs the deterministic calibration (about 10 minutes). It checks that the result is the evaluated configuration and then writes the file. After changing the page, the port or the data, rebuild and test:
+
+```sh
+python3 scripts/export_servo_demo.py          # only if the section 7 calibration changed
+python3 scripts/bundle.py --page servo.html --module servo_augmented.js \
+        --data servo_demo_data.json -o web/servo-standalone.html
+node tests/test_servo_demo.mjs                # about 40 s
+```
+
+The test runs the reference task in JavaScript and requires its medians to match the Python results of paper B (42.6°, 17.7° and 14.8° for the plain circuit, N and C) within 1.5°, and every trial's median within 0.5°. In practice they agree to better than 0.01°. Switching off one mechanism at a time must reproduce the ablations of paper B §7 (for example 74.9° for variant C without the PFN multiplication), so the page's toggles are tested too. It also checks the configuration against `data/servo_augmented.json`, checks that every weight in M sits on an existing PFN → hΔB connection, and checks that with every added mechanism off the fly is exactly the plain circuit.
 
 ## Where every number comes from
 
@@ -107,11 +125,12 @@ The test recomputes the numbers the page shows from the model: the intact size o
 | `tests/test_pi.py` | Rate-model invariants, including that shunting inhibition at f = 0 is bit-identical to the base model (B §4.3). |
 | `tests/test_cxnet.mjs` | The JavaScript engine and GGUF reader. |
 | `tests/test_minimal_demo.mjs` | The Minimal Brain demo: the numbers it displays, the record circuit's steering, English text, and an up-to-date standalone file. |
+| `tests/test_servo_demo.mjs` | The Fly Servo Lab demo: the exported configuration equals the one paper B evaluated, M sits on existing connections, mechanisms off = plain circuit, the JavaScript port reproduces the reference-task medians and the single-mechanism ablations, English text, and an up-to-date standalone file. |
 
 ## What is not included, and why
 
 - **Extraction from the raw connectome.** `model/flybrain-cx.gguf` and `data/cx_network.npz` were built from the 1.05 GB MaleCNS v1.0 connection and annotation tables (Janelia FlyEM, CC-BY 4.0, <https://male-cns.janelia.org/>). The extraction and GGUF build scripts need those tables and are not part of this package. The derived files are included, so every step from the model onward is reproducible here.
-- **The other browser demos** (the maze game and the 3D viewer) and the Japanese-language project documents referenced in some script comments. Neither is needed to reproduce the papers. The Minimal Brain demo is included.
+- **The other browser demos** (the maze game and the 3D viewer) and the Japanese-language project documents referenced in some script comments. Neither is needed to reproduce the papers. The Minimal Brain and Fly Servo Lab demos are included.
 - **The Medium articles** that accompany the papers.
 
 ## Notes

@@ -31,6 +31,7 @@ PAPER_B = os.path.join(PAPER, 'b_servo_control', 'PAPER.md')
 MED_A = os.path.join(MEDIUM, 'a_fly_brain_navigation.md')
 MED_B = os.path.join(MEDIUM, 'b_fly_brain_servo_control.md')
 MED_A1 = os.path.join(MEDIUM, 'a1_minimal_brain_demo.md')       # the demo article
+MED_B1 = os.path.join(MEDIUM, 'b1_servo_demo.md')                # the servo demo article
 
 
 def read(path):
@@ -49,7 +50,7 @@ def sheet(name):
 # The Medium articles are optional: the stand-alone reproduction package (toGitHub/)
 # carries the papers only, and every Medium check is skipped when they are absent.
 HAS_MEDIUM = os.path.exists(MED_A) and os.path.exists(MED_B)
-TEXT = {p: read(p) for p in (PAPER_A, PAPER_B, MED_A, MED_B, MED_A1) if os.path.exists(p)}
+TEXT = {p: read(p) for p in (PAPER_A, PAPER_B, MED_A, MED_B, MED_A1, MED_B1) if os.path.exists(p)}
 
 
 def forms(s):
@@ -369,6 +370,21 @@ class TestPaperBSection7(NumberCase):
             row = f"| {label} | " + ' | '.join(cells) + ' |'
             self.assert_quoted(PAPER_B, row, f'ablation row "{label}"')
 
+    def test_demo_article(self):
+        """Article b-1 quotes the 12-trial medians, rho and the ablations of section 7."""
+        P, V = self.a['plain'], self.a['variants']
+        self.assert_quoted(MED_B1, f"{P['sideslip']['median_deg']:.1f}°", 'plain median (b-1)')
+        self.assert_quoted(MED_B1, f"ρ = {P['back']['rho']:.3f}", 'plain rho (b-1)')
+        for v in ('N', 'C'):
+            self.assert_quoted(MED_B1, f"{V[v]['sideslip']['median_deg']:.1f}°", f'{v} median (b-1)')
+            self.assert_quoted(MED_B1, f"{V[v]['M_nonzero']} for {v}", f'{v} alignment weights (b-1)')
+        self.assert_quoted(MED_B1, f"Variant C has ρ = {V['C']['back']['rho']:.3f}", 'C rho (b-1)')
+        for key in ('without (1) multiplication', 'without (2) alignment', 'without (3) comparator'):
+            e = V['C']['ablations'][key]['sideslip_deg']
+            self.assert_quoted(MED_B1, f"{e:.1f}°", f'C {key} (b-1)')
+        for v, rho in (('plain', P['back']['rho']), ('C', V['C']['back']['rho'])):
+            self.assert_quoted(MED_B1, f"predicts {(1 - rho) * 30:.1f}°", f'(1 - rho) * 30 for {v} (b-1)')
+
     def test_robustness_table(self):
         R = {v: self.a['variants'][v]['robustness'] for v in ('N', 'C')}
         B = self.a['plain_robustness']
@@ -469,7 +485,7 @@ class TestScope(unittest.TestCase):
     AUGMENTED = ('15.14', '0.921', '160.49', '0.703', '36.48', 'GPT-6', 'Astra')
 
     def test_paper_b_uses_no_augmented_numbers(self):
-        for path in (p for p in (PAPER_B, MED_B) if p in TEXT):
+        for path in (p for p in (PAPER_B, MED_B, MED_B1) if p in TEXT):
             for s in self.AUGMENTED:
                 self.assertFalse(s in TEXT[path], f'{os.path.relpath(path, ROOT)} cites "{s}"')
 
@@ -483,7 +499,7 @@ class TestScope(unittest.TestCase):
 @unittest.skipUnless(HAS_MEDIUM, 'no medium/ in this checkout')
 class TestMediumFormat(unittest.TestCase):
     def test_no_latex_and_no_tables(self):
-        for path in (p for p in (MED_A, MED_B, MED_A1) if p in TEXT):
+        for path in (p for p in (MED_A, MED_B, MED_A1, MED_B1) if p in TEXT):
             text = TEXT[path]
             self.assertNotIn('$$', text)
             self.assertNotIn('\\(', text)
@@ -495,7 +511,7 @@ class TestMediumFormat(unittest.TestCase):
         self.assertIn('../paper/b_servo_control/PAPER.md', TEXT[MED_B])
 
     def test_length(self):
-        for path in (p for p in (MED_A, MED_B, MED_A1) if p in TEXT):
+        for path in (p for p in (MED_A, MED_B, MED_A1, MED_B1) if p in TEXT):
             words = len(re.findall(r"[A-Za-z][A-Za-z'-]*", TEXT[path]))
             self.assertTrue(1500 <= words <= 3500, f'{os.path.relpath(path, ROOT)}: {words} words')
 

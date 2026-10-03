@@ -4,6 +4,10 @@
 ES モジュールは file:// では読めず、fetch も CORS で弾かれるため、
 ダブルクリックで開ける版が欲しい場合はこのバンドルを使う。
 GGUF は base64 で埋め込む（1.04 MB → 約 1.4 MB）。
+
+  --module NAME.js   gguf.js / cxnet.js の後に web/NAME.js も埋め込む（複数可）
+  --data NAME.json   ページ中の `await (await fetch('./NAME.json')).json()` を
+                     そのファイルの中身（JSON リテラル）に置き換える（複数可）
 """
 
 from __future__ import annotations
@@ -30,6 +34,8 @@ def main() -> None:
     ap.add_argument("--page", default="index.html", help="web/ 以下のページ名")
     ap.add_argument("-o", "--out", default=None)
     ap.add_argument("--model", default=os.path.join(ROOT, "model", "flybrain-cx.gguf"))
+    ap.add_argument("--module", action="append", default=[], help="追加で埋め込む web/ 以下の ES モジュール")
+    ap.add_argument("--data", action="append", default=[], help="fetch の代わりに埋め込む web/ 以下の JSON")
     args = ap.parse_args()
 
     web = os.path.join(ROOT, "web")
@@ -40,6 +46,8 @@ def main() -> None:
     html = open(os.path.join(web, args.page), encoding="utf-8").read()
     gguf_js = strip_module_syntax(open(os.path.join(web, "gguf.js"), encoding="utf-8").read())
     cxnet_js = strip_module_syntax(open(os.path.join(web, "cxnet.js"), encoding="utf-8").read())
+    for name in args.module:
+        cxnet_js += "\n" + strip_module_syntax(open(os.path.join(web, name), encoding="utf-8").read())
 
     with open(args.model, "rb") as f:
         b64 = base64.b64encode(f.read()).decode("ascii")
@@ -53,6 +61,13 @@ def main() -> None:
         "gguf = await GGUF.fromURL('../model/flybrain-cx.gguf');",
         "gguf = GGUF.fromArrayBuffer(__ggufBytes().buffer);",
     )
+    for name in args.data:
+        call = f"await (await fetch('./{name}')).json()"
+        if call not in app:
+            raise SystemExit(f"web/{args.page} に {call} が見つかりません")
+        with open(os.path.join(web, name), encoding="utf-8") as f:
+            literal = f.read().strip()
+        app = app.replace(call, "(" + literal + ")")
 
     loader = """
 const __GGUF_B64 = "%s";
