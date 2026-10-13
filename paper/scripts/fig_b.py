@@ -77,7 +77,8 @@ def collect():
         'synthetic_controls': {k: {'K_H': v['fit']['K_H'], 'K_T': v['fit']['K_T'],
                                    'rho': v['fit']['rho'], 'verdict': v['verdict']}
                                for k, v in si['synthetic'].items()},
-        'ideal_hdb_clamp_rho': {k: ideal_rows[(k, 0.2)]['rho'] for k in ('travel', 'heading', 'shuffled')},
+        'ideal_hdb_clamp_rho': {k: signed_rho(ideal_rows[(k, 0.2)])['rho'] for k in ('travel', 'heading', 'shuffled')},
+        'ideal_hdb_clamp_rho_sign_blind': {k: ideal_rows[(k, 0.2)]['rho'] for k in ('travel', 'heading', 'shuffled')},
         'ideal_hdb_clamp_r2': {k: ideal_rows[(k, 0.2)]['r2'] for k in ('travel', 'heading', 'shuffled')},
         'goal_injection_confound_deg': {r['goal_types'].__str__(): r['median_deg'] for r in conf['rows']},
         'task_error_deg': {
@@ -196,8 +197,8 @@ def figB2(nums):
     ax.set_xlabel('constant sideslip phi (deg)'); ax.set_ylabel('steady error |G - T| (deg)')
     panel_title(ax, 'B  Steady error = (1 - rho) phi')
     ax.legend(frameon=False, fontsize=7.8, loc='upper left')
-    note(ax, f"rho = |K_T|/(|K_H|+|K_T|) = {fit['rho']:.3f} for the circuit:\nit rejects about "
-             f"{100 * fit['rho']:.0f}% of the sideslip. The small excess\nover phi comes from the negative K_T.", y=-0.16)
+    note(ax, f"rho = K_T/(K_H+K_T) = {fit['rho']:.3f} for the circuit: it rejects\nnothing and amplifies the "
+             f"sideslip by about {-100 * fit['rho']:.1f}%\n(the excess over phi comes from the negative K_T).", y=-0.16)
 
     ax = axs[2]
     sw = nums['travel_gain_sweep']
@@ -386,12 +387,13 @@ def figB7(nums):
     rho = rho[::-1]; col = col[::-1]
     bx.barh(range(7), rho, color=col)
     for i, r in enumerate(rho):
-        bx.text(r + 0.02, i, f'{r:.3f}', va='center', fontsize=8)
+        bx.text(max(r, 0) + 0.02, i, f'{(r if abs(r) >= 5e-4 else 0.0):.3f}', va='center', fontsize=8)
     bx.set_yticks(range(7)); bx.set_yticklabels(lab, fontsize=8)
     bx.axvline(0.2, color=BLUE, ls=':', lw=1); bx.axvline(0.8, color=ORANGE, ls=':', lw=1)
     bx.text(0.21, 6.45, 'heading < 0.2', fontsize=7.5, color=BLUE)
     bx.text(0.81, 6.45, 'travel > 0.8', fontsize=7.5, color=ORANGE)
-    bx.set_xlabel('rho = |K_T| / (|K_H| + |K_T|)'); bx.set_xlim(0, 1.15)
+    bx.axvline(0, color='#9aa3ad', lw=0.8)
+    bx.set_xlabel('rho = K_T / (K_H + K_T)'); bx.set_xlim(-0.12, 1.15)
     panel_title(bx, 'B  The closed loop is a heading servo')
     note(bx, f"circuit fit: K_H = {fit['K_H']:+.3f}, K_T = {fit['K_T']:+.3f}, R^2 = {fit['r2']:.3f}.\n"
              'Synthetic controls recover their known answer;\nan ideal travel signal clamped onto hDeltaB '
@@ -402,7 +404,7 @@ def figB7(nums):
     items = [('ideal\nheading\nservo', t['ideal_heading_sideslip'], None, BLUE),
              ('ideal\ntravel\nservo', t['ideal_travel_sideslip'], None, ORANGE),
              ('circuit\nfit\n(law only)', t['plain_law_sideslip'], None, DIM),
-             ('RSS\nprediction\nlaw + floor', t['rss_prediction'], None, PURPLE),
+             ('RSS check\nlaw + floor\n(heuristic)', t['rss_prediction'], None, PURPLE),
              ('circuit\n(measured)', t['circuit_sideslip'], t['circuit_sideslip_ci95'], INK)]
     for i, (lab, v, ci, c) in enumerate(items):
         cx.bar(i, v, color=c, alpha=0.9)
@@ -411,10 +413,11 @@ def figB7(nums):
         cx.text(i, v + 1, f'{v:.1f}', ha='center', fontsize=8.5)
     cx.set_xticks(range(5)); cx.set_xticklabels([x[0] for x in items], fontsize=7.8)
     cx.set_ylabel('median |G - T| with sideslip (deg)')
-    panel_title(cx, 'C  Theory predicts the measured error')
+    panel_title(cx, 'C  A rough consistency check')
     note(cx, f"floor = sqrt({t['circuit_no_sideslip']:.1f}^2 - {t['plain_law_no_sideslip']:.1f}^2) = "
              f"{t['floor']:.1f} deg:\nthe error without sideslip that the law does not explain.\n"
-             f"Prediction {t['rss_prediction']:.1f} deg lies inside the measured CI "
+             f"A root sum of squares of medians (a heuristic, not\nvariance addition) gives "
+             f"{t['rss_prediction']:.1f} deg,\ninside the measured CI "
              f"[{t['circuit_sideslip_ci95'][0]:.1f}, {t['circuit_sideslip_ci95'][1]:.1f}].", y=-0.24)
     fig.suptitle('Back stage (-> PFL3) and the closed loop: the comparator is fed heading, not travel',
                  x=0.012, ha='left', fontsize=13, weight='bold')
@@ -446,6 +449,31 @@ def figB8(nums):
 # ---------------------------------------------------------------- section 7: the added circuit
 VARIANT_COL = {'N': PURPLE, 'C': GREEN}
 VARIANT_NAME = {'N': 'N (decoded angles)', 'C': 'C (circuit, no decoding)'}
+
+
+def signed_rho(fit):
+    """rho = K_T / (K_H + K_T), as defined in section 3.4, with the loop's stability.
+
+    The measurement scripts store the sign-blind index |K_T| / (|K_H| + |K_T|) under 'rho'.
+    The paper reports the signed ratio, which is only meaningful for a stable loop
+    (K_H + K_T > 0); for an unstable one 'rho' is None.
+    """
+    s = fit['K_H'] + fit['K_T']
+    return {'rho': fit['K_T'] / s if s > 0 else None, 'stable': bool(s > 0)}
+
+
+def apply_signed_rho(obj):
+    """Replace every stored sign-blind rho by the signed one (kept as rho_sign_blind)."""
+    if isinstance(obj, dict):
+        if {'K_H', 'K_T', 'rho'} <= obj.keys() and 'rho_sign_blind' not in obj:
+            obj['rho_sign_blind'] = obj['rho']
+            obj.update(signed_rho(obj))
+        for v in obj.values():
+            apply_signed_rho(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            apply_signed_rho(v)
+    return obj
 
 
 def collect_augmented():
@@ -520,7 +548,7 @@ def figB9():
             'FC2 input;\nt = a newly declared hDeltaB -> PFL3 cosine projection (dashed; the connectome has '
             'only 32 synapses here).   (2) is identical in both: M >= 0 on existing pairs only.',
             fontsize=8.6, color=DIM, va='bottom')
-    fig.suptitle('Section 7: the two missing multiplications, added to the connectome model',
+    fig.suptitle('Section 7: the two missing nonlinear interactions and a phase alignment, added to the model',
                  x=0.012, ha='left', fontsize=13, weight='bold')
     save(fig, P, 'figB9_added_circuit')
 
@@ -620,11 +648,20 @@ def figB11(aug):
     save(fig, P, 'figB11_ablation_robustness')
 
 
-def main():
+def build_sheet():
+    """The number sheet: values copied from data/*.json, with rho made signed (section 3.4)."""
     nums = collect()
     aug = collect_augmented()
     if aug is not None:
         nums['augmented'] = aug
+    nums['rho_definition'] = ('rho = K_T / (K_H + K_T) (section 3.4); None when K_H + K_T <= 0 (unstable). '
+                              'rho_sign_blind = |K_T| / (|K_H| + |K_T|) is what the measurement scripts store.')
+    return apply_signed_rho(nums)
+
+
+def main():
+    nums = build_sheet()
+    aug = nums.get('augmented')
     save_json(nums, 'paper_b_measurements.json')
     figB1()
     figB2(nums)

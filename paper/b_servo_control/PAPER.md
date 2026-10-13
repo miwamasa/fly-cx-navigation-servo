@@ -9,13 +9,13 @@ Data: Janelia FlyEM **MaleCNS v1.0** (CC-BY 4.0) · Code, data and figures: this
 
 A fly in a crosswind points one way and moves another. If heading is H and the sideslip angle is φ, the travel direction is T = H + φ. A steering controller can feed back H (a *heading servo*) or T (a *travel servo*). Without sideslip the two are indistinguishable; with sideslip only the travel servo reaches the goal. The central complex appears to contain the ingredients of a travel servo. PFNd/PFNv → hΔB is credited with transforming body-frame velocity into a world-frame travel direction [Lyu et al. 2022; Lu et al. 2022], and PFL3 compares a direction with the goal [Westeinde et al. 2024; Mussells Pires et al. 2024]. We ask which controller the male connectome actually implements, and what it would need in order to implement the other.
 
-**Theory.** We treat steering as a closed loop in which sideslip is a disturbance added at the plant output. For the mixed law u = K_H·sin(G − H) + K_T·sin(G − T) we derive four results. The steady error is (1 − ρ)|φ| with ρ = K_T/(K_H + K_T), so ρ is the disturbance-rejection ratio. Stability requires K_H + K_T > 0. The travel servo is globally stable (Lyapunov function 1 − cos e). And the loop has the form of a first-order phase-locked loop, so a rotating sideslip is tracked with lag arcsin((dφ/dt)/K) and lost when |dφ/dt| > K. The coordinate transform T = H + φ is a phasor multiplication (angle addition). A comparator of G against T is a squaring operation (angle subtraction). Both are bilinear, and a purely additive (weighted-sum) stage can implement neither. All results are verified numerically and fixed as regression tests.
+**Theory.** We treat steering as a closed loop in which sideslip is a disturbance added at the plant output. For the mixed law u = K_H·sin(G − H) + K_T·sin(G − T) we derive four results. The steady error is (1 − ρ)|φ| with ρ = K_T/(K_H + K_T), so ρ is the disturbance-rejection ratio (ρ < 0 amplifies the sideslip, ρ > 1 over-compensates). Stability requires K_H + K_T > 0; K_T > 0 is what makes the loop compensate in the right direction. The travel servo is almost globally asymptotically stable: every start except the unstable equilibrium e = π converges to e = 0 (Lyapunov function 1 − cos e). And the loop has the form of a first-order phase-locked loop, so a rotating sideslip is tracked with lag arcsin((dφ/dt)/K) and lost when |dφ/dt| > K. The coordinate transform T = H + φ is a phasor multiplication (angle addition). A comparator of G against T is a squaring operation (angle subtraction). Both are bilinear, and a purely additive (weighted-sum) stage can implement neither; with threshold units, a nonlinear interaction is what is needed. All results are verified numerically and fixed as regression tests.
 
-**Measurement.** On a rate model of the MaleCNS central complex (2,308 neurons, 187,137 signed edges), the front stage is wired as the literature describes. Four PFNd/PFNv groups write onto hΔB with offsets of **+30°, −22°, −146° and +141°**, and all **19 of 19** hΔB cells receive from all four. **But the stage never operates.** Every self-motion entry is inhibitory, so no row gain gives heading tuning and activity while walking at the same time. In **0 of 16** tested conditions does hΔB carry travel direction (maximum travel gain +0.20). Declaring shunting inhibition wakes PFNv, but it flips each group's preference by 180°, so the four bases collapse forward and the transform still fails. At the same time the closed-loop maze error rises from 19.3° to 99.3°. In the back stage, direct hΔB input is **0.09%** of PFL3's input (32 synapses). A fit of the closed-loop steering gives **K_H = +0.748, K_T = −0.018, ρ = 0.024**: a heading servo. Clamping an ideal travel signal onto hΔB changes nothing (ρ = 0.027). With persistent sideslip the circuit's error is **42.6° [41.4, 43.6]**, next to an ideal heading servo's 40.0°. Theory predicts **43.5°** from the fitted law plus an independently measured floor, inside the confidence interval.
+**Measurement.** On a rate model of the MaleCNS central complex (2,308 neurons, 187,137 signed edges), the front stage is wired as the literature describes. Four PFNd/PFNv groups write onto hΔB with offsets of **+30°, −22°, −146° and +141°**, and all **19 of 19** hΔB cells receive from all four. **But the stage never operates.** Every self-motion entry is inhibitory, so no row gain gives heading tuning and activity while walking at the same time. In **0 of 16** tested conditions does hΔB carry travel direction (maximum travel gain +0.20). Declaring shunting inhibition wakes PFNv, but it flips each group's preference by 180°, so the four bases collapse forward and the transform still fails. At the same time the closed-loop maze error rises from 19.3° to 99.3°. In the back stage, direct hΔB input is **0.09%** of PFL3's input (32 synapses). A fit of the closed-loop steering gives **K_H = +0.748, K_T = −0.018, ρ = −0.025**: a heading servo that, if anything, slightly amplifies the sideslip (by about 2.5%). Clamping an ideal travel signal onto hΔB changes nothing (ρ = −0.029). With persistent sideslip the circuit's error is **42.6° [41.4, 43.6]**, next to an ideal heading servo's 40.0°. As an approximate consistency check, combining the fitted law's error with an independently measured floor (a root sum of squares of medians, which is a heuristic rather than variance addition) gives 43.5°, inside the confidence interval.
 
-The wiring for a travel servo is a necessary condition that the male connectome meets. It is not sufficient: what is missing are the two multiplications.
+In this rate model, the wiring for a travel servo is present but not sufficient. What the circuit does not perform are the two nonlinear interactions of the theory: a multiplicative combination of heading and self-motion, and a nonlinear comparison of the goal with the travel direction.
 
-**Adding them (Section 7).** We added the two operations to the model as a declared circuit, in two variants: one uses decoded angles, the other uses only cell activities plus a new hΔB → PFL3 projection. Each variant was calibrated once and then frozen. With them, hΔB carries T (held-out a = 1.00, b = 1.00–1.05), although its speed amplitude fails the linearity criterion. The loop becomes a travel servo (ρ = 0.972 / 0.933, K_T > 0), and the sideslip error falls from 42.6° to **17.7° / 14.8°**. Ablations confirm that both multiplications and a correctly signed comparator are necessary. They also show that neither the exact square (threshold rectification suffices) nor the connectome's specific PFN → hΔB pairs is. The improvement survives other seeds, noise, 100 ms of delay and changes of speed and gain.
+**Adding them (Section 7).** We added the two operations to the model as a declared circuit, together with a fitted phase alignment of PFN → hΔB weights restricted to existing pairs and gain changes of the native inputs. There are two variants: one uses decoded angles, the other uses only cell activities plus a new hΔB → PFL3 projection. Each variant was calibrated once and then frozen. With them, hΔB carries T (held-out a = 1.00, b = 1.00–1.05), although its speed amplitude fails the linearity criterion. The loop becomes a travel servo (ρ = 0.972 / 0.933, K_T > 0), and the sideslip error falls from 42.6° to **17.7° / 14.8°**. What this shows is that the added circuit as a whole suffices, not that the two multiplications alone do. Ablations show which parts are necessary: a multiplicative PFN gate (an additive input fails), the phase alignment, and a correctly signed nonlinear comparison of G with T. They also show which are not: the exact square (PFL3's threshold rectification suffices) and the connectome's specific PFN → hΔB pairs. The improvement survives other seeds, noise, 100 ms of delay and changes of speed and gain.
 
 ---
 
@@ -89,13 +89,13 @@ This is the standard picture of an **output disturbance**. Feedback can cancel a
 
 For u = sin(G − H) the equilibrium is H\* = G, so T\* = G + φ. **The steady travel error equals the sideslip.** The sensor (H) and the controlled quantity (T) differ, and no amount of gain removes a disturbance the loop cannot see.
 
-### 3.3 The travel servo is globally stable
+### 3.3 The travel servo is almost globally asymptotically stable
 
 For u = sin(G − T) and constant φ, Ṫ = Ḣ, so with e = G − T
 
 $$\dot e = -K\sin e$$
 
-Take V = 1 − cos e. Then V̇ = −K·sin²e ≤ 0: e = 0 is stable and e = π is unstable. **The steady error is zero whatever φ is.**
+Take V = 1 − cos e. Then V̇ = −K·sin²e ≤ 0: e = 0 is asymptotically stable and e = π is an unstable equilibrium. Every start except e = π itself converges to e = 0, so the stability is *almost* global, not global. **The steady error is zero whatever φ is.**
 
 ### 3.4 The mixed law: ρ is the disturbance-rejection ratio
 
@@ -111,9 +111,9 @@ Linearising for small angles, ė = −K(K_H + K_T)·e − K·K_H·φ, so the ste
 
 $$e^* = -\frac{K_H}{K_H+K_T}\,\phi$$
 
-If K_H and K_T are both positive, |e\*| = (1 − ρ)|φ| with ρ = K_T/(K_H + K_T). **ρ is exactly the fraction of sideslip the loop rejects.** A heading servo has ρ = 0; a travel servo has ρ = 1.
+With ρ = K_T/(K_H + K_T) this is e\* = −(1 − ρ)φ. **For 0 ≤ ρ ≤ 1 (K_H, K_T ≥ 0), ρ is exactly the fraction of sideslip the loop rejects.** A heading servo has ρ = 0; a travel servo has ρ = 1. A negative K_T gives ρ < 0, and the loop amplifies the sideslip; a negative K_H gives ρ > 1, and the loop over-compensates.
 
-**Stability requires K_H + K_T > 0** (more precisely K_H·cos φ + K_T > 0). A sign-blind definition such as ρ = |K_T|/(|K_H| + |K_T|) can approach 1 while K_T < 0. If then K_H + K_T < 0, e = 0 is unstable and the loop settles near e = π, pointing *away* from the goal (Figure 2A, dotted). **A ρ criterion must also require K_T > 0.** We found this hole in our own scoring script (Appendix C).
+**Stability requires K_H + K_T > 0** (more precisely K_H·cos φ + K_T > 0). K_T > 0 is not needed for stability (a pure heading servo, K_T = 0, is stable); it is the condition for compensating the sideslip in the right direction. A sign-blind index such as |K_T|/(|K_H| + |K_T|) can approach 1 while K_T < 0. If then K_H + K_T < 0, e = 0 is unstable and the loop settles near e = π, pointing *away* from the goal (Figure 2A, dotted). **This paper therefore reports the signed ρ, marks loops with K_H + K_T ≤ 0 as unstable, and requires K_T > 0 wherever a travel servo is claimed.** We found this hole in our own scoring script (Appendix C).
 
 ![Figure 2 — the mixed law](figures/figB2_theory.png)
 
@@ -250,7 +250,7 @@ With persistent sideslip, the PFN population vector does rotate slightly toward 
 
 ![Figure 8 — back stage and closed loop](figures/figB7_back_stage.png)
 
-**Figure 8.** A: composition of PFL3's input by route (wiring). B: ρ from the closed-loop fit, for synthetic controls, the circuit and ideal signals clamped onto hΔB. C: task error with sideslip: ideal servos, the circuit's fitted law, the theoretical prediction and the measurement.
+**Figure 8.** A: composition of PFL3's input by route (wiring). B: signed ρ = K_T/(K_H + K_T) from the closed-loop fit, for synthetic controls, the circuit and ideal signals clamped onto hΔB. C: task error with sideslip: ideal servos, the circuit's fitted law, the root-sum-of-squares consistency check and the measurement.
 
 ### 5.1 There is no wire from T to the comparator
 
@@ -266,9 +266,9 @@ We then swept heading θ, goal G and sideslip φ over a grid (4 × 8 × 8), let 
 
 $$u = K_H\sin(G-H) + K_T\sin(G-T) + c$$
 
-We validated the fit first: synthetic heading, travel and mixed controllers return their known K_H and K_T and the correct verdict. The circuit gives **K_H = +0.748, K_T = −0.018, c = −0.030, R² = 0.822, ρ = 0.024**. **It is a heading servo.** (The scoring script reports the sign-blind ρ = |K_T|/(|K_H| + |K_T|); with signs, K_T/(K_H + K_T) = −0.025. Either way it is close to 0.) By Section 3.4 it should reject about 2% of the sideslip; the slightly negative K_T makes the static error marginally exceed φ (Figure 2B).
+We validated the fit first: synthetic heading, travel and mixed controllers return their known K_H and K_T and the correct verdict. The circuit gives **K_H = +0.748, K_T = −0.018, c = −0.030, R² = 0.822, ρ = −0.025**. **It is a heading servo.** (The scoring script stores the sign-blind index |K_T|/(|K_H| + |K_T|) = 0.024; the signed ratio of Section 3.4 is the one used throughout this paper.) By Section 3.4 it rejects none of the sideslip: the slightly negative K_T makes the static error about 2.5% larger than φ (Figure 2B).
 
-**Clamping an ideal travel pattern onto hΔB changes nothing.** We clamped an ideal T bump directly onto hΔB, a heading bump as a control, and a phase-shuffled bump as a second control. They gave ρ = 0.027, 0.033 and 0.030, which cannot be told apart. Even a perfect T in hΔB does not reach the comparator.
+**Clamping an ideal travel pattern onto hΔB changes nothing.** We clamped an ideal T bump directly onto hΔB, a heading bump as a control, and a phase-shuffled bump as a second control. They gave ρ = −0.029, −0.035 and −0.032, which cannot be told apart. Even a perfect T in hΔB does not reach the comparator.
 
 ---
 
@@ -281,20 +281,20 @@ The task gives a goal at one of six directions and applies Ornstein–Uhlenbeck 
 | Controller | ρ | With sideslip (median) | Without |
 |---|---:|---:|---:|
 | ideal heading servo | 0.000 | 40.0° | 0.0° |
-| circuit's fitted law, without the circuit | 0.024 | 40.7° | 2.4° |
+| circuit's fitted law, without the circuit | −0.025 | 40.7° | 2.4° |
 | ideal travel servo | 1.000 | 7.8° | 0.0° |
 | **the circuit itself** | — | **42.6° [41.4, 43.6]** | **15.5° [15.0, 18.0]** |
 
 The idealised loops use the same seed as the circuit experiment. The ideal heading and travel servos reproduce the synthetic controls stored with that experiment bit for bit (7.8° / 40.0°), which confirms that the two task implementations are the same.
 
-### 6.2 Decomposing the circuit's error
+### 6.2 An approximate consistency check
 
-The circuit's 42.6° has two parts.
+The circuit's 42.6° can be read as having two parts. The combination below is a heuristic: it treats medians as if they added like independent variances, which they need not. It is a consistency check, not an exact error decomposition.
 
-1. **The control law.** The fitted law alone gives 40.7° with sideslip; the static part (1 − ρ)|φ| accounts for nearly all of it, because ρ is close to 0.
-2. **A floor outside the law.** Without sideslip the circuit still errs by 15.5°, where its law gives 2.4°. We attribute the difference to circuit time constants, dead zones and fit residuals, none of which the fitted equation contains. Assuming the two parts are independent and their medians combine as a root sum of squares, the floor is √(15.5² − 2.4²) = 15.3°.
+1. **The control law.** The fitted law alone gives 40.7° with sideslip; the static part (1 − ρ)|φ| accounts for nearly all of it, because ρ is close to 0 (slightly negative).
+2. **A floor outside the law.** Without sideslip the circuit still errs by 15.5°, where its law gives 2.4°. We attribute the difference to circuit time constants, dead zones and fit residuals, none of which the fitted equation contains. If the two parts were independent and their medians combined as a root sum of squares, the floor would be √(15.5² − 2.4²) = 15.3°.
 
-**Prediction:** √(40.7² + 15.3²) = **43.5°**. **Observed: 42.6° [41.4, 43.6].** The prediction lies inside the interval.
+**Check:** √(40.7² + 15.3²) = **43.5°**. **Observed: 42.6° [41.4, 43.6].** The value lies inside the interval. This supports the reading that the circuit's error is the heading servo's static error plus a sideslip-independent floor; it does not prove the decomposition, and Section 7.2 shows that it fails for the added circuits.
 
 The ideal travel servo's 7.8° is not zero, for the reason given in Section 3.7: a first-order loop lags a fluctuating disturbance. Raising the loop gain from 2.6 to 20 rad/s reduces the lag from 7.8° to 3.0° (Figure 2C). The lag is a property of the loop gain, not of which quantity is fed back.
 
@@ -306,15 +306,15 @@ Putting Sections 3–5 together:
 |---|---|---|
 | Four bases ~90° apart write onto hΔB (Section 3.5) | **present**: +30/−22/−146/+141°, 19/19 cells converge | PFNv silent, PFNd silenced by walking |
 | Velocity *scales* the heading bump (multiplication, Section 3.5) | inhibitory entries, subtractive in the base model | shunting gives division, but flips preferences by 180° |
-| T reaches the comparator (Section 3.1) | **absent**: hΔB → PFL3 is 0.09% | an ideal T clamped onto hΔB is ignored (ρ = 0.027) |
+| T reaches the comparator (Section 3.1) | **absent**: hΔB → PFL3 is 0.09% | an ideal T clamped onto hΔB is ignored (ρ = −0.029) |
 | The comparator subtracts angles (squaring, Section 3.6) | the shifted comparator compares G with **H** | fitted K_T = −0.018 |
-| K_T > 0 and K_H + K_T > 0 (Section 3.4) | — | K_H + K_T = 0.730 > 0: stable, as a heading servo |
+| K_H + K_T > 0 for stability; K_T > 0 for compensation (Section 3.4) | — | K_H + K_T = 0.730 > 0: stable; K_T < 0: no compensation (a heading servo) |
 
 ---
 
-## 7. Supplying the missing multiplications: an added circuit
+## 7. Supplying the missing nonlinear interactions: an added circuit
 
-Sections 3–6 say *what* is missing. Here we add it and measure what it buys. We attach both operations of Section 3 to the connectome model as a declared, added circuit, calibrate it once on training grids, freeze it, and then evaluate it with the criteria and the task used for the plain circuit. We also run ablations, controls and robustness tests on it. Nothing in the base model changes: with every added mechanism switched off, the dynamics are bit-identical to the base model (`tests/test_servo_augmented.py`).
+Sections 3–6 say *what* is missing. Here we add it and measure what it buys. We attach both operations of Section 3, with the phase alignment and gain changes they need, to the connectome model as a declared, added circuit, calibrate it once on training grids, freeze it, and then evaluate it with the criteria and the task used for the plain circuit. We also run ablations, controls and robustness tests on it. Nothing in the base model changes: with every added mechanism switched off, the dynamics are bit-identical to the base model (`tests/test_servo_augmented.py`).
 
 ![Figure 9 — the added circuit](figures/figB9_added_circuit.png)
 
@@ -369,7 +369,7 @@ Evaluation grids are disjoint from the training grids. The front stage has a hel
 
 Both variants pass the closed-loop criteria: at most 20° with sideslip, and without sideslip no worse than the plain circuit's upper confidence bound of 18.0°. The error with sideslip improved in 11 of 12 trials for N and in 12 of 12 for C. Neither variant reaches the ideal travel servo, and the tails are long: the 90th percentile stays near 40°. C's error without sideslip has a wide interval, and its median sits just below the criterion.
 
-**The decomposition of Section 6.2 does not carry over.** The fitted laws alone give 8.7° (N) and 9.8° (C) with sideslip. The effective loop gains are K·(K_H + K_T) = 2.18 and 1.76 rad/s, slightly below the ideal travel servo's 2.6. Adding the floor measured without sideslip as a root sum of squares predicts 10.9° for N (observed 17.7°) and 19.1° for C (observed 14.8°): once under, once over. With the added circuit, the error without sideslip is no longer independent of the sideslip-driven error. The additivity assumption that held for the plain circuit fails here, and we do not use it for these circuits.
+**The consistency check of Section 6.2 does not carry over.** The fitted laws alone give 8.7° (N) and 9.8° (C) with sideslip. The effective loop gains are K·(K_H + K_T) = 2.18 and 1.76 rad/s, slightly below the ideal travel servo's 2.6. Adding the floor measured without sideslip as a root sum of squares predicts 10.9° for N (observed 17.7°) and 19.1° for C (observed 14.8°): once under, once over. With the added circuit, the error without sideslip is no longer independent of the sideslip-driven error. The additivity assumption that held for the plain circuit fails here, and we do not use it for these circuits.
 
 ### 7.3 Ablations and controls
 
@@ -380,19 +380,21 @@ Both variants pass the closed-loop criteria: at most 20° with sideslip, and wit
 | Condition | N: K_T, ρ | N: error | C: K_T, ρ | C: error |
 |---|---:|---:|---:|---:|
 | full added circuit | +0.814, 0.972 | 17.7° | +0.632, 0.933 | 14.8° |
-| without (1) multiplication | −0.018, 0.024 | 42.6° | +0.003, 0.023 | 74.9° |
+| without (1) multiplication | −0.018, −0.025 | 42.6° | +0.003, 0.023 | 74.9° |
 | without (2) alignment | +0.340, 0.385 | 24.6° | +0.111, 0.319 | 40.1° |
-| without (3) comparator | −0.028, 0.037 | 41.5° | −0.026, 0.035 | 41.1° |
+| without (3) comparator | −0.028, −0.040 | 41.5° | −0.026, −0.038 | 41.1° |
 | (3) linear, no square | +0.597, 0.971 | 17.8° | +0.440, 0.903 | 18.5° |
-| (3) δ_L, δ_R swapped | −0.818, 0.949 | 156.3° | −0.639, 0.943 | 161.2° |
-| (1) additive instead of multiplicative | +0.372, 0.906 | 54.4° | −0.025, 0.824 | 97.3° |
-| (2) fitted weights moved to shuffled existing pairs | +0.497, 0.984 | 36.5° | +0.208, 0.684 | 57.7° |
+| (3) δ_L, δ_R swapped | −0.818, unstable | 156.3° | −0.639, unstable | 161.2° |
+| (1) additive instead of multiplicative | +0.372, 0.906 | 54.4° | −0.025, unstable | 97.3° |
+| (2) fitted weights moved to shuffled existing pairs | +0.497, 0.984 | 36.5° | +0.208, 1.862 | 57.7° |
 | (2) refitted on degree-matched random pairs | +0.832, 0.971 | 17.3° | +0.653, 0.940 | 13.9° |
 
-- **Both multiplications are necessary.** Without (1), PFN stays silent at the operating point (Section 4.2), hΔB carries nothing, and the loop reverts to the plain heading servo; for N the numbers are essentially those of the plain circuit. Making (1) additive leaves hΔB's travel gain at b = 0.00 (N) and 0.55 (C) and the error at 54° and 97°. This is the prediction of Section 3.5: velocity enters only as a per-group constant, and a constant cancels over the cells.
-- **The comparator is necessary, and its sign is as theory predicts.** Removing it restores K_T ≈ 0. Swapping δ keeps ρ high (0.949, 0.943) but flips K_T negative, and the loop settles near 180° (156°, 161°). This is exactly the case Section 3.4 warns about: a high sign-blind ρ with the wrong sign of K_T.
-- **The square itself turned out not to be essential.** A linear comparator steers almost as well (17.8°, 18.5°). Section 3.6 shows that a linear sum carries no G − T information for evenly spaced cells. The PFL3 phases are uneven, however, and each PFL3 cell's threshold rectifies its input, and that rectification supplies the product. This is the mechanism anticipated in Section 8.2: a threshold can stand in for a multiplication.
-- **Alignment matters, but the connectome's specific pairs do not.** Without (2), ρ falls to 0.385 (N) and 0.319 (C). Keeping the fitted values but moving them to shuffled existing pairs fails (36.5°, 57.7°). Refitting on degree-matched *random* PFN → hΔB pairs, which need not exist in the connectome, works as well as or better than refitting on real pairs (17.3°, 13.9°). **The existing wiring is a sufficient substrate for (2), but it is not a special one.**
+ρ is the signed K_T/(K_H + K_T) of Section 3.4. "Unstable" marks K_H + K_T < 0, where e = 0 is unstable and ρ has no meaning. ρ > 1 (C, shuffled pairs: K_H = −0.096) means over-compensation.
+
+- **The front stage needs a multiplicative interaction.** Without (1), PFN stays silent at the operating point (Section 4.2), hΔB carries nothing, and the loop reverts to the plain heading servo; for N the numbers are essentially those of the plain circuit. Making (1) additive leaves hΔB's travel gain at b = 0.00 (N) and 0.55 (C) and the error at 54° and 97°. This is the prediction of Section 3.5: velocity enters only as a per-group constant, and a constant cancels over the cells.
+- **The back stage needs a nonlinear comparison of G with T, with the right sign.** Removing the comparator restores K_T ≈ 0. Swapping δ flips K_T negative and makes K_H + K_T < 0, so e = 0 becomes unstable and the loop settles near 180° (156°, 161°). This is exactly the case Section 3.4 warns about: the sign-blind index stays high (0.949, 0.943) while the loop is unstable.
+- **The explicit square turned out not to be essential.** A linear comparator steers almost as well (17.8°, 18.5°). Section 3.6 shows that a linear sum carries no G − T information for evenly spaced cells. The PFL3 phases are uneven, however, and each PFL3 cell's threshold rectifies its input, and that rectification supplies the product. This is the mechanism anticipated in Section 8.2: a threshold can stand in for a multiplication. What the back stage needs is therefore a nonlinear interaction, not a squaring element as such.
+- **Alignment is necessary, but the connectome's specific pairs are not.** Without (2), ρ falls to 0.385 (N) and 0.319 (C) and the error rises to 24.6° and 40.1°. Keeping the fitted values but moving them to shuffled existing pairs fails (36.5°, 57.7°). Refitting on degree-matched *random* PFN → hΔB pairs, which need not exist in the connectome, works as well as or better than refitting on real pairs (17.3°, 13.9°). **The existing wiring is a sufficient substrate for (2), but it is not a special one.**
 
 ### 7.4 Robustness
 
@@ -417,18 +419,18 @@ With world-fixed wind the added circuits reach small errors even at β = 1.3, be
 
 ### 7.5 What this does and does not show
 
-It shows that **the two operations derived in Section 3 are sufficient, on this connectome model, to turn the heading servo into a travel servo**. The front stage then builds T from the existing PFN → hΔB wiring. The loop gains a positive K_T. The sideslip error falls from 42.6° to 15–18°, and the gain survives seeds, noise, delay and speed changes. It also shows **which parts are necessary**: both multiplications and the correctly signed comparator. And it shows **which are not**: the exact square (threshold rectification suffices) and the connectome's specific PFN → hΔB pairs.
+It shows that **the added circuit as a whole is sufficient, on this connectome model, to turn the heading servo into a travel servo**. That circuit contains the two operations derived in Section 3, but also a fitted phase alignment on existing PFN → hΔB pairs, gain changes of the native PFN and hΔB inputs and, in variant C, a new hΔB → PFL3 projection. It does not show that the two multiplications alone would suffice. With them, the front stage builds T from the existing PFN → hΔB wiring. The loop gains a positive K_T. The sideslip error falls from 42.6° to 15–18°, and the gain survives seeds, noise, delay and speed changes. It also shows **which parts are necessary**: the multiplicative PFN gate (an additive input of the same kind fails), the phase alignment, and a correctly signed nonlinear comparison of G with T. And it shows **which are not**: the exact square (threshold rectification suffices) and the connectome's specific PFN → hΔB pairs.
 
 It does not show that the fly computes this way. Every added term is declared, not measured. Variant N reads angles out of populations. Variant C avoids decoding but still needs a new hΔB → PFL3 projection that the connectome does not contain, and a gain-modulated PFN input whose biological form is unknown. The speed amplitude of T fails its criterion in both variants. The added circuits also remain far from the ideal travel servo in their tails: the 90th percentile is about 40°.
 
 
 ## 8. Discussion
 
-### 8.1 What is missing are two multiplications
+### 8.1 What is missing are two nonlinear interactions, and an alignment
 
 A travel servo needs angle addition in the front stage and angle subtraction in the comparator, and both are bilinear (Sections 3.5–3.6). The circuit is a heading servo because its comparator receives H, not T. It does not receive T for two reasons: the stage that would build T is not in service at the operating point, and no wire carries a T to the comparator.
 
-Section 7 tests the converse. Supplying the two operations turns the same wiring into a travel servo, and removing either one undoes it. Once PFN is multiplicatively gated, the existing PFN → hΔB projection builds T. The missing hΔB → PFL3 route, however, had to be declared.
+Section 7 tests the converse, in this model. Supplying the two operations, together with a fitted phase alignment on existing PFN → hΔB pairs, turns the same wiring into a travel servo, and removing any of the three undoes it. Once PFN is multiplicatively gated and aligned, the existing PFN → hΔB projection builds T. The missing hΔB → PFL3 route, however, had to be declared. The comparison need not be an exact square: PFL3's threshold supplied it (Section 7.3). The precise statement is therefore that two *nonlinear interactions* are missing, a multiplicative one in the front stage and a rectifying or squaring one in the comparator, plus the alignment that lets the front stage write T onto hΔB.
 
 ### 8.2 How far does "an additive circuit cannot do it" hold?
 
@@ -444,7 +446,7 @@ Not necessarily. Without sideslip the circuit follows goals to 15.5°. Tethered-
 
 ### 8.5 Related work
 
-An alternative model, produced by another AI system from the same data package, added three mechanisms from outside the model's parameter bounds: a multiplicative PFN stage, reweighted PFN → hΔB synapses and a squaring PFL3 comparator. It reported travel-servo behaviour. We could not reproduce it and cite none of its numbers. Structurally, the two multiplications it added are the operations Section 3 shows to be necessary.
+An alternative model, produced by another AI system from the same data package, added three mechanisms from outside the model's parameter bounds: a multiplicative PFN stage, reweighted PFN → hΔB synapses and a squaring PFL3 comparator. It reported travel-servo behaviour. We could not reproduce it and cite none of its numbers. Structurally, the two multiplications it added correspond to the two nonlinear interactions Section 3 identifies.
 
 ---
 
@@ -452,22 +454,22 @@ An alternative model, produced by another AI system from the same data package, 
 
 - **Idealised plant.** Ḣ = K·u has no body inertia and no sensory delay. Section 3.4 assumes constant φ, and Section 3.7 constant dφ/dt.
 - **The fitted law is a description, not a derivation.** K_H and K_T summarise the input–output behaviour of the circuit on a grid; they are not computed from the wiring.
-- **The root-sum-of-squares decomposition** (Section 6.2) assumes independent components and has been checked on one circuit.
+- **The root-sum-of-squares check** (Section 6.2) combines medians as if they were independent variances. It is a heuristic consistency check, not an error decomposition, it held for one circuit, and it fails for the added circuits.
 - **Signs are predictions.** Glutamate is taken as inhibitory. Taking it as excitatory revives PFNd but not PFNv, whose dominant inhibitor, LNO1, carries a ground-truth GABA label.
 - **Shunting is declared.** Every number in Section 4.3 rests on a mechanism we added, not on the wiring. Assigning the preference on the PFN side was added after the first failure and was not fixed in advance; it failed as well.
 - **Wiring is data; the rest is assumption.** Thresholds, gains, injection sites and readouts are assumptions of this project, not properties of the connectome (Section 2).
-- **The added circuit is declared (Section 7).** Its operations, parameters and, in variant C, the hΔB → PFL3 projection are ours. Parameters were chosen on training grids by rules fixed in advance, and the grid of candidate values is small. A different choice of candidates could give different numbers. The speed amplitude of T fails its criterion, and the error-budget decomposition of Section 6.2 does not transfer to the added circuits.
+- **The added circuit is declared (Section 7).** Its operations, parameters and, in variant C, the hΔB → PFL3 projection are ours. Parameters were chosen on training grids by rules fixed in advance, and the grid of candidate values is small. A different choice of candidates could give different numbers. The speed amplitude of T fails its criterion, and the consistency check of Section 6.2 does not transfer to the added circuits. The result is the sufficiency of this whole added circuit; it does not isolate the two multiplications from the alignment and gain changes that come with them.
 
 ---
 
 ## 10. Conclusions
 
-1. To reject sideslip, a steering loop must feed back the controlled quantity T. In the mixed law, ρ is the disturbance-rejection ratio, and stability additionally requires K_T > 0 and K_H + K_T > 0.
-2. A travel servo needs two bilinear operations: multiplication to add angles (T = H + φ) and squaring to subtract them (G − T). Together they give a loop isomorphic to a first-order PLL, with a lock range and a ramp lag set by the loop gain.
+1. To reject sideslip, a steering loop must feed back the controlled quantity T. In the mixed law, ρ = K_T/(K_H + K_T) is the disturbance-rejection ratio. Stability requires K_H + K_T > 0; compensation in the right direction additionally requires K_T > 0. The pure travel servo is almost globally asymptotically stable (all starts except e = π).
+2. A travel servo needs two bilinear operations: multiplication to add angles (T = H + φ) and squaring to subtract them (G − T). In circuits with thresholds, these become nonlinear interactions; a rectifying threshold can stand in for the square. Together they give a loop isomorphic to a first-order PLL, with a lock range and a ramp lag set by the loop gain.
 3. The male connectome contains the wiring of the front stage: four bases near ±45°/±135° converging on all 19 hΔB cells. At every operating point we tested, the stage does not operate. Inhibitory entries silence it, and under shunting they flip its preferences.
-4. The comparator receives heading, not travel. The closed loop is a heading servo (K_H = +0.748, K_T = −0.018, ρ = 0.024), and theory predicts its sideslip error (43.5° predicted, 42.6° [41.4, 43.6] measured).
-5. **Wiring is a necessary condition, and the male connectome meets it. It is not sufficient: the missing pieces are two multiplications.**
-6. Supplying those two operations as an added circuit is sufficient in this model. Sideslip error falls from 42.6° to 15–18° with K_T > 0, both with decoded angles and without them, and the gain is robust to seeds, noise, delay and speed. Both multiplications and the comparator's sign are necessary; the exact square and the connectome's specific PFN → hΔB pairs are not.
+4. The comparator receives heading, not travel. The closed loop is a heading servo (K_H = +0.748, K_T = −0.018, ρ = −0.025) that slightly amplifies the sideslip. An approximate consistency check with the fitted law is met (43.5° from a root sum of squares of medians, 42.6° [41.4, 43.6] measured).
+5. **In this rate model, the wiring is present but not sufficient. What is missing are two nonlinear interactions (a multiplicative front stage and a nonlinear comparator), not wires.**
+6. A declared added circuit, containing those two operations plus a fitted phase alignment on existing PFN → hΔB pairs (and, in variant C, a new hΔB → PFL3 projection), is sufficient in this model. Sideslip error falls from 42.6° to 15–18° with K_T > 0, both with decoded angles and without them, and the gain is robust to seeds, noise, delay and speed. The multiplicative PFN gate, the alignment and a correctly signed nonlinear comparison are necessary; the exact square and the connectome's specific PFN → hΔB pairs are not.
 
 ---
 
@@ -495,7 +497,7 @@ where α = K(K_H + K_T) and β = K·K_H. For an ideal travel servo (β = 0), Var
 | 6 | world-fixed wind with β < 1 lets every direction be reached |
 | 7 | the synthetic task values are reproduced bit for bit with the same seed |
 | 8 | the squaring comparator gives sin(G − T) exactly for 12 cells; the linear sum is 0 |
-| 9 | the root-sum-of-squares decomposition predicts the circuit's error within its CI |
+| 9 | the root-sum-of-squares consistency check lands inside the circuit's CI |
 
 `tests/test_servo_augmented.py` fixes the added circuit of Section 7: bit-identical dynamics with every mechanism off, M ≥ 0 only on existing PFN → hΔB pairs, the sign of the squaring comparator and its reversal when δ is swapped, the delay line, the multiplicative versus additive gate, and that the saved results follow the calibration rule and reproduce the plain circuit.
 
@@ -503,7 +505,7 @@ where α = K(K_H + K_T) and β = K·K_H. For an ideal travel servo (β = 0), Var
 
 ## Appendix C. Self-corrections
 
-1. **A sign-blind ρ.** Our scoring (`scripts/servo_identify.py`) defines ρ = |K_T|/(|K_H| + |K_T|), which approaches 1 even when K_T < 0. All synthetic controls had K_T ≥ 0, so the flaw stayed hidden. It does not change this paper's verdict (the circuit's K_T is small and ρ ≈ 0), but a travel-servo verdict must also require K_T > 0.
+1. **A sign-blind ρ.** Our scoring (`scripts/servo_identify.py`) defines ρ = |K_T|/(|K_H| + |K_T|), which approaches 1 even when K_T < 0. All synthetic controls had K_T ≥ 0, so the flaw stayed hidden. It does not change this paper's verdict (the circuit's K_T is small and ρ ≈ 0), but a travel-servo verdict must also require K_T > 0. The paper now reports the signed ρ = K_T/(K_H + K_T) everywhere and marks K_H + K_T ≤ 0 as unstable (`paper/scripts/fig_b.py`); the data files keep the sign-blind index under `rho`. The calibration rule of Section 7.1 used the stored index, but every candidate it evaluated had K_H > 0 and K_T > 0, where the two definitions agree, so no choice changes.
 2. **The equilibrium finder dropped roots at ±π.** A root exactly on a grid endpoint was missed, so at φ = 0 the e = π equilibrium went undetected. Test 4 exposed it; the grid is now offset by half a step and scanned periodically.
 3. **The injection confound.** Early servo fits injected the goal into both FC2 and hΔB. Removing hΔB from the injection (Section 5.2) changed the maze error by less than its confidence interval, and all fits here use FC2 only.
 

@@ -5,7 +5,7 @@ This is the minimal package needed to reproduce two papers built on a rate model
 | | Paper | What it shows |
 |---|---|---|
 | A | [`paper/a_navigation/PAPER.md`](paper/a_navigation/PAPER.md) · [HTML](paper/a_navigation/PAPER.html) | **The navigation algorithm is in the wiring.** The heading ring is recovered from connectivity alone. The connection kernels contain the ring-attractor motifs and a ±73° shifted comparator. The model steers in closed loop. Quantization is pruning, and a 166-neuron / 932-synapse circuit still steers. |
-| B | [`paper/b_servo_control/PAPER.md`](paper/b_servo_control/PAPER.md) · [HTML](paper/b_servo_control/PAPER.html) | **Heading servo or travel servo?** A control-theoretic reading of coordinate transformation: ρ as a disturbance-rejection ratio, the two bilinear operations a travel servo needs, and the PLL isomorphism. The plain circuit is a heading servo. §7 adds the two missing multiplications as a declared circuit and tests its performance, ablations and robustness. |
+| B | [`paper/b_servo_control/PAPER.md`](paper/b_servo_control/PAPER.md) · [HTML](paper/b_servo_control/PAPER.html) | **Heading servo or travel servo?** A control-theoretic reading of coordinate transformation: ρ as a disturbance-rejection ratio, the two bilinear operations a travel servo needs, and the PLL isomorphism. In this rate model the plain circuit is a heading servo. §7 adds the two missing nonlinear interactions, with a fitted phase alignment, as a declared circuit and tests its performance, ablations and robustness. |
 
 The HTML files are self-contained, with all figures and the typeset maths embedded.
 
@@ -89,7 +89,7 @@ The test runs the reference task in JavaScript and requires its medians to match
 
 **Paper A.** `paper/scripts/fig_a.py` re-measures everything from `model/flybrain-cx.gguf` and `data/cx_network.npz`: the ring embedding, the kernels, the requantization, the minimal-circuit table and a Python replication of the 48-trial closed-loop audit. It writes `paper/data/paper_a_measurements.json` and figures A0–A7. The JavaScript audit it is checked against is `data/claims_audit_maze.json`.
 
-**Paper B.** `paper/scripts/fig_b.py` copies every cited value into `paper/data/paper_b_measurements.json` and draws figures B1–B11. B3 and B4 are drawn by `scripts/fig_servo_theory.py`. The values come from:
+**Paper B.** `paper/scripts/fig_b.py` copies every cited value into `paper/data/paper_b_measurements.json` and draws figures B1–B11. It converts every fitted ρ to the signed K_T/(K_H + K_T) of the paper's Section 3.4 and marks loops with K_H + K_T ≤ 0 as unstable. B3 and B4 are drawn by `scripts/fig_servo_theory.py`. The values come from:
 
 | Data file | Produced by | Used in |
 |---|---|---|
@@ -119,7 +119,7 @@ The test runs the reference task in JavaScript and requires its medians to match
 
 | Test | Checks |
 |---|---|
-| `tests/test_papers_en.py` | Every key number in both papers matches its data file or number sheet. The Python engine reproduces the JavaScript closed-loop audit. Every figure link resolves and every figure is used. The text is English only. Paper B cites no number from the unreproduced external model. |
+| `tests/test_papers_en.py` | Every key number in both papers matches its data file or number sheet. The Python engine reproduces the JavaScript closed-loop audit. Every figure link resolves and every figure is used. The text is English only. Paper B cites no number from the unreproduced external model. Paper B reports the signed ρ = K_T/(K_H + K_T) of its theory (the measurement scripts store the sign-blind index under `rho`; the number sheet keeps it as `rho_sign_blind`), and states its stability and sufficiency claims at the strength tested. |
 | `tests/test_servo_augmented.py` | The added circuit of B §7: bit-identical dynamics with every mechanism off, M ≥ 0 only on existing PFN → hΔB pairs, the comparator's sign and its reversal, the delay line, multiplicative vs additive gating, and that the saved results follow the calibration rule. |
 | `tests/test_servo_theory.py` | The control theory of B §3 and §6: (1 − ρ)φ, stability, the phasor identity, the squaring comparator, the PLL lag and cycle slips, world-fixed wind, and bit-for-bit reproduction of the task. |
 | `tests/test_pi.py` | Rate-model invariants, including that shunting inhibition at f = 0 is bit-identical to the base model (B §4.3). |

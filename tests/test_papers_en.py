@@ -25,6 +25,7 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAPER = os.path.join(ROOT, 'paper')
 MEDIUM = os.path.join(ROOT, 'medium')
+DATA = os.path.join(ROOT, 'data')
 
 PAPER_A = os.path.join(PAPER, 'a_navigation', 'PAPER.md')
 PAPER_B = os.path.join(PAPER, 'b_servo_control', 'PAPER.md')
@@ -181,9 +182,8 @@ class TestPaperBNumbers(NumberCase):
         self.assert_quoted(PAPER_B, s, 'fitted control law')
         self.assert_quoted(MED_B, f'K_H = {f["K_H"]:+.3f}, K_T = {f["K_T"]:+.3f}, ρ = {f["rho"]:.3f}',
                            'fitted control law (Medium)')
-        signed = f['K_T'] / (f['K_H'] + f['K_T'])
-        self.assert_quoted(PAPER_B, f'K_T/(K_H + K_T) = {signed:.3f}',
-                           'signed rho')
+        self.assert_quoted(PAPER_B, f'|K_T|/(|K_H| + |K_T|) = {f["rho_sign_blind"]:.3f}',
+                           'the stored sign-blind index, named as such')
         self.assert_quoted(PAPER_B, f'K_H + K_T = {f["K_H"] + f["K_T"]:.3f}', 'stability margin')
 
     def test_ideal_clamp(self):
@@ -366,7 +366,7 @@ class TestPaperBSection7(NumberCase):
                 else:
                     ab = r['ablations'][key]
                     kt, rho, e = ab['K_T'], ab['rho'], ab['sideslip_deg']
-                cells += [f'{kt:+.3f}, {rho:.3f}', f'{e:.1f}°']
+                cells += [f'{kt:+.3f}, ' + ('unstable' if rho is None else f'{rho:.3f}'), f'{e:.1f}°']
             row = f"| {label} | " + ' | '.join(cells) + ' |'
             self.assert_quoted(PAPER_B, row, f'ablation row "{label}"')
 
@@ -419,11 +419,7 @@ class TestNumberSheetIsFresh(unittest.TestCase):
             import fig_b  # noqa: E402
         except ImportError as e:  # pragma: no cover
             self.skipTest(f'needs numpy/matplotlib: {e}')
-        fresh = fig_b.collect()
-        aug = fig_b.collect_augmented()
-        if aug is not None:
-            fresh['augmented'] = aug
-        fresh = json.loads(json.dumps(fresh))
+        fresh = json.loads(json.dumps(fig_b.build_sheet()))
         self.assertEqual(fresh, sheet('paper_b_measurements.json'),
                          'run python3 paper/scripts/fig_b.py to refresh the number sheet')
 
@@ -467,6 +463,81 @@ class TestLinksAndFigures(unittest.TestCase):
             self.assertIn('<h1', html)
             self.assertIn(title.split('*')[0][:40], html)
             self.assertNotIn('](figures/', html, f'{paper}: an image was not embedded')
+
+
+class TestRhoAndClaims(unittest.TestCase):
+    """Paper B reports the signed rho of its own theory, and states its claims at their tested strength."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = sheet('paper_b_measurements.json')
+
+    def fits(self, obj):
+        if isinstance(obj, dict):
+            if {'K_H', 'K_T', 'rho'} <= obj.keys():
+                yield obj
+            for v in obj.values():
+                yield from self.fits(v)
+        elif isinstance(obj, list):
+            for v in obj:
+                yield from self.fits(v)
+
+    def test_sheet_rho_is_signed(self):
+        n = 0
+        for f in self.fits(self.m):
+            n += 1
+            s = f['K_H'] + f['K_T']
+            self.assertEqual(f['stable'], s > 0)
+            if s > 0:
+                self.assertAlmostEqual(f['rho'], f['K_T'] / s, places=12)
+            else:
+                self.assertIsNone(f['rho'])
+        self.assertGreater(n, 20)
+
+    def test_plain_circuit_amplifies(self):
+        f = self.m['back_stage_fit']
+        self.assertLess(f['rho'], 0)
+        for path in (PAPER_B, MED_B):
+            if path in TEXT:
+                self.assertIn('2.5%', TEXT[path], f'{os.path.relpath(path, ROOT)}: amplification not stated')
+                for bad in ('ρ = 0.024', 'ρ 0.024', 'about 2% of', 'ρ = 0.027'):
+                    self.assertNotIn(bad, TEXT[path], f'{os.path.relpath(path, ROOT)}: sign-blind "{bad}"')
+
+    def test_calibration_unaffected_by_sign_blind_rho(self):
+        """The lambda rule used the stored index; it equals the signed rho when K_H, K_T > 0."""
+        with open(os.path.join(DATA, 'servo_augmented.json'), encoding='utf-8') as f:
+            d = json.load(f)
+        for v, rec in d['variants'].items():
+            for c in rec['config']['lambda_candidates']:
+                self.assertGreater(c['K_H'], 0, v)
+                self.assertGreater(c['K_T'], 0, v)
+
+    def test_stability_wording(self):
+        for path in (p for p in (PAPER_B, MED_B) if p in TEXT):
+            for m in re.finditer(r'globally', TEXT[path]):
+                self.assertIn('almost', TEXT[path][max(0, m.start() - 40):m.start()],
+                              f'{os.path.relpath(path, ROOT)}: "globally" without "almost"')
+        self.assertNotIn('stability additionally requires K_T > 0', TEXT[PAPER_B])
+
+    def test_consistency_check_not_called_a_prediction(self):
+        for path in (p for p in (PAPER_B, MED_B) if p in TEXT):
+            for bad in ('Theory predicts **43.5°**', 'theory predicts **43.5°**', '**Prediction:**'):
+                self.assertNotIn(bad, TEXT[path])
+            self.assertIn('consistency check', TEXT[path])
+
+    def test_sufficiency_is_of_the_whole_added_circuit(self):
+        self.assertNotIn('what is missing are the two multiplications', TEXT[PAPER_B])
+        self.assertNotIn('Both multiplications are necessary', TEXT[PAPER_B])
+        self.assertIn('the added circuit as a whole is sufficient', TEXT[PAPER_B])
+        if MED_B in TEXT:
+            self.assertNotIn('two multiplications**, and adding them is enough', TEXT[MED_B])
+
+    def test_medium_b_is_framed_as_a_model(self):
+        if MED_B not in TEXT:
+            self.skipTest('no medium/ in this checkout')
+        lines = TEXT[MED_B].splitlines()
+        self.assertIn('model', lines[0].lower(), 'title')
+        self.assertIn('model', lines[2].lower(), 'standfirst')
 
 
 class TestEnglishOnly(unittest.TestCase):
